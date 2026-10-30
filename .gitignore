@@ -8,3 +8,5 @@ prototype/
 test-results/
 playwright-report/
 .features-gen/
+PRODUCT.md
+.impeccable/
