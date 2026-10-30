@@ -71,18 +71,29 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
     if (coverRect) renderer?.setFocus({ x: (x - coverRect.x) / coverRect.width, y: (y - coverRect.y) / coverRect.height });
   };
 
+  // Snap back to the closed state without a transition, then open again, so the motion plays every time.
+  const replay = (el: HTMLElement, cls: string) => {
+    el.style.transition = "none";            // snap back instantly, or the reset itself animates and cancels the replay
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.style.transition = "";
+    el.classList.add(cls);
+  };
+
   const choose = (i: number) => {
+    if (i === chosen && !holder.hidden) return;   // hovering the open card again doesn't restart it
     chosen = i;
     cards.forEach((card, k) => (card.hidden = k !== i));
     [...waypoints, ...entries].forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.i) === i)));
     holder.hidden = false;
     tether.hidden = false;
     hang(i);
-    holder.classList.remove("open"); void holder.offsetWidth; holder.classList.add("open");   // the motion plays every time
+    replay(holder, "open");
+    replay(tether, "drawn");
   };
   const close = () => {
     chosen = -1;
-    holder.hidden = true; tether.hidden = true; holder.classList.remove("open");
+    holder.hidden = true; tether.hidden = true; holder.classList.remove("open"); tether.classList.remove("drawn");
     [...waypoints, ...entries].forEach((b) => b.setAttribute("aria-pressed", "false"));
     renderer?.setFocus(null);
   };

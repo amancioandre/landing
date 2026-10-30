@@ -56,7 +56,10 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   }
   .index .n { font: 11px var(--mono); color: var(--mute); margin-right: 14px; }
   .index button[aria-pressed="true"] { color: var(--ink); font-weight: 500; }
-  .tether { position: absolute; z-index: 4; width: 1.5px; background: var(--signal); display: none; }
+  /* The tether draws up from the waypoint to the card, every time a card opens. */
+  .tether { position: absolute; z-index: 4; width: 1.5px; background: var(--signal); display: none;
+    transform-origin: bottom; transform: scaleY(0); transition: transform .5s ease-out; }
+  .tether:global(.drawn) { transform: scaleY(1); }
   .card { opacity: 0; transform: translateY(6px); transition: opacity .45s ease-out, transform .45s ease-out; }
   .card:global(.open) { opacity: calc(1 - var(--leave, 0)); transform: none; }
   .card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; filter: grayscale(1); }
@@ -86,5 +89,5 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
     .tether { display: block; }
     .tether[hidden] { display: none; }
   }
-  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .card, .tether { transition: none; } }
 </style>
