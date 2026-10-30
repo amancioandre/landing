@@ -12,7 +12,7 @@ const { copy } = Astro.props;
   <label class="sr-only" for="write-note">{copy.letter.message}</label>
   <div class="field">
     <span class="pipe" aria-hidden="true"></span>
-    <textarea id="write-note" rows="7"></textarea>
+    <textarea id="write-note" rows="4"></textarea>
   </div>
   <label class="sr-only" for="write-from">{copy.letter.email}</label>
   <input id="write-from" type="email" autocomplete="email" placeholder={copy.letter.emailPlaceholder} hidden />
@@ -36,16 +36,17 @@ const { copy } = Astro.props;
   .prompt { min-height: 64px; font-size: 24px; line-height: 32px; font-weight: 500; letter-spacing: -.01em; transition: opacity .6s ease; }
   .prompt:global(.leaving) { opacity: 0; }
   .said { font: italic 400 20px/32px var(--sans); color: var(--ink-2); white-space: pre-wrap; }
-  .field { position: relative; }
+  /* The whole field takes a click, and it grows with the letter instead of opening on a tall void. */
+  .field { position: relative; cursor: text; }
   textarea, input {
     display: block; width: 100%; border: 0; padding: 0; resize: none; background: transparent; color: var(--ink);
     font: 400 20px/32px var(--sans); letter-spacing: .01em; outline: none;
   }
-  textarea { padding-left: 14px; }
+  textarea { padding-left: 14px; field-sizing: content; min-height: calc(4 * 32px); cursor: text; }
   input::placeholder { color: var(--mute); opacity: 1; }
-  .pipe { position: absolute; left: 0; top: 4px; width: 2px; height: 24px; background: var(--signal); animation: blink 1.1s steps(1) infinite; }
+  /* At rest the caret stands still, a mark that says "here"; once in, the browser's own caret blinks. */
+  .pipe { position: absolute; left: 0; top: 4px; width: 2px; height: 24px; background: var(--signal); pointer-events: none; }
   .letter:global(.ready) .pipe, .field:focus-within .pipe { display: none; }
-  @keyframes blink { 50% { opacity: 0; } }
   .row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; font-size: 14px; font-weight: 500; color: var(--ink-2); }
   .key {
     display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; letter-spacing: .08em; min-width: 44px; min-height: 32px; padding: 3px 8px 2px; cursor: pointer; background: none; color: var(--mute);
@@ -61,7 +62,8 @@ const { copy } = Astro.props;
     .prompt { min-height: 76px; font-size: 30px; line-height: 38px; }
     .said { font-size: 24px; line-height: 40px; }
     textarea, input { font-size: 24px; line-height: 40px; }
+    textarea { min-height: calc(4 * 40px); }
     .pipe { top: 6px; height: 28px; }
   }
-  @media (prefers-reduced-motion: reduce) { .pipe { animation: none; } .prompt { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .prompt { transition: none; } }
 </style>
