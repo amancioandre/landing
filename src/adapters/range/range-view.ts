@@ -4,6 +4,7 @@ import { ORIGINAL, PLATES } from "../../content/plates";
 import type { InterestStop } from "../../content/interests";
 import { nearMap } from "./near-map";
 import { nookShown } from "../../domain/range/night";
+import { placeCard } from "../../domain/range/card-place";
 import { NIGHT } from "../../content/night";
 import { RangeRenderer } from "./renderer";
 
@@ -57,17 +58,32 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
   };
 
   // The card hangs above its waypoint on the tether; near the right edge it flips. On phones it is a sheet.
+  // The card hangs above its waypoint on the tether, on whichever side covers nothing (domain/range/card-place);
+  // when no side is clear, and always on phones, it opens as a sheet at the foot of the screen.
+  const index = root.querySelector<HTMLElement>(".index")!;
+  const boxIn = (el: Element) => {
+    const r = el.getBoundingClientRect(), o = root.getBoundingClientRect();
+    return { x: r.left - o.left, y: r.top - o.top, width: r.width, height: r.height };
+  };
   const hang = (i: number) => {
     const at = waypoints[i];
     const x = parseFloat(at.style.left), y = parseFloat(at.style.top);
-    const width = holder.offsetWidth || 260, flip = x + width > root.clientWidth - 16;
-    const top = Math.max(96, y - 30 - holder.offsetHeight);
-    holder.classList.toggle("flip", flip);
-    holder.style.left = `${flip ? x - width : x}px`;
-    holder.style.top = `${top}px`;
-    tether.style.left = `${x - 0.75}px`;
-    tether.style.top = `${top}px`;
-    tether.style.height = `${Math.max(0, y - 32 - top)}px`;
+    holder.classList.remove("sheet");
+    const place = innerWidth < 700 ? null : placeCard({
+      at: { x, y }, size: { width: holder.offsetWidth || 254, height: holder.offsetHeight },
+      screen: { width: root.clientWidth, height: root.clientHeight }, top: 96,
+      obstacles: [boxIn(index), ...waypoints.filter((_, k) => k !== i).map(boxIn)],
+    });
+    holder.classList.toggle("sheet", !place);
+    tether.hidden = !place;
+    if (place) {
+      holder.classList.toggle("flip", place.side === "left");
+      holder.style.left = `${place.left}px`;
+      holder.style.top = `${place.top}px`;
+      tether.style.left = `${x - 0.75}px`;
+      tether.style.top = `${place.top}px`;
+      tether.style.height = `${Math.max(0, y - 32 - place.top)}px`;
+    }
     if (coverRect) renderer?.setFocus({ x: (x - coverRect.x) / coverRect.width, y: (y - coverRect.y) / coverRect.height });
   };
 
@@ -86,7 +102,6 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
     cards.forEach((card, k) => (card.hidden = k !== i));
     [...waypoints, ...entries].forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.i) === i)));
     holder.hidden = false;
-    tether.hidden = false;
     hang(i);
     replay(holder, "open");
     replay(tether, "drawn");

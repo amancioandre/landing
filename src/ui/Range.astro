@@ -70,14 +70,16 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   .card li a { display: inline-flex; align-items: center; gap: 8px; }
   .card :global(.out) { color: var(--signal); }
   .card h3, .card .say, .card li { width: fit-content; background: var(--paper); box-shadow: 0 0 0 3px var(--paper); }
-  @media (max-width: 699px) {
-    .card {
-      position: fixed; left: 0 !important; right: 0; top: auto !important; bottom: 0; z-index: 5;
-      padding: 16px 16px 22px; background: var(--paper); border-top: 1px solid var(--signal);
-    }
-    .card article { display: grid; grid-template-columns: 112px 1fr; column-gap: 14px; align-items: start; }
-    .card article :is(img, .empty) { grid-row: 1 / span 3; }
+  /* The sheet: always on phones, and wherever a card can't hang clear of the index and the other waypoints. */
+  .card:global(.sheet) {
+    position: fixed; left: 0 !important; right: 0; top: auto !important; bottom: 0; z-index: 5; width: auto;
+    padding: 16px 16px 22px; background: var(--paper); border-top: 1px solid var(--signal); text-align: left;
   }
+  .card:global(.sheet) article { display: grid; grid-template-columns: 112px 1fr; column-gap: 14px; align-items: start; }
+  .card:global(.sheet) article :is(img, .empty) { grid-row: 1 / span 3; }
+  .card:global(.sheet) h3 { margin-top: 0; }
+  .card:global(.sheet) :is(h3, .say) { margin-left: 0; }
+  .card:global(.sheet) ul { justify-items: start; }
   @media (min-width: 700px) {
     .index { top: 22%; left: auto; right: clamp(24px, 3vw, 56px); justify-items: end; }
     .index button { font-size: 15px; padding: 0; text-align: right; }
