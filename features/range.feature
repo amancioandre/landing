@@ -15,6 +15,10 @@ Feature: The range
     When I choose "Writer" in the index
     Then the card for "Writer" opens with a link to "Stories on Substack"
 
+  Scenario: The writer can be backed on Patreon
+    When I choose "Writer" in the index
+    Then the card for "Writer" opens with a link to "Patreon"
+
   Scenario: Choosing a waypoint opens the same card
     When I choose waypoint "04"
     Then the card for "Hunter" opens with a link to "Films on YouTube"

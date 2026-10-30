@@ -4,6 +4,7 @@ Feature: The footer says where else to find André
   Scenario: Every channel is one click away and says where it leads
     Given I open the home page
     Then the footer links to "YouTube", "Instagram", "Substack", "LinkedIn" and "GitHub"
+    And the footer links to "Patreon"
     And every channel link leaves for its own site
 
   Scenario: The address is shown, not hidden

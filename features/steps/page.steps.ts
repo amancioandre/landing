@@ -29,6 +29,10 @@ Then("the footer links to {string}, {string}, {string}, {string} and {string}",
     for (const name of [a, b, c, d, e]) await expect(footer.getByRole("link", { name })).toBeVisible();
   });
 
+Then("the footer links to {string}", async ({ page }, name: string) => {
+  await expect(page.getByRole("contentinfo").getByRole("link", { name })).toHaveAttribute("href", /^https:\/\//);
+});
+
 Then("every channel link leaves for its own site", async ({ page }) => {
   const channels = page.getByRole("contentinfo").getByRole("navigation", { name: "Channels" }).getByRole("link");
   for (const link of await channels.all()) {
