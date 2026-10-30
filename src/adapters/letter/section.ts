@@ -1,11 +1,11 @@
 import { LetterForm, formParts } from "./letter-form";
-import { notConnected } from "./not-connected";
+import { postOffice } from "./post-office";
 
 const TURN_MS = 6000, FADE_MS = 600;
 
 /** The write-to-me section: prompts take turns above the letter, and hold still once someone is writing. */
 export function mountSection(root: HTMLElement, prompts: readonly string[], address: string): void {
-  const form = new LetterForm(formParts(root), notConnected, address);
+  const form = new LetterForm(formParts(root), postOffice, address);
   const line = root.querySelector<HTMLElement>("[data-prompt]")!;
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let at = 0;

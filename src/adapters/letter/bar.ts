@@ -1,6 +1,6 @@
 import { lock, release, startTyping, tick, visible, lockedPrompt, type Typing } from "../../domain/letter/typewriter";
 import { LetterForm, formParts } from "./letter-form";
-import { notConnected } from "./not-connected";
+import { postOffice } from "./post-office";
 
 const TICK_MS = 45, HOLD_TICKS = 60;
 export const OPENING = "write to me";   // typed first; a letter opened on it answers no particular question
@@ -9,7 +9,7 @@ export const OPENING = "write to me";   // typed first; a letter opened on it an
 export function mountBar(root: HTMLElement, prompts: readonly string[], address: string): void {
   const ask = root.querySelector<HTMLButtonElement>("[data-ask]")!;
   const panel = root.querySelector<HTMLElement>("[data-panel]")!;
-  const form = new LetterForm(formParts(panel), notConnected, address);
+  const form = new LetterForm(formParts(panel), postOffice, address);
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let typing: Typing = startTyping(prompts, { whole: true });
 

@@ -1,10 +1,10 @@
 import { compose, type Letter, type Message } from "./letter";
 
 export type { Message };
-export type Delivery = "sent" | "not-connected" | "failed";
+export type Delivery = "sent" | "failed";
 export type Outcome = Delivery | "bad-email" | "not-ready";
 
-/** The domain's port for delivering a letter. The Cloudflare Worker adapter comes later (ADR 0007). */
+/** The domain's port for delivering a letter; the Worker's adapter is in adapters/letter (ADR 0023). */
 export interface LetterSender {
   send(message: Message): Promise<Delivery>;
 }

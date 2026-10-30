@@ -15,7 +15,6 @@ export interface FormParts {
 const say = (address: string): Record<Outcome, string> => ({
   "not-ready": "",
   "bad-email": "That email doesn't look right.",
-  "not-connected": `Sending isn't connected yet. Write to ${address} instead.`,
   failed: `It didn't go through. Write to ${address} instead.`,
   sent: "Sent. Thank you.",
 });
@@ -74,8 +73,8 @@ export class LetterForm {
   private async forward(): Promise<void> {
     if (this.letter.step === "say") return this.show((this.letter = advance(this.letter)), true);
     const outcome = await sendLetter(this.letter, this.sender);
+    if (outcome === "sent") this.show((this.letter = startLetter()), false);   // a fresh sheet first: showing it clears the status
     this.parts.status.textContent = this.lines[outcome];
-    if (outcome === "sent") this.show((this.letter = startLetter()), false);
   }
 
   private show(letter: Letter, focus: boolean): void {

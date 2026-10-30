@@ -3,7 +3,7 @@ import { advance, startLetter, write } from "./letter";
 import { sendLetter, type LetterSender, type Message } from "./send";
 
 const ready = (from: string) => write(advance(write(startLetter("Hello!"), "Hi André")), from);
-const sender = (answer: "sent" | "not-connected" | "failed") => {
+const sender = (answer: "sent" | "failed") => {
   const sent: Message[] = [];
   const port: LetterSender = { send: async (m) => (sent.push(m), answer) };
   return { port, sent };
@@ -23,7 +23,6 @@ describe("sending a letter", () => {
   });
 
   it("reports what the sender says when it cannot deliver", async () => {
-    expect(await sendLetter(ready("me@example.com"), sender("not-connected").port)).toBe("not-connected");
     expect(await sendLetter(ready("me@example.com"), sender("failed").port)).toBe("failed");
   });
 });
