@@ -70,6 +70,8 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   .stop[aria-pressed="true"] { font-weight: 700; }
   /* A finger-sized target around the small number, with nothing drawn. */
   .stop::before { content: ""; position: absolute; inset: -12px -9px; }
+  /* By day the fog can leave a number hanging in the air: a short stem sets it down on the ground beneath. */
+  :global([data-theme="day"]) .stop::after { content: ""; position: absolute; left: calc(50% - .75px); top: 100%; width: 1.5px; height: 12px; background: var(--ink-2); }
   .index { position: absolute; z-index: 2; left: var(--gutter); top: calc(84px + 3svh); display: grid; gap: 12px; }
   .index button {
     width: fit-content; border: 0; padding: 4px 0; cursor: pointer; text-align: left; color: var(--ink-2);
