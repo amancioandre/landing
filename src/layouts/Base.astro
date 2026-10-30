@@ -3,6 +3,7 @@ import "@fontsource/jost/400.css";
 import "@fontsource/jost/500.css";
 import "../styles/base.css";
 import { themeCss } from "../design/css";
+import { themeColor } from "../design/tokens";
 import { earlyScript } from "../adapters/daylight/inline";
 import { structuredData } from "../adapters/seo/structured-data";
 import { SITE } from "../content/site";
@@ -25,6 +26,7 @@ const words = JSON.stringify(letterWordsIn(copy));
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content={themeColor("day")} />
     <title>{title}</title>
     <meta name="description" content={copy.site.summary} />
     <meta name="author" content={SITE.name} />

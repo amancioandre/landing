@@ -10,3 +10,6 @@ export type Role = keyof (typeof THEMES)["day"];
 
 // Roles that carry words. "mark" is for rules and empty-frame borders only, never text.
 export const TEXT_ROLES = ["ink", "ink2", "mute", "signal"] as const satisfies readonly Role[];
+
+/** The colour the browser paints its own bar with: the paper of the hour, so bar and page read as one sheet. */
+export const themeColor = (theme: ThemeName): string => THEMES[theme].paper;

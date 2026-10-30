@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { contrastRatio } from "./contrast";
-import { THEMES, TEXT_ROLES } from "./tokens";
+import { THEMES, TEXT_ROLES, themeColor } from "./tokens";
 
 // WCAG AA for normal text. The red is text too ("write to me"), so it is held to the same bar (ADR 0012).
 const AA = 4.5;
@@ -19,5 +19,12 @@ describe("day and night", () => {
   it("keeps the night's words gentler than white (Andre: \"use less white\")", () => {
     expect(THEMES.night.ink).not.toBe("#eeebe5");
     expect(contrastRatio(THEMES.night.ink, THEMES.night.paper)).toBeLessThan(contrastRatio("#eeebe5", THEMES.night.paper));
+  });
+});
+
+describe("the browser's bar", () => {
+  it("takes the paper of the hour, so the page and the bar read as one sheet", () => {
+    expect(themeColor("day")).toBe(THEMES.day.paper);
+    expect(themeColor("night")).toBe(THEMES.night.paper);
   });
 });
