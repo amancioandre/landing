@@ -21,3 +21,9 @@ export function inkAt({ u, v, lum, mean }: Sample, f: Focus, t: Touch): number {
   const ink = smooth(t.low, t.high, tone * (1 - t.localContrast) + local * t.localContrast) * keep * t.maxInk;
   return ink < t.floor ? 0 : ink;
 }
+
+// Seventy glyphs from blank to densest (Paul Bourke's ramp, lightest first): many more steps than the range's eleven,
+// so a portrait keeps its detail and its tones move smoothly (Andre: more resolution and characters).
+export const PICTURE_RAMP = " .'`^\",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
+
+export const glyphFor = (ink: number) => PICTURE_RAMP[Math.round(Math.min(1, Math.max(0, ink)) * (PICTURE_RAMP.length - 1))];
