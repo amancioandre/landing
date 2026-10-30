@@ -38,3 +38,8 @@ Feature: Found and understood by search and AI answers
   Scenario: The site claims its own domain when it is hosted
     When I read "/CNAME"
     Then it starts with "andreamnc.com"
+
+  Scenario: Visits are counted by Andre's Umami, only on his own domain
+    Given I open the home page
+    Then the page loads Umami for the website "67b02ce4-e3ee-4a99-85b7-88c6b0e1e7b2"
+    And Umami counts visits only on "andreamnc.com"

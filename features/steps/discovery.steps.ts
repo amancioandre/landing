@@ -1,4 +1,4 @@
-import { expect } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 import { createBdd } from "playwright-bdd";
 
 const { When, Then } = createBdd();
@@ -89,4 +89,15 @@ Then("the section names {string} and {string} carry no draft mark", async ({ pag
 
 Then("no carousel card shows a placeholder piece", async ({ page }) => {
   await expect(page.locator("#interests .piece")).toHaveCount(0);
+});
+
+const umami = (page: Page) => page.locator('head script[src="https://cloud.umami.is/script.js"]');
+
+Then("the page loads Umami for the website {string}", async ({ page }, id: string) => {
+  await expect(umami(page)).toHaveAttribute("data-website-id", id);
+  await expect(umami(page)).toHaveAttribute("defer", "");
+});
+
+Then("Umami counts visits only on {string}", async ({ page }, domain: string) => {
+  await expect(umami(page)).toHaveAttribute("data-domains", domain);
 });
