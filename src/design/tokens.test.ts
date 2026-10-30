@@ -11,8 +11,13 @@ describe.each(Object.entries(THEMES))("the %s theme", (_name, theme) => {
   });
 });
 
-describe("the two themes", () => {
+describe("day and night", () => {
   it("share the same roles, so every component works in both", () => {
-    expect(Object.keys(THEMES.dark).sort()).toEqual(Object.keys(THEMES.light).sort());
+    expect(Object.keys(THEMES.night).sort()).toEqual(Object.keys(THEMES.day).sort());
+  });
+
+  it("keeps the night's words gentler than white (Andre: \"use less white\")", () => {
+    expect(THEMES.night.ink).not.toBe("#eeebe5");
+    expect(contrastRatio(THEMES.night.ink, THEMES.night.paper)).toBeLessThan(contrastRatio("#eeebe5", THEMES.night.paper));
   });
 });
