@@ -31,10 +31,10 @@ describe("the small icon, pixel for pixel", () => {
 });
 
 describe("the large icon, in glyphs", () => {
-  it("sets one line of glyphs per row, each glyph in its own cell", () => {
+  it("sets each glyph in its own cell and leaves the sky empty, whatever the font's widths", () => {
     const svg = glyphIcon([" @", "i:"], 180, ICON_DAY);
-    expect(svg.match(/<text /g)).toHaveLength(2);
-    expect(svg).toContain('x="0 90"');
+    expect(svg.match(/<text /g)).toHaveLength(3);
+    expect(svg).toContain('<text x="90" y="73.8">@</text>');
   });
 
   it("marks the waypoint as one glyph cell, as small as a red number on the page", () => {

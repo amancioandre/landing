@@ -1,7 +1,7 @@
 // An .ico is a directory of PNGs (Windows Vista onward); every browser that still asks for /favicon.ico reads it.
 export interface IcoImage { size: number; png: Uint8Array }
 
-export function icoFrom(images: readonly IcoImage[]): Uint8Array {
+export function icoFrom(images: readonly IcoImage[]): Uint8Array<ArrayBuffer> {
   const header = 6, entry = 16;
   const total = header + entry * images.length + images.reduce((sum, i) => sum + i.png.length, 0);
   const out = new Uint8Array(total), view = new DataView(out.buffer);

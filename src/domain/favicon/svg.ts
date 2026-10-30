@@ -24,8 +24,8 @@ const round = (v: number) => Math.round(v * 100) / 100;
 /** Each glyph is placed in its own cell, so the drawing doesn't depend on the font's advance width. */
 export function glyphIcon(rows: readonly string[], n: number, palette: Palette, { inset = 0 } = {}): string {
   const g = rows.length, cell = n / g;
-  const xs = Array.from({ length: g }, (_, i) => round(i * cell)).join(" ");
-  const lines = rows.map((r, y) => `<text x="${xs}" y="${round((y + 0.82) * cell)}" xml:space="preserve">${escape(r)}</text>`).join("");
+  const lines = rows.flatMap((r, y) => [...r].flatMap((ch, x) =>
+    ch === " " ? [] : [`<text x="${round(x * cell)}" y="${round((y + 0.82) * cell)}">${escape(ch)}</text>`])).join("");
   // One glyph cell of red, as small beside the glyphs as a waypoint's number is on the page.
   const red = waypoint(g), size = cell * 1.1, ring = cell * 0.6;
   const mark = `<rect class="p" x="${round(red.x * cell - ring)}" y="${round(red.y * cell - ring)}" width="${round(size + 2 * ring)}" height="${round(size + 2 * ring)}"/>`

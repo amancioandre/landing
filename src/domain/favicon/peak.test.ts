@@ -63,6 +63,10 @@ describe("the peak drawn large, in the range's own glyphs", () => {
     for (const ch of rows.join("")) expect(ramp).toContain(ch);
   });
 
+  it("keeps faint sky as paper rather than a scatter of commas", () => {
+    expect(glyphRows([[0.02, 0.05]], rampFor("ridge"))).toEqual(["  "]);
+  });
+
   it("keeps a cell about six pixels wide, at most forty-eight across", () => {
     expect(glyphGrid(180)).toBe(30);
     expect(glyphGrid(192)).toBe(32);

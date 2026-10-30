@@ -52,7 +52,8 @@ const GLYPH_GAIN = 1.7;
 
 export function glyphRows(grid: Darkness, ramp: string): string[] {
   const last = ramp.length - 1;
-  return grid.map((row) => row.map((v) => ramp[Math.round(Math.min(1, v * GLYPH_GAIN) * last)]).join(""));
+  // Rounding down keeps faint sky as paper, as in the drawing Andre picked.
+  return grid.map((row) => row.map((v) => ramp[Math.floor(Math.min(1, v * GLYPH_GAIN) * last)]).join(""));
 }
 
 export const glyphGrid = (size: number) => Math.min(48, Math.round(size / 6));
