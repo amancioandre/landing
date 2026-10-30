@@ -18,6 +18,9 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -25,8 +28,15 @@ jobs:
       - run: npm ci
       - run: npx vitest run src/domain/letter worker
       - run: npx tsc -p worker/tsconfig.json
-      - run: npx wrangler deploy
+      - run: npx wrangler deploy   # creates andreamnc-letter on the first run
         working-directory: worker
+      # The Worker's secrets come from GitHub's secret store, so they never sit in the repo or pass through anyone's chat.
+      - name: Set the Worker's secrets
+        working-directory: worker
+        run: |
+          if [ -z "$INBOX" ] || [ -z "$TURNSTILE_SECRET" ]; then echo "::warning::INBOX or TURNSTILE_SECRET missing in GitHub secrets; letters can't be delivered yet"; exit 0; fi
+          printf %s "$INBOX" | npx wrangler secret put INBOX
+          printf %s "$TURNSTILE_SECRET" | npx wrangler secret put TURNSTILE_SECRET
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          INBOX: ${{ secrets.INBOX }}
+          TURNSTILE_SECRET: ${{ secrets.TURNSTILE_SECRET }}
