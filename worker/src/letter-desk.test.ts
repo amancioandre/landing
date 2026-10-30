@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { receiveLetter, type Desk } from "./letter-desk";
 import type { Envelope } from "../../src/domain/letter/delivery";
 
-const letter = { prompt: "Hello!", note: "Hi André", from: "me@example.com", token: "pass" };
+const letter = { prompt: "Hello!", note: "Hi André", from: "me@example.com", token: "pass", visit: { via: "bar", interest: "Writer", junk: "x" } };
 const post = (body: unknown, method = "POST") =>
   new Request("https://andreamnc.com/letter", { method, headers: { "content-type": "application/json", "cf-connecting-ip": "1.2.3.4" }, body: method === "POST" ? JSON.stringify(body) : undefined });
 const desk = (over: Partial<Desk> = {}) => {
@@ -23,6 +23,15 @@ describe("Given a letter written on andreamnc.com", () => {
     expect(checked).toEqual([["pass", "1.2.3.4"]]);
     expect(delivered).toHaveLength(1);
     expect(delivered[0].replyTo).toBe("me@example.com");
+  });
+
+  it("When it arrives, Then Andre also reads where it was written, what they looked at, and where they are", async () => {
+    const { port, delivered } = desk();
+    await receiveLetter(post(letter), port, { city: "Calgary", country: "CA" });
+    expect(delivered[0].text).toContain("Written in the bar at the top");
+    expect(delivered[0].text).toContain("Looking at Writer");
+    expect(delivered[0].text).toContain("Calgary, CA");
+    expect(delivered[0].text).not.toContain("junk");
   });
 
   it("When a bot sends it, Then nothing is delivered", async () => {
