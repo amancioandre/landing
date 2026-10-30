@@ -124,4 +124,6 @@ Then("the letter that went out carries {string}, {string}, its question and a pa
   const sent = outgoing.get(page);
   expect(sent).toMatchObject({ note, from, token: "a-person" });
   expect(sent?.prompt).toEqual(expect.any(String));
+  const asked = await page.evaluate(() => { const o = (window as unknown as { __turnstile: { sitekey: string; action: string } }).__turnstile; return { sitekey: o.sitekey, action: o.action }; });
+  expect(asked).toEqual({ sitekey: "0x4AAAAAAFsMmr_4Ql21QTux", action: "letter" });
 });

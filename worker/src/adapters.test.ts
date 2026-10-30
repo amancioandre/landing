@@ -8,7 +8,7 @@ const siteverify = (answer: object, seen: FormData[] = []) =>
 describe("Turnstile's verdict", () => {
   it("passes a person on Andre's own domain, sending the secret and the visitor's address", async () => {
     const seen: FormData[] = [];
-    const isHuman = turnstileCheck("s3cret", siteverify({ success: true, hostname: "andreamnc.com" }, seen));
+    const isHuman = turnstileCheck("s3cret", siteverify({ success: true, hostname: "andreamnc.com", action: "letter" }, seen));
     expect(await isHuman("pass", "1.2.3.4")).toBe(true);
     expect(seen[0].get("secret")).toBe("s3cret");
     expect(seen[0].get("response")).toBe("pass");
@@ -17,7 +17,21 @@ describe("Turnstile's verdict", () => {
 
   it("turns away a failed check, and a pass issued for another site", async () => {
     expect(await turnstileCheck("s", siteverify({ success: false }))("t", "")).toBe(false);
-    expect(await turnstileCheck("s", siteverify({ success: true, hostname: "elsewhere.com" }))("t", "")).toBe(false);
+    expect(await turnstileCheck("s", siteverify({ success: true, hostname: "elsewhere.com", action: "letter" }))("t", "")).toBe(false);
+  });
+
+  it("turns away a pass made for some other action, or too long to be real", async () => {
+    expect(await turnstileCheck("s", siteverify({ success: true, hostname: "andreamnc.com", action: "signup" }))("t", "")).toBe(false);
+    const seen: FormData[] = [];
+    expect(await turnstileCheck("s", siteverify({ success: true, hostname: "andreamnc.com", action: "letter" }, seen))("x".repeat(2049), "")).toBe(false);
+    expect(seen).toHaveLength(0);
+  });
+
+  it("turns away the letter when Cloudflare can't be asked", async () => {
+    const down = (async () => new Response("busy", { status: 503 })) as typeof fetch;
+    const broken = (async () => { throw new Error("offline"); }) as typeof fetch;
+    expect(await turnstileCheck("s", down)("t", "")).toBe(false);
+    expect(await turnstileCheck("s", broken)("t", "")).toBe(false);
   });
 });
 
