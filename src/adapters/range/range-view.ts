@@ -7,6 +7,7 @@ import { nookShown } from "../../domain/range/night";
 import { placeCard } from "../../domain/range/card-place";
 import { NIGHT } from "../../content/night";
 import { RangeRenderer } from "./renderer";
+import { seeInterest } from "../letter/visit";
 
 const loadImage = (src: string) => new Promise<HTMLImageElement>((ok, fail) => {
   const img = new Image(); img.onload = () => ok(img); img.onerror = fail; img.src = src;
@@ -66,6 +67,7 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
     return { x: r.left - o.left, y: r.top - o.top, width: r.width, height: r.height };
   };
   const hang = (i: number) => {
+    seeInterest(holder, cards[i]?.dataset.cardFor);
     const at = waypoints[i];
     const x = parseFloat(at.style.left), y = parseFloat(at.style.top);
     holder.classList.remove("sheet");

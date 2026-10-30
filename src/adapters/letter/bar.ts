@@ -9,7 +9,7 @@ export const OPENING = "write to me";   // typed first; a letter opened on it an
 export function mountBar(root: HTMLElement, prompts: readonly string[], address: string): void {
   const ask = root.querySelector<HTMLButtonElement>("[data-ask]")!;
   const panel = root.querySelector<HTMLElement>("[data-panel]")!;
-  const form = new LetterForm(formParts(panel), postOffice, address);
+  const form = new LetterForm(formParts(panel), postOffice("bar"), address);
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let typing: Typing = startTyping(prompts, { whole: true });
 

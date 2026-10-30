@@ -1,6 +1,7 @@
 import { carousel, key, next, previous, select, swipe, type Carousel } from "../../domain/interests/carousel";
 import { photoSpan } from "../../domain/interests/glyph-picture";
 import { drawGlyphs } from "./glyph-drawer";
+import { seeInterest } from "../letter/visit";
 
 /** Binds the interests carousel to the page: one card in focus, the others in glyphs and out of reach. */
 export function mountCarousel(root: HTMLElement, start: number): void {
@@ -34,8 +35,9 @@ export function mountCarousel(root: HTMLElement, start: number): void {
     step();
   };
 
-  const show = (to: Carousel) => {
+  const show = (to: Carousel, looked = true) => {
     state = to;
+    if (looked) seeInterest(root, slides[state.focus].dataset.slide);   // the opening card is not one they chose
     track.style.setProperty("--focus", String(state.focus));
     slides.forEach((slide, i) => {
       const on = i === state.focus;
@@ -84,7 +86,7 @@ export function mountCarousel(root: HTMLElement, start: number): void {
   addEventListener("hashchange", fromHash);
 
   frame();
-  show(state);
+  show(state, false);
   fromHash();
   draw();
 }
