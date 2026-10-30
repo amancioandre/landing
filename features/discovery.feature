@@ -1,0 +1,36 @@
+Feature: Found and understood by search and AI answers
+  The page says who André is and where his work lives, in a form search engines and AI systems read (GEO/AIO).
+
+  Scenario: The page describes itself in Andre's words
+    Given I open the home page
+    Then the page's description is the first two sentences of Andre's paragraph
+    And link previews carry his name, that description and a picture
+    And the page names its one address, https://andreamnc.com/
+
+  Scenario: Structured data says who he is and where his work lives
+    Given I open the home page
+    Then the structured data describes a person named "André Amnc"
+    And it links his channels "https://www.youtube.com/@andre-amnc", "https://andramnc.substack.com" and "https://github.com/amancioandre"
+    And it lists what he knows about, including "Hunting"
+
+  Scenario: The page has one main heading, his name
+    Given I open the home page
+    Then the page's one main heading is "André Amnc"
+
+  Scenario: Crawlers are welcome and know where to look
+    When I read "/robots.txt"
+    Then it allows every crawler and points to "https://andreamnc.com/sitemap.xml"
+    When I read "/sitemap.xml"
+    Then it lists "https://andreamnc.com/"
+
+  Scenario: AI systems get a plain summary
+    When I read "/llms.txt"
+    Then it starts with "# André Amnc"
+    And it mentions "Storytelling is the vehicle of tradition."
+    And it mentions "hello@andreamnc.com"
+
+  Scenario: Everything that matters is in the page itself, readable without JavaScript
+    When I read "/"
+    Then it mentions "Being my own boss has always been my dream, and also my nemesis."
+    And it mentions "Films on YouTube"
+    And it mentions "hunting adventures throughout British Columbia"

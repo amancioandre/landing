@@ -7,7 +7,7 @@ Feature: The hub page
 
   Scenario: The name leads back to the top
     Given I open the home page
-    Then the bar shows "ANDRÉ AMNC" linking to the top of the page
+    Then the bar shows "André Amnc" linking to the top of the page
 
   Scenario: Writing is offered from the bar
     Given I open the home page
