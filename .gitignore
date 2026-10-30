@@ -10,3 +10,4 @@ playwright-report/
 .features-gen/
 PRODUCT.md
 .impeccable/
+worker/.wrangler/

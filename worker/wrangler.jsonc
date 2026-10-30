@@ -1,0 +1,11 @@
+// The letter's Worker (ADR 0023). Secrets (INBOX, TURNSTILE_SECRET) are set in Cloudflare, never here.
+{
+  "name": "andreamnc-letter",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  // Reachable only because andreamnc.com is proxied through Cloudflare (ADR 0022).
+  "routes": [{ "pattern": "andreamnc.com/letter", "zone_name": "andreamnc.com" }],
+  // No destination here: any verified Email Routing destination is allowed, and the inbox stays a secret.
+  "send_email": [{ "name": "LETTERS" }]
+}
