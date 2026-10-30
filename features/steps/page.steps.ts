@@ -20,7 +20,9 @@ Then("the bar shows {string} linking to the top of the page", async ({ page }, n
 });
 
 Then("the bar offers {string}", async ({ page }, label: string) => {
-  await expect(page.getByRole("banner").getByText(label, { exact: true })).toBeVisible();
+  const letter = page.getByRole("banner").locator("[data-ask]");   // the bar's own letter, not the menu's link
+  await expect(letter).toBeVisible();
+  await expect(letter).toHaveText(label);
 });
 
 Then("the footer links to {string}, {string}, {string}, {string} and {string}",
