@@ -103,7 +103,7 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
   addEventListener("scroll", onScroll, { passive: true });
 
   // Light or night follows the page's theme (a switcher is planned).
-  const night = () => renderer?.setNight(document.documentElement.dataset.theme === "dark");
+  const night = () => renderer?.setNight(document.documentElement.dataset.theme === "night");
   new MutationObserver(night).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
   let resizing: ReturnType<typeof setTimeout>;

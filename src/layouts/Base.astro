@@ -15,6 +15,10 @@ const { title } = Astro.props;
     <title>{title}</title>
     <link rel="alternate" type="application/rss+xml" title="André Amnc" href="/rss.xml" />
     <style is:inline set:html={themeCss()}></style>
+    <script>
+      import { followTheSun } from "../adapters/daylight/clock";
+      followTheSun();
+    </script>
   </head>
   <body id="top">
     <slot />
