@@ -13,6 +13,8 @@ Then("{string} is the interest in focus", async ({ page }, name: string) => {
 const span = async (page: Page, slide: ReturnType<typeof card>) => {
   await page.waitForTimeout(900);   // let the strip settle
   const fig = slide.locator(".figure");
+  await expect(fig).toHaveAttribute("data-from", /\d/);
+  await expect(fig).toHaveAttribute("data-to", /\d/);
   return { from: Number(await fig.getAttribute("data-from")), to: Number(await fig.getAttribute("data-to")) };
 };
 
