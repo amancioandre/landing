@@ -34,3 +34,7 @@ Feature: Found and understood by search and AI answers
     Then it mentions "Being my own boss has always been my dream, and also my nemesis."
     And it mentions "Films on YouTube"
     And it mentions "hunting adventures throughout British Columbia"
+
+  Scenario: The site claims its own domain when it is hosted
+    When I read "/CNAME"
+    Then it starts with "andreamnc.com"
