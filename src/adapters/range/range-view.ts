@@ -3,6 +3,8 @@ import { clampToScreen, cover, innerRect, toScreen, type Rect } from "../../doma
 import { ORIGINAL, PLATES } from "../../content/plates";
 import type { InterestStop } from "../../content/interests";
 import { nearMap } from "./near-map";
+import { nookShown } from "../../domain/range/night";
+import { NIGHT } from "../../content/night";
 import { RangeRenderer } from "./renderer";
 
 const loadImage = (src: string) => new Promise<HTMLImageElement>((ok, fail) => {
@@ -19,6 +21,8 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
   const tether = root.querySelector<HTMLElement>("[data-tether]")!;
   const bar = document.querySelector<HTMLElement>("header.bar");
   const renderer = RangeRenderer.create(canvas);
+  renderer?.setNightLook(NIGHT);
+  const isNight = () => document.documentElement.dataset.theme === "night";
   let elevation: Elevation | null = null, plate: HTMLImageElement | null = null, original: Rect | null = null, coverRect: Rect | null = null;
   let chosen = -1;
 
@@ -34,6 +38,7 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
     });
     if (chosen >= 0) hang(chosen);
     if (!renderer) return;
+    lightTheNook();
     renderer.layout({
       cover: coverRect, ramp: rampFor(elevation), cellPx: glyphCell(elevation), bold: boldFor(elevation),
       boldMist: PLATES[elevation].nearBy === "walk", fog: fogStrength(screen.width),
@@ -102,8 +107,16 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
   };
   addEventListener("scroll", onScroll, { passive: true });
 
-  // Light or night follows the page's theme (a switcher is planned).
-  const night = () => renderer?.setNight(document.documentElement.dataset.theme === "night");
+  // The nook between 02 and 03 glows at night on bigger screens; it sits in the original's frame like the waypoints.
+  function lightTheNook() {
+    if (!renderer || !original || !coverRect) return;
+    const p = toScreen(NIGHT.nook.at, original, ORIGINAL);
+    const on = nookShown({ night: isNight(), width: root.clientWidth });
+    renderer.setNook(on ? { x: (p.x - coverRect.x) / coverRect.width, y: (p.y - coverRect.y) / coverRect.height } : null);
+  }
+
+  // Day or night follows the visitor's sun (ADR 0018), set on <html> by adapters/daylight.
+  const night = () => { renderer?.setNight(isNight()); lightTheNook(); };
   new MutationObserver(night).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
   let resizing: ReturnType<typeof setTimeout>;

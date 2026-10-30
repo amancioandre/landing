@@ -12,6 +12,10 @@ uniform vec2 res, cell;
 uniform vec4 cover;
 uniform vec3 focus;
 uniform float time, glyphs, atlasSize, boldFrom, boldMist, fogScale, edge, night;
+// Night (ADR 0018): the glyphs' colour, and the nook between 02 and 03 lit from within (x, y on the plate, on).
+uniform vec3 nightInk, nookAt;
+uniform vec4 nookLight;   // radius, glow, smoke, warmth
+uniform vec2 nookSmoke;   // height, speed
 out vec4 color;
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -29,7 +33,7 @@ void main() {
 
   float trees = smoothstep(.55, .2, base) * smoothstep(.42, .62, uv.y);
   float gust = pow(.5 + .5 * sin(time * .6 - uv.x * 6.), 3.);
-  float dx = (sin(time * 2.2 + uv.y * 170. + uv.x * 35.) * .35 + gust) * .0018 * trees * uv.y;
+  float dx = (sin(time * 2.2 + uv.y * 170. + uv.x * 35.) * .35 + gust) * .0018 * trees * uv.y * (1. - night * .6);   // a lighter breeze at night
 
   // Average the cell's footprint, not one point, so tone reads as wash instead of speckle.
   vec2 q = uv + vec2(dx, 0.), h = cell / cover.zw * .25;
@@ -41,7 +45,7 @@ void main() {
   lum += (drift - .5) * .2 * mist;
   float shadow = fbm(uv * vec2(1.4, 2.2) - vec2(time * .012, 0.));
   float body = smoothstep(.08, .2, 1. - base);
-  lum -= smoothstep(.55, .75, shadow) * .07 * body;
+  lum -= smoothstep(.55, .75, shadow) * .07 * body * (1. - night);   // a clear night: no cloud shadow
 
   // Fog banks: white patches that drift gently left to right across the slopes.
   // Fog moves like a fluid: a warped flow field carries dense banks rightward,
@@ -51,7 +55,7 @@ void main() {
   float bank = fbm(fq + 1.8 * flow - vec2(time * .025, 0.));
   float band = smoothstep(.3, .45, uv.y) * (1. - smoothstep(.8, .95, uv.y));
   // Smaller screens see less of the range, so the same banks would bury it: thinner, sparser fog there.
-  float fog = smoothstep(mix(.54, .44, fogScale), mix(.68, .62, fogScale), bank) * band * body * mix(.55, 1., fogScale);
+  float fog = smoothstep(mix(.54, .44, fogScale), mix(.68, .62, fogScale), bank) * band * body * mix(.55, 1., fogScale) * (1. - night);   // and no fog
 
   // Dodge and burn: push each cell away from its neighbourhood, the way Adams separated forms in fog.
   vec2 r = cell / cover.zw * 6.;
@@ -83,9 +87,41 @@ void main() {
   // Near ground takes the bold row of the atlas; a dithered seam keeps the switch from drawing a line.
   float near = texture(depth, uv).r;
   float bold = step(hash(c) * .16 + boldFrom, near) * step(.3 * boldMist, dark);   // mist on the near hill stays light
+
+  // The nook between 02 and 03: the light never falls on the front of the foreground trees, it only fills the gaps
+  // between their foliage, showing the trees behind in the plate's own tones; a slow smoke climbs and drifts right.
+  float glow = 0., smoke = 0., gap = 0.;
+  if (night > .5 && nookAt.z > .5) {
+    vec2 d = (uv - nookAt.xy) * vec2(cover.z / cover.w, 1.);
+    float r = nookLight.x;
+    float breathe = .88 + .12 * sin(time * .9) * sin(time * .53 + 1.3);
+    glow = exp(-(d.x * d.x / (.003 * r * r) + d.y * d.y / (.0016 * r * r))) * breathe * smoothstep(-.035, .006, -d.y + .012);
+    gap = 1. - smoothstep(.12, .22, dark);
+    float behind = smoothstep(.02, .4, 1. - lum);
+    float up = -d.y - .006;
+    float lean = up * up * 1.6 + sin(up * 11. - time * .5) * .004 * (1. + up * 30.);
+    float column = (1. - smoothstep(.005 + up * .08, .012 + up * .17, abs(d.x - lean))) * step(0., up)
+                 * (1. - smoothstep(.04 * nookSmoke.x, .16 * nookSmoke.x, up));
+    smoke = nookLight.z * column * gap
+          * smoothstep(.32 + up * 1.4, .6 + up * 1.4, fbm(vec2((d.x - lean) * 50., uv.y * 16. + time * .12 * nookSmoke.y)));
+    dark = max(dark, glow * gap * nookLight.y * (.3 + .4 * behind));
+    if (smoke > .04) dark = max(dark, .14 + smoke * .22);
+    g = floor(dark * (glyphs - 1.) + .5);
+  }
+
+  // A few faint stars in the clear sky.
+  if (night > .5 && g < .5) {
+    float star = step(.9965, hash(c * 1.37 + 2.1)) * step(.93, base) * step(uv.y, .42);
+    if (star > 0.) { g = 1. + step(.6, hash(c + 9.)); bold = 0.; }
+  }
+
   float ink = texture(atlas, vec2((g + local.x) / atlasSize, (local.y + bold) * .5)).a;
   vec3 day = vec3(.933, .922, .898), dusk = vec3(.047);
-  vec3 paper = mix(day, dusk, night), inkc = mix(dusk, day, night);   // at night the glyphs are drawn in paper
+  // Starlight: the near ground a little brighter than the far range; the nook's light warms what it reaches.
+  float reached = clamp(glow * gap * nookLight.y * 1.6 + smoke * .6, 0., 1.);
+  vec3 starlit = min(nightInk * mix(.72, 1.12, bold) * (1. + reached * .35), vec3(.86));
+  starlit = mix(starlit, starlit * vec3(1.22, .84, .58), clamp(reached * nookLight.w, 0., .55 * nookLight.w));
+  vec3 paper = mix(day, dusk, night), inkc = mix(dusk, starlit, night);
   vec3 rgb = mix(paper, inkc, ink * (.8 + .2 * dark));
   float a = max(body, ink);
   color = vec4(rgb * a, a);

@@ -1,5 +1,6 @@
 import { FRAGMENT, VERTEX } from "./shader";
 import type { Rect } from "../../domain/range/geometry";
+import type { NightLook } from "../../content/night";
 
 /** Everything the shader needs for one layout; computed by the range view from the domain. */
 export interface Scene {
@@ -13,7 +14,7 @@ export interface Scene {
 
 const FRAME_MS = 1000 / 30;   // fog and wind move slowly; 30 frames a second is plenty and halves the GPU's work
 const UNIFORMS = ["plate", "atlas", "terrain", "depth", "res", "cell", "cover", "focus", "time", "glyphs",
-  "atlasSize", "boldFrom", "boldMist", "fogScale", "edge", "night"] as const;
+  "atlasSize", "boldFrom", "boldMist", "fogScale", "edge", "night", "nightInk", "nookAt", "nookLight", "nookSmoke"] as const;
 
 /** Draws the range into a canvas with WebGL2. Owns only drawing: layout comes from the domain. */
 export class RangeRenderer {
@@ -81,6 +82,20 @@ export class RangeRenderer {
   }
 
   setNight(night: boolean): void { this.gl.uniform1f(this.u.night, night ? 1 : 0); this.draw(performance.now()); }
+
+  /** The night's glyph colour and the nook's light, as tuned by Andre (content/night.ts). */
+  setNightLook(look: NightLook): void {
+    const { gl, u } = this;
+    gl.uniform3f(u.nightInk, ...look.ink);
+    gl.uniform4f(u.nookLight, look.nook.radius, look.nook.glow, look.nook.smoke, look.nook.warmth);
+    gl.uniform2f(u.nookSmoke, look.nook.smokeHeight, look.nook.smokeSpeed);
+  }
+
+  /** Where the nook is on the plate now (fractions), and whether it shows. */
+  setNook(at: { x: number; y: number } | null): void {
+    this.gl.uniform3f(this.u.nookAt, at?.x ?? 0, at?.y ?? 0, at ? 1 : 0);
+    this.draw(performance.now());
+  }
   setEdge(progress: number): void { this.gl.uniform1f(this.u.edge, progress); if (this.calm) this.draw(performance.now()); }
   setVisible(visible: boolean): void { this.visible = visible; }
 
