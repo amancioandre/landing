@@ -17,7 +17,7 @@ Feature: The hub speaks every major language
       | /pt-br/   | pt-BR   | Português (Brasil)      | Recentes    | Interesses        | escreva para mim |
       | /es-es/   | es-ES   | Español (España)        | Lo último   | Intereses         | escríbeme       |
       | /es-419/  | es-419  | Español (Latinoamérica) | Lo último   | Intereses         | escríbeme       |
-      | /fr/      | fr      | Français                | Récent      | Centres d'intérêt | écris-moi       |
+      | /fr/      | fr      | Français                | Récent      | Centres d’intérêt | écris-moi       |
       | /de/      | de      | Deutsch                 | Neu         | Interessen        | schreib mir     |
       | /it/      | it      | Italiano                | Ultimi      | Interessi         | scrivimi        |
       | /ja/      | ja      | 日本語                  | 最新        | 関心ごと          | 手紙をください  |

@@ -1,0 +1,81 @@
+import type { Copy } from "./copy";
+
+// AI translation of en.ts for Spain (2026-10-29), awaiting Andre's review.
+export const ES_ES: Copy = {
+  site: {
+    summary: "El hub de André Amnc. Mi manera de presentarme al mundo, de forma creativa y lúdica: mis intereses, lo que puedo hacer por ti y lo que devuelvo a la naturaleza y a la sociedad.",
+    more: "Espero que vivas mis intereses como yo los vivo, a través de los enlaces y contenidos que te traigo: la ingeniería de software y el código en el que estoy trabajando (¡o con el que estoy jugando!), los vídeos y artículos de un aventurero al aire libre, las novelas y los relatos que estoy creando, aventuras de caza por toda la Columbia Británica y las dificultades de emprender en la era de la IA.",
+    imageAlt: "La cordillera en ASCII de andreamnc.com",
+  },
+  sections: { latest: "Lo último", interests: "Intereses", write: "escríbeme", nav: "Secciones", menu: "Menú" },
+  interests: {
+    Engineer: {
+      label: "Ingeniero",
+      line: "La ingeniería ha sido mi forma de ganarme el pan, y disfruto muchísimo con ella. Casi no ha habido un día en que no la haya practicado, en el software o resolviendo problemas, esté donde esté.",
+      alt: "Dos vagones cisterna en una playa de vías, vistos desde arriba",
+    },
+    Outdoorsman: {
+      label: "Aventurero",
+      line: "La pasión que me llegó tarde, y la razón por la que estoy redescubriendo mi vida. La naturaleza salvaje ha sido una gran amiga y maestra.",
+      alt: "André con gorro y chaqueta de cuadros, mirando hacia el agua",
+    },
+    Writer: {
+      label: "Escritor",
+      line: "Escribir es una forma de ahondar en mi vida, procesar mis experiencias y dar libertad a mis pensamientos. Contar historias es el vehículo de la tradición.",
+      alt: "Una cabaña en un bosque oscuro sobre el agua",
+    },
+    Hunter: {
+      label: "Cazador",
+      line: "La caza me conecta con la tierra y con lo salvaje, ahí fuera y dentro de mí. Ser responsable de una vida, y de tu propio sustento, es una práctica de reverencia espiritual hacia la naturaleza.",
+      alt: "André con sombrero de ala ancha y una bolsa de pecho, con montañas detrás",
+    },
+    Entrepreneur: {
+      label: "Emprendedor",
+      line: "Ser mi propio jefe siempre ha sido mi sueño, y también mi némesis. Es una experiencia abrumadora que te enseña humildad, y pone en perspectiva lo que significa aportar valor a la sociedad.",
+      alt: "Mirando hacia arriba una torre de hormigón hasta su mirador",
+    },
+  },
+  links: { "Code on GitHub": "Código en GitHub", "Films on YouTube": "Vídeos en YouTube", "Stories on Substack": "Historias en Substack" },
+  range: { label: "La cordillera: cinco intereses", index: "Intereses", photoToCome: "foto próximamente", lineToCome: "[una frase con tus palabras]" },
+  carousel: {
+    all: "Todos los intereses", previous: "Interés anterior", next: "Interés siguiente",
+    strip: "Intereses, de uno en uno; usa las flechas del teclado", slide: "{n} de {total}: {name}", show: "Mostrar {name}",
+    carouselRole: "carrusel", slideRole: "diapositiva",
+  },
+  latest: { nothingYet: "[aún no hay nada publicado]" },
+  letter: {
+    opening: "escríbeme",
+    message: "Tu mensaje", email: "Tu correo", emailPlaceholder: "Tu correo, para que pueda responderte", enter: "intro",
+    edit: "Editar mensaje", another: "Otra pregunta", orWriteTo: "o escribe a",
+    badEmail: "Ese correo no parece correcto.",
+    failed: "No se ha podido enviar. Escribe a {address}.",
+    sent: "Enviado. Gracias.",
+  },
+  prompts: [
+    "Medita unas palabras",
+    "¿Qué escribiría tu referente?",
+    "¿Has salido hoy al aire libre?",
+    "¿Has visto el amanecer hoy?",
+    "¿Miras atrás hacia tu casa, cuando sales a trabajar, y piensas: ‘Qué suerte tengo’?",
+    "¿Te convence?",
+    "¿Te has tomado hoy un momento para reflexionar antes de hacerte más mayor?",
+    "¿Vives en paz?",
+    "¿Qué esperas lograr?",
+    "¿Alguna vez te has quedado mirando el fondo de la tierra?",
+    "¿Cuál es esa canción que te encanta?",
+    "Cuéntame una historia",
+    "Excavando recuerdos",
+    "¡Hola!",
+    "¿Qué te quita el sueño?",
+    "¿A ti también te gusta el canal de YouTube OutdoorBoyz?",
+    "¿Necesitas ayuda para encontrar lo que de verdad buscas?",
+  ],
+  asks: {
+    Engineer: "¿Qué le preguntarías al ingeniero?",
+    Outdoorsman: "¿Qué le preguntarías al aventurero?",
+    Writer: "¿Qué le preguntarías al escritor?",
+    Hunter: "¿Qué le preguntarías al cazador?",
+    Entrepreneur: "¿Qué le preguntarías al emprendedor?",
+  },
+  footer: { channels: "Canales", languages: "Idiomas" },
+};
