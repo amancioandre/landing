@@ -17,6 +17,9 @@ Feature: write to me
     And 20 seconds pass
     Then the same prompt still shows above the letter
 
+  Scenario: The address is only asked for after the message
+    Then the letter does not yet ask "Your email, so I can reply"
+
   Scenario: Nothing written, nothing to ask
     When I press enter in the empty letter
     Then the letter still asks for my message

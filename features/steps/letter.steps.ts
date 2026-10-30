@@ -50,6 +50,10 @@ Then("the letter asks {string}", async ({ page }, placeholder: string) => {
   await expect(section(page).getByPlaceholder(placeholder)).toBeFocused();
 });
 
+Then("the letter does not yet ask {string}", async ({ page }, placeholder: string) => {
+  await expect(section(page).getByPlaceholder(placeholder)).toBeHidden();
+});
+
 Then("my message {string} shows above it", async ({ page }, text: string) => {
   await expect(section(page).locator("[data-said]")).toHaveText(text);
 });
