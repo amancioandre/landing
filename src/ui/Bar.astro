@@ -58,14 +58,16 @@ const slug = (name: string) => `interest-${name.toLowerCase()}`;
 </header>
 
 <script>
-  import { mountBar } from "../adapters/letter/bar";
+  import { mountBar, stepAsideFor } from "../adapters/letter/bar";
   import { readWords } from "../adapters/letter/words";
   import { shortEnough } from "../domain/letter/prompts";
   import { CONTACT_ADDRESS } from "../content/channels";
   // Only questions that fit the bar on one line: about 46 columns on wide screens, 36 on phones.
   const max = matchMedia("(min-width: 700px)").matches ? 46 : 36;
   const words = readWords();
-  mountBar(document.querySelector<HTMLElement>("[data-bar-letter]")!, words, shortEnough(words.prompts, max), CONTACT_ADDRESS);
+  const barLetter = document.querySelector<HTMLElement>("[data-bar-letter]")!;
+  mountBar(barLetter, words, shortEnough(words.prompts, max), CONTACT_ADDRESS);
+  stepAsideFor(barLetter, document.querySelector("[data-section-letter]"));
   import { mountMenu } from "../adapters/menu/menu";
   mountMenu(document.querySelector<HTMLElement>("header.bar")!);
 </script>
@@ -80,7 +82,8 @@ const slug = (name: string) => `interest-${name.toLowerCase()}`;
   .mark { font-size: 14px; line-height: 1.6; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; white-space: nowrap; width: fit-content; }
   .mark a { text-decoration: none; }
   .mark, .ask, .sections a, .panel { background: var(--paper); box-shadow: 0 0 0 4px var(--paper); }
-  .letter { grid-column: 1 / -1; grid-row: 2; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .letter { grid-column: 1 / -1; grid-row: 2; display: flex; flex-direction: column; gap: 10px; min-width: 0; transition: opacity .4s ease; }
+  .letter[data-away] { opacity: 0; pointer-events: none; }
   .ask {
     align-self: flex-start; background: none; border: 0; padding: 0; cursor: pointer; text-align: left;
     font-size: 15px; line-height: 1.5; font-weight: 500; letter-spacing: .04em; color: var(--signal); min-height: 24px;

@@ -40,3 +40,10 @@ export function mountBar(root: HTMLElement, words: LetterWords, shortPrompts: re
   setInterval(() => { typing = tick(typing, prompts, { hold: calm ? Math.round(6000 / TICK_MS) : HOLD_TICKS, erase: calm ? 999 : 2 }); render(); }, TICK_MS);
   render();
 }
+
+/** While the page's own letter is in view, the bar's letter steps aside, so one question is asked at a time. */
+export function stepAsideFor(root: HTMLElement, letter: Element | null): void {
+  if (!letter) return;
+  new IntersectionObserver(([seen]) => root.toggleAttribute("data-away", seen.isIntersecting && !root.classList.contains("open")))
+    .observe(letter);
+}

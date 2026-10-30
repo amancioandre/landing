@@ -31,7 +31,8 @@ const { copy, language } = Astro.props;
   .channels { display: flex; gap: 22px; color: var(--ink); }
   .channels a { display: grid; place-items: center; width: 44px; height: 44px; margin: -12px; }
   .channels a:hover, .channels a:focus-visible { color: var(--signal); }
-  .languages { display: flex; flex-wrap: wrap; gap: 6px 16px; font-weight: 400; }
+  /* Every language on one line on wide screens, none left alone on a line of its own. */
+  .languages { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; font-weight: 400; }
   .languages a { text-decoration: none; }
   .languages a:hover, .languages a:focus-visible { color: var(--signal); }
   .languages [aria-current] { color: var(--ink); font-weight: 500; }
