@@ -43,3 +43,12 @@ Feature: Found and understood by search and AI answers
     Given I open the home page
     Then the page loads Umami for the website "67b02ce4-e3ee-4a99-85b7-88c6b0e1e7b2"
     And Umami counts visits only on "andreamnc.com"
+
+  Scenario: The tab shows the peak from the range
+    Given I open the home page
+    Then the page names its icon "/favicon.svg", its fallback "/favicon.ico", its home-screen icon "/apple-touch-icon.png" and its manifest "/site.webmanifest"
+    When I read "/favicon.svg"
+    Then it mentions "prefers-color-scheme: dark"
+    When I read "/site.webmanifest"
+    Then it mentions "André Amnc"
+    And "/favicon.ico", "/apple-touch-icon.png", "/icon-192.png", "/icon-512.png" and "/icon-maskable-512.png" are pictures

@@ -101,3 +101,18 @@ Then("the page loads Umami for the website {string}", async ({ page }, id: strin
 Then("Umami counts visits only on {string}", async ({ page }, domain: string) => {
   await expect(umami(page)).toHaveAttribute("data-domains", domain);
 });
+
+Then("the page names its icon {string}, its fallback {string}, its home-screen icon {string} and its manifest {string}", async ({ page }, svg: string, ico: string, touch: string, manifest: string) => {
+  await expect(page.locator(`link[rel="icon"][type="image/svg+xml"]`)).toHaveAttribute("href", svg);
+  await expect(page.locator(`link[rel="icon"][sizes]`)).toHaveAttribute("href", ico);
+  await expect(page.locator(`link[rel="apple-touch-icon"]`)).toHaveAttribute("href", touch);
+  await expect(page.locator(`link[rel="manifest"]`)).toHaveAttribute("href", manifest);
+});
+
+Then("{string}, {string}, {string}, {string} and {string} are pictures", async ({ request }, a: string, b: string, c: string, d: string, e: string) => {
+  for (const path of [a, b, c, d, e]) {
+    const res = await request.get(path);
+    expect(res.status(), path).toBe(200);
+    expect((await res.body()).length, path).toBeGreaterThan(100);
+  }
+});
