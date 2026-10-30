@@ -50,6 +50,12 @@ Then("the letter asks {string}", async ({ page }, placeholder: string) => {
   await expect(section(page).getByPlaceholder(placeholder)).toBeFocused();
 });
 
+Then("the letter's keycap reads {string} beside the return glyph", async ({ page }, word: string) => {
+  const keycap = section(page).locator("[data-key]");
+  await expect(keycap).toHaveText(word);
+  await expect(keycap.locator("svg")).toBeVisible();
+});
+
 Then("the letter does not yet ask {string}", async ({ page }, placeholder: string) => {
   await expect(section(page).getByPlaceholder(placeholder)).toBeHidden();
 });

@@ -20,6 +20,9 @@ Feature: write to me
   Scenario: The address is only asked for after the message
     Then the letter does not yet ask "Your email, so I can reply"
 
+  Scenario: The keycap shows the return glyph and the word enter
+    Then the letter's keycap reads "enter" beside the return glyph
+
   Scenario: Nothing written, nothing to ask
     When I press enter in the empty letter
     Then the letter still asks for my message
