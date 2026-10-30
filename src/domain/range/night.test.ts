@@ -11,7 +11,7 @@ describe("the embers in the nook (ADR 0018)", () => {
     expect(nookShown({ night: true, width: 1024 })).toBe(true);
   });
 
-  it("stay off phones, held either way (Andre: \\"too small\\")", () => {
+  it("stay off phones, held either way (Andre: \"too small\")", () => {
     expect(nookShown({ night: true, width: 390 })).toBe(false);
     expect(nookShown({ night: true, width: 844 })).toBe(false);
   });
