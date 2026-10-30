@@ -31,6 +31,13 @@ Feature: The range
     Then its line draws in from the waypoint
     And its card fades in
 
+  Scenario: On a medium screen a card never covers the index or another waypoint
+    Given I am on a medium screen
+    When I choose "Hunter" in the index
+    Then the card covers neither the index nor another waypoint
+    When I choose "Entrepreneur" in the index
+    Then the card covers neither the index nor another waypoint
+
   Scenario: Clicking away puts the card away
     When I choose "Writer" in the index
     And I click on the land away from the card

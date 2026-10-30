@@ -1,7 +1,7 @@
 import { expect, type Page } from "@playwright/test";
 import { createBdd } from "playwright-bdd";
 
-const { When, Then } = createBdd();
+const { Given, When, Then } = createBdd();
 const range = (page: Page) => page.locator("[data-range]");
 const card = (page: Page) => page.locator("[data-card]");
 
@@ -72,4 +72,22 @@ Then("its line draws in from the waypoint", async ({ page }) => {
 
 Then("its card fades in", async ({ page }) => {
   expect(await card(page).evaluate((el) => el.getAnimations().length)).toBeGreaterThan(0);
+});
+
+Given("I am on a medium screen", async ({ page }) => {
+  await page.setViewportSize({ width: 820, height: 720 });
+  await page.reload();
+});
+
+Then("the card covers neither the index nor another waypoint", async ({ page }) => {
+  await page.waitForTimeout(600);
+  const shown = card(page).locator("[data-card-for]:not([hidden])");
+  const box = (await shown.boundingBox())!;
+  const hits = (b: { x: number; y: number; width: number; height: number }) =>
+    box.x < b.x + b.width && b.x < box.x + box.width && box.y < b.y + b.height && b.y < box.y + box.height;
+  const index = (await range(page).getByRole("navigation", { name: "Interests" }).boundingBox())!;
+  expect(hits(index), "the card covers the index").toBe(false);
+  for (const stop of await range(page).locator("[data-stop][aria-pressed=false]").all()) {
+    expect(hits((await stop.boundingBox())!), `the card covers waypoint ${await stop.textContent()}`).toBe(false);
+  }
 });
