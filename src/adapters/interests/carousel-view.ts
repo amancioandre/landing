@@ -41,6 +41,16 @@ export function mountCarousel(root: HTMLElement, stops: readonly InterestStop[],
   addEventListener("resize", () => { clearTimeout(resizing); resizing = setTimeout(draw, 200); });
   new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
+  // Where the strip starts: the column's left edge on wide screens; on phones, so the card in focus is centred.
+  const frame = () => {
+    const bleed = root.getBoundingClientRect().left, card = slides[0].offsetWidth;
+    const lead = innerWidth < 700 ? Math.max(0, (innerWidth - card) / 2) : bleed;
+    root.style.setProperty("--bleed", `${bleed}px`);
+    root.style.setProperty("--lead", `${lead}px`);
+  };
+  addEventListener("resize", frame);
+
+  frame();
   show(state);
   draw();
 }
