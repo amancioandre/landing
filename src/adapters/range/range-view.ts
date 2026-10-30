@@ -1,6 +1,6 @@
 import { boldFor, fogStrength, glyphCell, pickElevation, rampFor, type Elevation } from "../../domain/range/elevation";
 import { clampToScreen, cover, innerRect, toScreen, type Rect } from "../../domain/range/geometry";
-import { ORIGINAL, PLATES, RIVER } from "../../content/plates";
+import { ORIGINAL, PLATES } from "../../content/plates";
 import type { InterestStop } from "../../content/interests";
 import { nearMap } from "./near-map";
 import { RangeRenderer } from "./renderer";
@@ -34,11 +34,9 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
     });
     if (chosen >= 0) hang(chosen);
     if (!renderer) return;
-    const [ix, iy, iw, ih] = PLATES[elevation].inner, f = ORIGINAL.refWidth, r = f * ORIGINAL.aspect;
     renderer.layout({
       cover: coverRect, ramp: rampFor(elevation), cellPx: glyphCell(elevation), bold: boldFor(elevation),
       boldMist: PLATES[elevation].nearBy === "walk", fog: fogStrength(screen.width),
-      water: [ix + (RIVER[0] / f) * iw, iy + (RIVER[1] / r) * ih, ix + (RIVER[2] / f) * iw, iy + (RIVER[3] / r) * ih],
     });
   };
 

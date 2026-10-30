@@ -1,5 +1,6 @@
 // The range's shaders, ported from the approved prototype (prototype/site.html) without the rejected
-// parallax (ADR 0003). Each cell samples the plate; wind, water, cloud and fog bend that sample into a glyph.
+// parallax (ADR 0003) and without the stream (Andre, 2026-10-29). Each cell samples the plate; wind, cloud and fog
+// bend that sample into a glyph.
 export const VERTEX = `#version 300 es
 in vec2 pos; void main() { gl_Position = vec4(pos, 0., 1.); }`;
 
@@ -8,7 +9,7 @@ precision highp float;
 uniform sampler2D plate, atlas, terrain;
 uniform sampler2D depth;   // near ground: 1 near, 0 far
 uniform vec2 res, cell;
-uniform vec4 cover, water;
+uniform vec4 cover;
 uniform vec3 focus;
 uniform float time, glyphs, atlasSize, boldFrom, boldMist, fogScale, edge, night;
 out vec4 color;
@@ -29,11 +30,6 @@ void main() {
   float trees = smoothstep(.55, .2, base) * smoothstep(.42, .62, uv.y);
   float gust = pow(.5 + .5 * sin(time * .6 - uv.x * 6.), 3.);
   float dx = (sin(time * 2.2 + uv.y * 170. + uv.x * 35.) * .35 + gust) * .0018 * trees * uv.y;
-
-  vec2 wc = (water.xy + water.zw) * .5, wr = (water.zw - water.xy) * .5;
-  vec2 wd = abs(uv - wc) / wr;
-  float river = (1. - smoothstep(.6, 1., wd.x)) * (1. - smoothstep(.5, 1., wd.y)) * smoothstep(.68, .86, base);
-  dx += sin(uv.y * 700. - time * 2.6) * .0012 * river;
 
   // Average the cell's footprint, not one point, so tone reads as wash instead of speckle.
   vec2 q = uv + vec2(dx, 0.), h = cell / cover.zw * .25;
@@ -70,9 +66,6 @@ void main() {
   float lift = focus.z * (1. - smoothstep(.02, .14, length((uv - focus.xy) * vec2(1.77, 1.))));
   dark *= 1. - fog * .95 * (1. - lift);   // fog sits in front of the print, so it veils after the tones are set
   dark = mix(dark, min(1., dark * 1.2), lift);
-  // The river is bright, so its current is drawn as ripples that run downstream.
-  float ripple = .5 + .5 * sin(uv.x * 420. - uv.y * 160. - time * 3.2 + noise(uv * 80.) * 4.);
-  dark = max(dark, river * smoothstep(.55, .95, ripple) * .42);
   dark = min(dark, .9);   // shadows keep their texture (Zones II-III): never solid black
   // The art ends in mist, never on a ruled line: the bottom thins through the ramp the way the desktop plate's
   // own fog does, along an edge that wanders across the width. Scrolling away lifts the mist higher.
@@ -86,8 +79,6 @@ void main() {
   dark = max(0., dark + (hash(c + 5.7) - .5) / glyphs * 1.6 * step(.02, fade) * step(.001, dark));
   float g = floor(dark * (glyphs - 1.) + .5);
 
-  bool current = river * smoothstep(.45, .9, ripple) > .18;
-  if (current) { g = glyphs; dark = max(dark, .75); }             // '~' rides the current
 
   // Near ground takes the bold row of the atlas; a dithered seam keeps the switch from drawing a line.
   float near = texture(depth, uv).r;

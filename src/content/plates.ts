@@ -13,4 +13,3 @@ export const PLATES: Record<Elevation, Plate> = {
 
 // Points on the range are written in the original comp's 2000-wide frame.
 export const ORIGINAL: Frame = { refWidth: 2000, aspect: 1520 / 2688 };
-export const RIVER = [1225, 900, 1575, 1020] as const;

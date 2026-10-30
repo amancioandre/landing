@@ -4,7 +4,6 @@ import type { Rect } from "../../domain/range/geometry";
 /** Everything the shader needs for one layout; computed by the range view from the domain. */
 export interface Scene {
   cover: Rect;                                   // the plate on screen, CSS px
-  water: readonly [number, number, number, number]; // the river, as fractions of the plate
   ramp: string;
   cellPx: number;
   bold: { from: number; stroke: number };
@@ -13,7 +12,7 @@ export interface Scene {
 }
 
 const FRAME_MS = 1000 / 30;   // fog and wind move slowly; 30 frames a second is plenty and halves the GPU's work
-const UNIFORMS = ["plate", "atlas", "terrain", "depth", "res", "cell", "cover", "water", "focus", "time", "glyphs",
+const UNIFORMS = ["plate", "atlas", "terrain", "depth", "res", "cell", "cover", "focus", "time", "glyphs",
   "atlasSize", "boldFrom", "boldMist", "fogScale", "edge", "night"] as const;
 
 /** Draws the range into a canvas with WebGL2. Owns only drawing: layout comes from the domain. */
@@ -62,18 +61,17 @@ export class RangeRenderer {
     canvas.width = canvas.clientWidth * dpr;
     canvas.height = canvas.clientHeight * dpr;
     gl.viewport(0, 0, canvas.width, canvas.height);
-    const atlas = glyphAtlas(scene.ramp + "~", scene.cellPx * dpr, scene.bold.stroke * dpr);
+    const atlas = glyphAtlas(scene.ramp, scene.cellPx * dpr, scene.bold.stroke * dpr);
     this.texture(1, atlas.canvas);
     gl.uniform2f(u.res, canvas.width, canvas.height);
     gl.uniform2f(u.cell, atlas.w, atlas.h);
     gl.uniform1f(u.glyphs, scene.ramp.length);
-    gl.uniform1f(u.atlasSize, scene.ramp.length + 1);
+    gl.uniform1f(u.atlasSize, scene.ramp.length);
     gl.uniform1f(u.boldFrom, scene.bold.from);
     gl.uniform1f(u.boldMist, scene.boldMist ? 1 : 0);
     gl.uniform1f(u.fogScale, scene.fog);
     const { x, y, width, height } = scene.cover;
     gl.uniform4f(u.cover, x * dpr, y * dpr, width * dpr, height * dpr);
-    gl.uniform4f(u.water, ...scene.water);
     this.draw(performance.now());
   }
 
