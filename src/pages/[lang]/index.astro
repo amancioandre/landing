@@ -1,0 +1,13 @@
+---
+// Each translation at its own address: /pt-br/, /ja/, /zh-hant/ … (English stays at the root).
+import Hub from "../../ui/Hub.astro";
+import { segmentOf, translations, type Language } from "../../domain/languages/languages";
+
+export function getStaticPaths() {
+  return translations.map((language) => ({ params: { lang: segmentOf(language) }, props: { language } }));
+}
+
+interface Props { language: Language }
+const { language } = Astro.props;
+---
+<Hub language={language} />

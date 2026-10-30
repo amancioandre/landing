@@ -1,15 +1,23 @@
 ---
 import Icon from "./Icon.astro";
 import { CHANNELS, CONTACT_ADDRESS } from "../content/channels";
+import type { Copy } from "../content/copy/copy";
+import { LANGUAGES, pathFor, type Language } from "../domain/languages/languages";
+interface Props { copy: Copy; language: Language }
+const { copy, language } = Astro.props;
 ---
 <footer class="foot">
-  <nav class="channels" aria-label="Channels">
+  <nav class="channels" aria-label={copy.footer.channels}>
     {CHANNELS.map((c) => (
       <a href={c.url} target="_blank" rel="me noopener" aria-label={c.name} title={c.name}><Icon name={c.icon} size={20} /></a>
     ))}
   </nav>
   <a href={`mailto:${CONTACT_ADDRESS}`}>{CONTACT_ADDRESS}</a>
-  <span>English</span>
+  <nav class="languages" aria-label={copy.footer.languages}>
+    {LANGUAGES.map((l) => (
+      <a href={pathFor(l)} lang={l.tag} hreflang={l.tag} aria-current={l === language ? "page" : undefined}>{l.name}</a>
+    ))}
+  </nav>
   <a href="/rss.xml">RSS</a>
   <small>© 2026 André Amnc</small>
 </footer>
@@ -23,6 +31,10 @@ import { CHANNELS, CONTACT_ADDRESS } from "../content/channels";
   .channels { display: flex; gap: 22px; color: var(--ink); }
   .channels a { display: grid; place-items: center; width: 44px; height: 44px; margin: -12px; }
   .channels a:hover, .channels a:focus-visible { color: var(--signal); }
+  .languages { display: flex; flex-wrap: wrap; gap: 6px 16px; font-weight: 400; }
+  .languages a { text-decoration: none; }
+  .languages a:hover, .languages a:focus-visible { color: var(--signal); }
+  .languages [aria-current] { color: var(--ink); font-weight: 500; }
   small { font: inherit; font-weight: 400; color: var(--mute); margin-left: auto; }
   @media (max-width: 699px) { .channels { width: 100%; } small { width: 100%; margin-left: 0; } }
 </style>
