@@ -68,6 +68,8 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
     font: 500 12px/1 var(--mono); color: var(--signal); background: var(--paper); box-shadow: 0 0 0 3px var(--paper);
   }
   .stop[aria-pressed="true"] { font-weight: 700; }
+  /* A finger-sized target around the small number, with nothing drawn. */
+  .stop::before { content: ""; position: absolute; inset: -12px -9px; }
   .index { position: absolute; z-index: 2; left: var(--gutter); top: calc(84px + 3svh); display: grid; gap: 12px; }
   .index button {
     width: fit-content; border: 0; padding: 4px 0; cursor: pointer; text-align: left; color: var(--ink-2);
