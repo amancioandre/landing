@@ -17,7 +17,11 @@ export interface Pace {
 const ERASE = 2;
 const current = (state: Typing, prompts: readonly string[]) => prompts[state.at % prompts.length];
 
-export const startTyping = (): Typing => ({ at: 0, n: 0, phase: "type", wait: 0, locked: false });
+export function startTyping(prompts: readonly string[] = [], opening: { whole?: boolean } = {}): Typing {
+  return opening.whole && prompts.length
+    ? { at: 0, n: prompts[0].length, phase: "hold", wait: 0, locked: false }
+    : { at: 0, n: 0, phase: "type", wait: 0, locked: false };
+}
 
 export function tick(state: Typing, prompts: readonly string[], pace: Pace): Typing {
   if (state.locked) return state;

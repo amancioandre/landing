@@ -26,6 +26,11 @@ export function startLetter(prompt?: string): Letter {
   return prompt === undefined ? { step: "say", note: "", from: "" } : { step: "say", note: "", from: "", prompt };
 }
 
+/** The letter answers the prompt in view when the writer begins; once words exist, its prompt stays. */
+export function answering(letter: Letter, prompt: string): Letter {
+  return hasWords(letter.note) ? letter : { ...letter, prompt };
+}
+
 export function write(letter: Letter, text: string): Letter {
   return letter.step === "say" ? { ...letter, note: text } : { ...letter, from: text };
 }
