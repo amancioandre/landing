@@ -11,7 +11,7 @@ export interface FormParts {
   back?: HTMLButtonElement;
 }
 
-// Status lines are Claude's words (marked in .docs/PLANS.md) until Andre gives his.
+// Status lines, approved by Andre (2026-10-29).
 const say = (address: string): Record<Outcome, string> => ({
   "not-ready": "",
   "bad-email": "That email doesn't look right.",

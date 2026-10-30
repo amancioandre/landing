@@ -7,7 +7,7 @@ export interface InterestStop {
   at: readonly [number, number];          // on the trail, in the original's frame
   photo?: { src: string; alt: string };   // Andre's own photographs (ophanim)
   line?: string;                           // Andre's line, still to come
-  piece?: string;                          // a few lines in his words, read under the card (kk.org manner)
+  piece?: string;                          // under the card; hidden until there is content tagged for the interest
   links: readonly InterestLink[];
 }
 

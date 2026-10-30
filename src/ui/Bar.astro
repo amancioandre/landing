@@ -3,7 +3,7 @@
 import Icon from "./Icon.astro";
 import { STOPS } from "../content/interests";
 import { CHANNELS, CONTACT_ADDRESS } from "../content/channels";
-const SECTIONS = [["latest", "Latest"], ["interests", "Interests"]] as const;   // labels are Claude's drafts
+const SECTIONS = [["latest", "Latest"], ["interests", "Interests"]] as const;
 const n = (i: number) => String(i + 1).padStart(2, "0");
 const slug = (label: string) => `interest-${label.toLowerCase()}`;
 ---
@@ -28,7 +28,7 @@ const slug = (label: string) => `interest-${label.toLowerCase()}`;
   </div>
 
   <nav class="sections" aria-label="Sections">
-    {SECTIONS.map(([id, label]) => <a href={`#${id}`}><span class="draft">{label}</span></a>)}
+    {SECTIONS.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
   </nav>
 
   <button class="menu-button" type="button" data-menu-button aria-label="Menu" aria-expanded="false" aria-controls="menu">
@@ -36,9 +36,9 @@ const slug = (label: string) => `interest-${label.toLowerCase()}`;
   </button>
   <nav class="menu" id="menu" data-menu aria-label="Menu" hidden>
     <ol class="menu-sections">
-      <li><a href="#latest"><span class="n">01</span><span class="name draft">Latest</span></a></li>
+      <li><a href="#latest"><span class="n">01</span><span class="name">Latest</span></a></li>
       <li>
-        <a href="#interests"><span class="n">02</span><span class="name draft">Interests</span></a>
+        <a href="#interests"><span class="n">02</span><span class="name">Interests</span></a>
         <ol class="menu-interests" aria-label="Interests">
           {STOPS.map((stop, i) => <li><a href={`#${slug(stop.label)}`}><span class="n">{n(i)}</span>{stop.label}</a></li>)}
         </ol>

@@ -38,7 +38,7 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
                 <li><a href={link.url} target="_blank" rel="noopener">{link.icon && <Icon name={link.icon} />}{link.label}<Icon name="out" size={13} class="out" /></a></li>
               ))}
             </ul>
-            <p class:list={["piece", { placeholder: !stop.piece }]}>{stop.piece ?? "[a few lines in your words: what this is to you]"}</p>
+            {stop.piece && <p class="piece">{stop.piece}</p>}
           </div>
         </article>
       ))}
