@@ -15,6 +15,8 @@ a:hover, a:focus-visible { text-decoration: underline; }
 ::selection { background: var(--ink); color: var(--paper); }
 input, textarea { caret-color: var(--signal); }
 button { font: inherit; color: inherit; }
+/* The hidden attribute always wins over a component's display rule. */
+[hidden] { display: none !important; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Words Claude wrote that wait on Andre's: a dotted underline. Gaps in his words stay [bracketed]. */

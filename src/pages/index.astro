@@ -3,6 +3,7 @@ import Base from "../layouts/Base.astro";
 import Bar from "../ui/Bar.astro";
 import Section from "../ui/Section.astro";
 import Footer from "../ui/Footer.astro";
+import WriteLetter from "../ui/WriteLetter.astro";
 ---
 <Base title="André Amnc">
   <Bar />
@@ -10,7 +11,7 @@ import Footer from "../ui/Footer.astro";
   <main>
     <Section id="latest" number="01" label="Latest" draft><p class="build-note">[Latest arrives in slice 4]</p></Section>
     <Section id="interests" number="02" label="Interests" draft><p class="build-note">[the interests carousel arrives in slice 5]</p></Section>
-    <Section id="write" number="03" label="write to me"><p class="build-note">[the letter arrives in slice 2]</p></Section>
+    <Section id="write" number="03" label="write to me"><WriteLetter /></Section>
   </main>
   <Footer />
 </Base>

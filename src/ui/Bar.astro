@@ -1,14 +1,42 @@
 ---
-// The bar: the name, the letter at its centre, the way around. The typewriter letter arrives in slice 2.
+// The bar: the name, the letter at its centre (it types Andre's questions), the way around.
+import Icon from "./Icon.astro";
 const SECTIONS = [["latest", "Latest"], ["interests", "Interests"]] as const;   // labels are Claude's drafts
 ---
 <header class="bar">
   <a class="mark" href="#top">ANDRÉ AMNC</a>
-  <a class="write" href="#write">write to me</a>
+
+  <div class="letter" data-bar-letter>
+    <button class="ask" type="button" data-ask aria-expanded="false" aria-controls="bar-panel"></button>
+    <div class="panel" id="bar-panel" data-panel hidden>
+      <p class="said" data-said hidden></p>
+      <label class="sr-only" for="bar-note">Your message</label>
+      <textarea id="bar-note" rows="2"></textarea>
+      <label class="sr-only" for="bar-from">Your email</label>
+      <input id="bar-from" type="email" autocomplete="email" placeholder="Your email, so I can reply" hidden />
+      <div class="row">
+        <button class="key" type="button" data-key aria-label="enter"><Icon name="enter" size={13} /></button>
+        <button class="quiet" type="button" data-back hidden>Edit message</button>
+        <button class="quiet" type="button" data-again>Another question</button>
+      </div>
+      <p class="status" role="status"></p>
+    </div>
+  </div>
+
   <nav class="sections" aria-label="Sections">
     {SECTIONS.map(([id, label]) => <a href={`#${id}`}><span class="draft">{label}</span></a>)}
   </nav>
 </header>
+
+<script>
+  import { mountBar, OPENING } from "../adapters/letter/bar";
+  import { shortEnough } from "../domain/letter/prompts";
+  import { ROTATION } from "../content/prompts";
+  import { CONTACT_ADDRESS } from "../content/channels";
+  // Only questions that fit the bar on one line: about 46 characters on wide screens, 36 on phones.
+  const max = matchMedia("(min-width: 700px)").matches ? 46 : 36;
+  mountBar(document.querySelector<HTMLElement>("[data-bar-letter]")!, [OPENING, ...shortEnough(ROTATION, max)], CONTACT_ADDRESS);
+</script>
 
 <style>
   .bar {
@@ -16,14 +44,43 @@ const SECTIONS = [["latest", "Latest"], ["interests", "Interests"]] as const;   
     display: grid; grid-template-columns: minmax(0, 1fr) auto; row-gap: 14px; padding: 18px var(--gutter);
   }
   .mark { font-size: 14px; font-weight: 500; letter-spacing: .26em; white-space: nowrap; text-decoration: none; }
-  .write { grid-column: 1 / -1; grid-row: 2; font-size: 15px; font-weight: 500; letter-spacing: .04em; color: var(--signal); }
+  .letter { grid-column: 1 / -1; grid-row: 2; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .ask {
+    align-self: flex-start; background: none; border: 0; padding: 0; cursor: pointer; text-align: left;
+    font-size: 15px; line-height: 1.5; font-weight: 500; letter-spacing: .04em; color: var(--signal); min-height: 24px;
+  }
+  .ask::after { content: ""; display: inline-block; width: 2px; height: 1.05em; margin-left: 2px; transform: translateY(3px); background: var(--signal); animation: blink 1.1s steps(1) infinite; }
+  .letter:global(.open) .ask { color: var(--ink); }
+  .letter:global(.open) .ask::after { display: none; }
+  .panel { display: flex; flex-direction: column; gap: 8px; }
+  .panel[hidden] { display: none; }
+  .said { font: italic 400 14px/1.5 var(--sans); color: var(--ink-2); white-space: pre-wrap; }
+  textarea, input {
+    width: 100%; border: 0; padding: 0; resize: none; background: transparent; color: var(--ink); outline: none;
+    font: 400 16px/1.6 var(--sans);
+  }
+  input::placeholder { color: var(--mute); opacity: 1; }
+  .row { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--ink-2); }
+  .key {
+    display: inline-grid; place-items: center; min-width: 40px; min-height: 28px; padding: 2px 7px 1px; cursor: pointer; background: none; color: var(--mute);
+    border: 1px solid currentColor; border-bottom-width: 2px; border-radius: 3px;
+  }
+  .panel:global(.ready) .key { color: var(--signal); }
+  .quiet { background: none; border: 0; padding: 0; cursor: pointer; font-size: 13px; }
+  .status { font-size: 13px; color: var(--ink-2); }
+  .status:empty { display: none; }
   .sections { display: none; }
+  @keyframes blink { 50% { opacity: 0; } }
   @media (min-width: 700px) {
-    .bar { grid-template-columns: minmax(0, 1fr) min(560px, 40vw) minmax(0, 1fr); padding: 24px clamp(24px, 3vw, 56px); align-items: baseline; }
+    .bar { grid-template-columns: minmax(0, 1fr) min(560px, 40vw) minmax(0, 1fr); padding: 24px clamp(24px, 3vw, 56px); align-items: start; }
     .mark { font-size: 16px; letter-spacing: .32em; }
-    .write { grid-column: 2; grid-row: 1; justify-self: center; }
+    .letter { grid-column: 2; grid-row: 1; align-items: center; }
+    .letter:global(.open) { align-items: stretch; }
+    .ask { align-self: center; }
+    .letter:global(.open) .ask { align-self: flex-start; }
   }
   @media (min-width: 1080px) {
     .sections { display: flex; justify-self: end; gap: 32px; font-size: 14px; letter-spacing: .14em; }
   }
+  @media (prefers-reduced-motion: reduce) { .ask::after { animation: none; } }
 </style>
