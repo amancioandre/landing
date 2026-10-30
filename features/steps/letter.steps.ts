@@ -99,3 +99,29 @@ When("I click somewhere else on the page", async ({ page }) => {
 Then("the bar's letter still holds {string}", async ({ page }, text: string) => {
   await expect(bar(page).getByLabel("Your message")).toHaveValue(text);
 });
+
+// Turnstile stands in with a pass, as Cloudflare's own test keys do; the Worker is played by a route.
+const passingTurnstile = (page: Page) => page.route("https://challenges.cloudflare.com/**", (route) => route.fulfill({
+  contentType: "text/javascript",
+  body: `window.turnstile = { render: (el, o) => (window.__turnstile = o, "w"), execute: () => window.__turnstile.callback("a-person"), reset: () => {} };`,
+}));
+const outgoing = new WeakMap<Page, Record<string, unknown>>();
+
+Given("letters can be delivered", async ({ page }) => {
+  await passingTurnstile(page);
+  await page.route("**/letter", (route) => {
+    outgoing.set(page, route.request().postDataJSON());
+    return route.fulfill({ status: 200, json: { sent: true } });
+  });
+});
+
+Given("letters cannot be delivered right now", async ({ page }) => {
+  await passingTurnstile(page);
+  await page.route("**/letter", (route) => route.fulfill({ status: 502, json: { problem: "not-delivered" } }));
+});
+
+Then("the letter that went out carries {string}, {string}, its question and a pass that a person sent it", async ({ page }, note: string, from: string) => {
+  const sent = outgoing.get(page);
+  expect(sent).toMatchObject({ note, from, token: "a-person" });
+  expect(sent?.prompt).toEqual(expect.any(String));
+});

@@ -40,9 +40,19 @@ Feature: write to me
     And I press enter in the letter
     Then the letter says "That email doesn't look right."
 
-  Scenario: Sending is honest until it is connected
+  Scenario: A letter reaches Andre, with the question it answers
+    Given letters can be delivered
     When I write "Hello André" in the letter
     And I press enter in the letter
     And I write "me@example.com" in the letter
     And I press enter in the letter
-    Then the letter says "Sending isn't connected yet. Write to hello@andreamnc.com instead."
+    Then the letter says "Sent. Thank you."
+    And the letter that went out carries "Hello André", "me@example.com", its question and a pass that a person sent it
+
+  Scenario: When a letter can't go out, the address is offered
+    Given letters cannot be delivered right now
+    When I write "Hello André" in the letter
+    And I press enter in the letter
+    And I write "me@example.com" in the letter
+    And I press enter in the letter
+    Then the letter says "It didn't go through. Write to hello@andreamnc.com instead."
