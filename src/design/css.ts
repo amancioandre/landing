@@ -7,7 +7,7 @@ function block(selector: string, theme: ThemeName): string {
   return `${selector} {\n${vars.join("\n")}\n}`;
 }
 
-// Light is the default; dark applies wherever an ancestor carries data-theme="dark".
+// Day is the default; night applies wherever an ancestor carries data-theme="night" (set by the visitor's clock).
 export function themeCss(): string {
-  return [block(":root", "light"), block('[data-theme="dark"]', "dark")].join("\n");
+  return [block(":root", "day"), block('[data-theme="night"]', "night")].join("\n");
 }
