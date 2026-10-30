@@ -68,3 +68,13 @@ Then("the links of {string} cannot be reached yet", async ({ page }, name: strin
 Then("the links of {string} open in a new tab", async ({ page }, name: string) => {
   for (const link of await card(page, name).getByRole("link").all()) await expect(link).toHaveAttribute("target", "_blank");
 });
+
+Then("every interest card shows a photograph", async ({ page }) => {
+  for (const slide of await section(page).locator("[data-slide]").all()) await expect(slide.locator("img")).toHaveAttribute("alt", /\w/);
+  await expect(section(page).getByText("photo to come")).toHaveCount(0);
+});
+
+Then("the {string} photograph is framed on Andre, at the left of the picture", async ({ page }, name: string) => {
+  const position = await card(page, name).locator("img").evaluate((img) => getComputedStyle(img).objectPosition);
+  expect(parseFloat(position)).toBeLessThan(50);
+});

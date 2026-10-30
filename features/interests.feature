@@ -35,3 +35,7 @@ Feature: Interests
   Scenario: Only the card in focus can be followed
     Then the links of "Writer" cannot be reached yet
     And the links of "Outdoorsman" open in a new tab
+
+  Scenario: Every interest has Andre's photograph, framed on its subject
+    Then every interest card shows a photograph
+    And the "Hunter" photograph is framed on Andre, at the left of the picture
