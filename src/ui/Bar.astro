@@ -15,7 +15,7 @@ const SECTIONS = [["latest", "Latest"], ["interests", "Interests"]] as const;   
       <label class="sr-only" for="bar-from">Your email</label>
       <input id="bar-from" type="email" autocomplete="email" placeholder="Your email, so I can reply" hidden />
       <div class="row">
-        <button class="key" type="button" data-key aria-label="enter"><Icon name="enter" size={13} /></button>
+        <button class="key" type="button" data-key><Icon name="enter" size={13} /><span>enter</span></button>
         <button class="quiet" type="button" data-back hidden>Edit message</button>
         <button class="quiet" type="button" data-again>Another question</button>
       </div>
@@ -65,7 +65,7 @@ const SECTIONS = [["latest", "Latest"], ["interests", "Interests"]] as const;   
   input::placeholder { color: var(--mute); opacity: 1; }
   .row { display: flex; gap: 16px; align-items: center; font-size: 13px; color: var(--ink-2); }
   .key {
-    display: inline-grid; place-items: center; min-width: 40px; min-height: 28px; padding: 2px 7px 1px; cursor: pointer; background: none; color: var(--mute);
+    display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; letter-spacing: .08em; min-width: 40px; min-height: 28px; padding: 2px 7px 1px; cursor: pointer; background: none; color: var(--mute);
     border: 1px solid currentColor; border-bottom-width: 2px; border-radius: 3px;
   }
   .panel:global(.ready) .key { color: var(--signal); }

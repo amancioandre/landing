@@ -14,7 +14,7 @@ import { CONTACT_ADDRESS } from "../content/channels";
   <label class="sr-only" for="write-from">Your email</label>
   <input id="write-from" type="email" autocomplete="email" placeholder="Your email, so I can reply" hidden />
   <div class="row">
-    <button class="key" type="button" data-key aria-label="enter"><Icon name="enter" size={14} /></button>
+    <button class="key" type="button" data-key><Icon name="enter" size={14} /><span>enter</span></button>
     <button class="quiet" type="button" data-back hidden>Edit message</button>
     <span class="or">or write to <a href={`mailto:${CONTACT_ADDRESS}`}>{CONTACT_ADDRESS}</a></span>
   </div>
@@ -45,7 +45,7 @@ import { CONTACT_ADDRESS } from "../content/channels";
   @keyframes blink { 50% { opacity: 0; } }
   .row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; font-size: 14px; font-weight: 500; color: var(--ink-2); }
   .key {
-    display: inline-grid; place-items: center; min-width: 44px; min-height: 32px; padding: 3px 8px 2px; cursor: pointer; background: none; color: var(--mute);
+    display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 500; letter-spacing: .08em; min-width: 44px; min-height: 32px; padding: 3px 8px 2px; cursor: pointer; background: none; color: var(--mute);
     border: 1px solid currentColor; border-bottom-width: 2px; border-radius: 3px;
   }
   .letter:global(.ready) .key { color: var(--signal); }
