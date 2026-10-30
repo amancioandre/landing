@@ -92,7 +92,8 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   .card .say { font: italic 400 14px/1.4 var(--sans); color: var(--mute); }
   .card ul { list-style: none; padding: 0; margin-top: 6px; display: grid; gap: 6px; font-size: 14px; color: var(--ink-2); }
   .card li a { display: inline-flex; align-items: center; gap: 8px; }
-  .card :global(.out) { color: var(--signal); }
+  .card :global(.out) { color: var(--mute); transition: color .2s ease; }
+  .card a:hover :global(.out), .card a:focus-visible :global(.out) { color: var(--signal); }
   .card h3, .card .say, .card li { width: fit-content; background: var(--paper); box-shadow: 0 0 0 3px var(--paper); }
   /* The sheet: always on phones, and wherever a card can't hang clear of the index and the other waypoints. */
   .card:global(.sheet) {

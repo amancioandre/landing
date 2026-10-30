@@ -37,6 +37,8 @@ const longDate = (iso: string) => new Date(iso).toLocaleDateString(language.tag,
   .lead .title { font-size: 28px; line-height: 34px; letter-spacing: -.01em; }
   .excerpt { color: var(--ink-2); max-width: 62ch; }
   .via { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; }
-  .via :global(.out) { color: var(--signal); }
+  /* The way out waits in grey and turns red only when it is the one being pointed at: red stays a single signal. */
+  .via :global(.out) { color: var(--mute); transition: color .2s ease; }
+  .post:hover .via :global(.out), .post:focus-visible .via :global(.out) { color: var(--signal); }
   @media (min-width: 900px) { .lead .title { font-size: 32px; line-height: 38px; } }
 </style>

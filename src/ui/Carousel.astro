@@ -88,12 +88,14 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   /* The cards already passed show only their glyphs at the screen's edge: their words would be cut mid-line. */
   .slide:global([data-before]) .body { opacity: 0; }
   .title { display: flex; gap: 12px; align-items: baseline; }
-  .title .n { font: 500 12px var(--mono); color: var(--signal); }
+  /* The chooser above already marks the card in focus in red; here the number stays quiet. */
+  .title .n { font: 500 12px var(--mono); color: var(--mute); }
   h3 { font-size: 28px; line-height: 34px; font-weight: 500; letter-spacing: -.01em; }
   .line { font-style: italic; }
   .links { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 15px; font-weight: 500; }
   .links a { display: inline-flex; align-items: center; gap: 10px; }
-  .links :global(.out) { color: var(--signal); }
+  .links :global(.out) { color: var(--mute); transition: color .2s ease; }
+  .links a:hover :global(.out), .links a:focus-visible :global(.out) { color: var(--signal); }
   .piece { margin-top: 8px; }
   @media (min-width: 700px) {
     .carousel { --card: 360px; --gap: 56px; }
