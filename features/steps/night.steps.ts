@@ -4,6 +4,14 @@ import { createBdd } from "playwright-bdd";
 const { Given, Then } = createBdd();
 
 Given("it is {string} in {string}", async ({ page }, instant: string, zone: string) => {
+  // Records the theme at the moment the body is first added, before anything after the head can run.
+  await page.addInitScript(() => {
+    new MutationObserver((_, watcher) => {
+      if (!document.body) return;
+      (window as unknown as { themeAtBody?: string }).themeAtBody = document.documentElement.dataset.theme ?? "";
+      watcher.disconnect();
+    }).observe(document, { childList: true, subtree: true });
+  });
   const cdp = await page.context().newCDPSession(page);
   await cdp.send("Emulation.setTimezoneOverride", { timezoneId: zone });
   await page.clock.install({ time: new Date(instant) });
@@ -21,4 +29,8 @@ Then("its words are a gentle grey on black, not white", async ({ page }) => {
   const body = page.locator("body");
   await expect(body).toHaveCSS("color", "rgb(201, 197, 189)");
   await expect(page.locator("html")).toHaveCSS("background-color", "rgb(12, 12, 11)");
+});
+
+Then("the page already knew it was night when its body first appeared", async ({ page }) => {
+  expect(await page.evaluate(() => (window as unknown as { themeAtBody?: string }).themeAtBody)).toBe("night");
 });

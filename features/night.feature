@@ -7,6 +7,11 @@ Feature: Day and night
     Then the page is at night
     And its words are a gentle grey on black, not white
 
+  Scenario: Night is decided before the page is drawn, so day never flashes first
+    Given it is "2026-12-21T17:30:00-08:00" in "America/Vancouver"
+    When I open the home page
+    Then the page already knew it was night when its body first appeared
+
   Scenario: At midday it is day
     Given it is "2026-12-21T12:00:00-08:00" in "America/Vancouver"
     When I open the home page
