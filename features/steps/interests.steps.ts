@@ -21,7 +21,7 @@ Then("the card for {string} shows its photo drawn in glyphs", async ({ page }, n
 });
 
 When("I choose {string} among the interests", async ({ page }, name: string) => {
-  await section(page).getByRole("navigation", { name: "Interests" }).getByRole("button", { name: new RegExp(name) }).click();
+  await section(page).getByRole("navigation", { name: "All interests" }).getByRole("button", { name: new RegExp(name) }).click();
 });
 
 When("I ask for the next interest", async ({ page }) => {
