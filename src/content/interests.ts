@@ -17,7 +17,7 @@ export const STOPS: readonly InterestStop[] = [
   { label: "Outdoorsman", at: [596, 679], photo: { src: "/img/outdoorsman.jpg", alt: "André walking a forest track with his dog", focus: { cx: 0.55, cy: 0.52, rx: 0.34, ry: 0.46 } },
     links: [{ label: "Films on YouTube", url: "https://www.youtube.com/@andre-amnc", icon: "youtube" }, { label: "@andre.amnc", url: "https://www.instagram.com/andre.amnc/", icon: "instagram" }] },
   { label: "Writer", at: [937, 742], photo: { src: "/img/writer.jpg", alt: "A worn copy of Creation Myths by Marie-Louise von Franz", focus: { cx: 0.52, cy: 0.5, rx: 0.36, ry: 0.4 } },
-    links: [{ label: "Stories on Substack", url: "https://andramnc.substack.com", icon: "substack" }] },
+    links: [{ label: "Stories on Substack", url: "https://andramnc.substack.com", icon: "substack" }, { label: "Patreon", url: "https://www.patreon.com/c/andreamnc", icon: "patreon" }] },
   { label: "Hunter", at: [1260, 789], photo: { src: "/img/hunter.jpg", alt: "André glassing a valley, rifle on his back", focus: { cx: 0.4, cy: 0.56, rx: 0.22, ry: 0.46 } },
     links: [{ label: "Films on YouTube", url: "https://www.youtube.com/@andre-amnc", icon: "youtube" }, { label: "Stories on Substack", url: "https://andramnc.substack.com", icon: "substack" }] },
   { label: "Entrepreneur", at: [1667, 830], links: [{ label: "Work1.ai", url: "https://work1.ai" }, { label: "Leathercase", url: "https://leathercase.app" }] },

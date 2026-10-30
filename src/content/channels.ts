@@ -1,5 +1,5 @@
 // Where else to find Andre (ADR 0009). Handles are facts, not copy.
-export type IconName = "youtube" | "instagram" | "substack" | "linkedin" | "github";
+export type IconName = "youtube" | "instagram" | "substack" | "linkedin" | "github" | "patreon";
 
 export interface Channel {
   name: string;
@@ -14,6 +14,7 @@ export const CHANNELS: readonly Channel[] = [
   { name: "Substack", handle: "andramnc.substack.com", url: "https://andramnc.substack.com", icon: "substack" },
   { name: "LinkedIn", handle: "amancioandre", url: "https://www.linkedin.com/in/amancioandre/", icon: "linkedin" },
   { name: "GitHub", handle: "amancioandre", url: "https://github.com/amancioandre", icon: "github" },
+  { name: "Patreon", handle: "andreamnc", url: "https://www.patreon.com/c/andreamnc", icon: "patreon" },
 ];
 
 export const CONTACT_ADDRESS = "hello@andreamnc.com"; // ADR 0014
