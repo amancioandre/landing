@@ -1,5 +1,5 @@
 // The Worker's one job (ADR 0023): take a letter from the page, make sure a person sent it, and hand it to Andre's inbox.
-import { envelope, readMessage, type Envelope } from "../../src/domain/letter/delivery";
+import { envelope, readMessage, readVisit, type Envelope, type Place } from "../../src/domain/letter/delivery";
 
 /** What the desk needs from the outside: a bot check and a way to deliver. */
 export interface Desk {
@@ -13,7 +13,7 @@ async function bodyOf(request: Request): Promise<unknown> {
   try { return await request.json(); } catch { return undefined; }
 }
 
-export async function receiveLetter(request: Request, desk: Desk): Promise<Response> {
+export async function receiveLetter(request: Request, desk: Desk, place: Place = {}): Promise<Response> {
   if (request.method !== "POST") return answer(405, { problem: "post-only" });
   const body = await bodyOf(request);
   if (body === undefined) return answer(400, { problem: "malformed" });
@@ -25,7 +25,7 @@ export async function receiveLetter(request: Request, desk: Desk): Promise<Respo
   if (typeof token !== "string" || !(await desk.isHuman(token, ip))) return answer(403, { problem: "not-human" });
 
   try {
-    await desk.deliver(envelope(arrival.message));
+    await desk.deliver(envelope(arrival.message, readVisit((body as { visit?: unknown }).visit), place));
   } catch {
     return answer(502, { problem: "not-delivered" });
   }
