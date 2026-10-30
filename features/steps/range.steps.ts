@@ -44,7 +44,10 @@ Then("the card for {string} opens with a link to {string}", async ({ page }, nam
 
 When("I click on the land away from the card", async ({ page }) => {
   const box = (await range(page).boundingBox())!;
-  await page.mouse.click(box.x + box.width * 0.5, box.y + box.height * 0.2);
+  const open = await card(page).boundingBox();
+  // The sky on the side of the range the card doesn't hang on.
+  const onTheRight = open ? open.x + open.width / 2 > box.x + box.width / 2 : false;
+  await page.mouse.click(box.x + box.width * (onTheRight ? 0.3 : 0.7), box.y + box.height * 0.2);
 });
 
 Then("no card is open", async ({ page }) => {
