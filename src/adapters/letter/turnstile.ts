@@ -32,7 +32,7 @@ export function turnstilePass(siteKey: string, patience = 10_000): () => Promise
       if (widget === undefined) {
         document.body.append(box);
         widget = turnstile.render(box, {
-          sitekey: siteKey, execution: "execute", appearance: "interaction-only",
+          sitekey: siteKey, action: "letter", execution: "execute", appearance: "interaction-only",   // the Worker accepts only "letter" passes
           callback: (pass: string) => waiting?.(pass), "error-callback": () => waiting?.(null),
         });
       } else turnstile.reset(widget);
