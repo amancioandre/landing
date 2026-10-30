@@ -28,7 +28,7 @@ export function drawGlyphs(canvas: HTMLCanvasElement, img: HTMLImageElement): vo
   g.scale(dpr, dpr);
   g.clearRect(0, 0, width, height);
   g.fillStyle = getComputedStyle(canvas).color;
-  g.font = `${ch}px ${getComputedStyle(document.documentElement).getPropertyValue("--mono") || "monospace"}`;
+  g.font = `${ch}px ${getComputedStyle(document.documentElement).getPropertyValue("--glyphs") || "monospace"}`;
   g.textBaseline = "top";
   for (let r = 0; r < rows; r++) for (let x = 0; x < cols; x++) {
     const k = (r * cols + x) * 4;

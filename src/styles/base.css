@@ -1,6 +1,9 @@
 /* The system below the range (ADR 0015): one centred column, handlers in its margin, no hairlines, no thin weights. */
 :root {
-  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* One mono for every visitor: the dates and the waypoints' numbers look the same on any system. */
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* The range and the cards are drawn in the system's monospace (ADR 0006), apart from the words. */
+  --glyphs: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --sans: "Jost", system-ui, sans-serif;
   --column: min(1008px, 100% - 32px);
   --gutter: 16px;

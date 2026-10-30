@@ -146,7 +146,7 @@ export class RangeRenderer {
 // Two rows of glyphs: regular, then bold for the near ground (ADR 0006). System monospace, drawn in white;
 // the shader colours them. A thin stroke guarantees the extra weight where the system font has no true bold.
 function glyphAtlas(chars: string, px: number, stroke: number) {
-  const mono = getComputedStyle(document.documentElement).getPropertyValue("--mono") || "monospace";
+  const mono = getComputedStyle(document.documentElement).getPropertyValue("--glyphs") || "monospace";
   const probe = document.createElement("canvas").getContext("2d")!;
   probe.font = `${px}px ${mono}`;
   const w = Math.ceil(probe.measureText("M").width), h = Math.ceil(px);
