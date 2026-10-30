@@ -23,6 +23,14 @@ Feature: The range
     When I choose waypoint "04"
     Then the card for "Hunter" opens with a link to "Films on YouTube"
 
+  Scenario: Every card draws its line again as it opens
+    Given I am on a wide screen
+    When I choose "Writer" in the index
+    And the card has finished opening
+    And I choose "Hunter" in the index
+    Then its line draws in from the waypoint
+    And its card fades in
+
   Scenario: Clicking away puts the card away
     When I choose "Writer" in the index
     And I click on the land away from the card

@@ -58,3 +58,18 @@ When("I scroll past the range", async ({ page }) => {
 Then("the bar is docked on paper", async ({ page }) => {
   await expect(page.getByRole("banner")).toHaveAttribute("data-docked", "");
 });
+
+When("the card has finished opening", async ({ page }) => {
+  await page.waitForTimeout(900);
+});
+
+Then("its line draws in from the waypoint", async ({ page }) => {
+  const tether = range(page).locator("[data-tether]");
+  await expect(tether).toBeVisible();
+  // A transition is running on the line right after the choice: it is drawing in, not simply appearing.
+  expect(await tether.evaluate((el) => el.getAnimations().length)).toBeGreaterThan(0);
+});
+
+Then("its card fades in", async ({ page }) => {
+  expect(await card(page).evaluate((el) => el.getAnimations().length)).toBeGreaterThan(0);
+});
