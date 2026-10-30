@@ -49,7 +49,8 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
 </script>
 
 <style>
-  .range { position: relative; height: 100svh; min-height: 600px; overflow: hidden; }
+  /* A little short of the screen, so the first line below peeks in and says there is more. */
+  .range { position: relative; height: calc(100svh - 80px); min-height: 600px; overflow: hidden; }
   @media (max-height: 599px) { .range { min-height: 0; } }
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
   .stop, .index, .tether, .offer { opacity: calc(1 - var(--leave, 0)); }
