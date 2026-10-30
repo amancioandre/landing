@@ -1,8 +1,8 @@
-import { glyphFor, inkAt, SOFT, type Focus } from "../../domain/interests/glyph-picture";
+import { glyphFor, inkAt, SOFT } from "../../domain/interests/glyph-picture";
 
 
 /** Draws a photo in glyphs onto a transparent canvas, in the canvas's text colour, so both themes follow. */
-export function drawGlyphs(canvas: HTMLCanvasElement, img: HTMLImageElement, focus: Focus): void {
+export function drawGlyphs(canvas: HTMLCanvasElement, img: HTMLImageElement): void {
   const width = canvas.clientWidth, height = canvas.clientHeight;
   if (!width || !height || !img.naturalWidth) return;
   const dpr = Math.min(3, devicePixelRatio || 1), cw = 3, ch = 5;   // fine cells: more detail in each picture
@@ -30,7 +30,7 @@ export function drawGlyphs(canvas: HTMLCanvasElement, img: HTMLImageElement, foc
   g.textBaseline = "top";
   for (let r = 0; r < rows; r++) for (let x = 0; x < cols; x++) {
     const k = (r * cols + x) * 4;
-    const ink = inkAt({ u: (x + 0.5) / cols, v: (r + 0.5) / rows, lum: lum(tone, k), mean: lum(around, k) }, focus, SOFT);
+    const ink = inkAt({ u: (x + 0.5) / cols, v: (r + 0.5) / rows, lum: lum(tone, k), mean: lum(around, k) }, SOFT);
     if (ink > 0) g.fillText(glyphFor(ink), x * cw, r * ch);
   }
 }
