@@ -49,6 +49,19 @@ Feature: write to me
     Then the letter says "Sent. Thank you."
     And the letter that went out carries "Hello André", "me@example.com", its question and a pass that a person sent it
 
+  Scenario: A letter tells Andre how the writer came and what they looked at
+    Given letters can be delivered
+    And I arrived from "https://www.youtube.com/watch?v=abc" through a link tagged "youtube" and "video"
+    When I choose "Hunter" among the interests
+    And I write "Where do you hunt?" in the letter
+    And I press enter in the letter
+    And I write "me@example.com" in the letter
+    And I press enter in the letter
+    Then the letter says "Sent. Thank you."
+    And the letter that went out notes it was written in the section, on this device, under this sky
+    And the letter that went out notes I came from "https://www.youtube.com/watch?v=abc" by "youtube / video", looking at "Hunter"
+    And Umami counts a letter sent from the section
+
   Scenario: When a letter can't go out, the address is offered
     Given letters cannot be delivered right now
     When I write "Hello André" in the letter

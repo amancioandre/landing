@@ -106,9 +106,13 @@ const passingTurnstile = (page: Page) => page.route("https://challenges.cloudfla
   body: `window.turnstile = { render: (el, o) => (window.__turnstile = o, "w"), execute: () => window.__turnstile.callback("a-person"), reset: () => {} };`,
 }));
 const outgoing = new WeakMap<Page, Record<string, unknown>>();
+const countingUmami = (page: Page) => page.route("https://cloud.umami.is/**", (route) => route.fulfill({
+  contentType: "text/javascript", body: `window.umami = { track: (name, data) => (window.__counted ??= []).push([name, data]) };`,
+}));
 
 Given("letters can be delivered", async ({ page }) => {
   await passingTurnstile(page);
+  await countingUmami(page);
   await page.route("**/letter", (route) => {
     outgoing.set(page, route.request().postDataJSON());
     return route.fulfill({ status: 200, json: { sent: true } });
@@ -126,4 +130,24 @@ Then("the letter that went out carries {string}, {string}, its question and a pa
   expect(sent?.prompt).toEqual(expect.any(String));
   const asked = await page.evaluate(() => { const o = (window as unknown as { __turnstile: { sitekey: string; action: string } }).__turnstile; return { sitekey: o.sitekey, action: o.action }; });
   expect(asked).toEqual({ sitekey: "0x4AAAAAAFsMmr_4Ql21QTux", action: "letter" });
+});
+
+Given("I arrived from {string} through a link tagged {string} and {string}", async ({ page }, from: string, source: string, medium: string) => {
+  await page.goto(`/?utm_source=${source}&utm_medium=${medium}#write`, { referer: from });
+});
+
+Then("the letter that went out notes it was written in the section, on this device, under this sky", async ({ page }, ) => {
+  const visit = outgoing.get(page)?.visit as Record<string, unknown>;
+  const sky = await page.evaluate(() => document.documentElement.dataset.theme);
+  expect(visit).toMatchObject({ via: "section", sky });
+  expect(["phone", "tablet", "computer"]).toContain(visit.device);
+});
+
+Then("the letter that went out notes I came from {string} by {string}, looking at {string}", async ({ page }, from: string, campaign: string, interest: string) => {
+  expect(outgoing.get(page)?.visit).toMatchObject({ from, campaign, interest });
+});
+
+Then("Umami counts a letter sent from the section", async ({ page }) => {
+  const counted = await page.evaluate(() => (window as unknown as { __counted?: unknown[] }).__counted ?? []);
+  expect(counted).toContainEqual(["letter-sent", expect.objectContaining({ via: "section" })]);
 });
