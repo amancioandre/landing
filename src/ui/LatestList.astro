@@ -1,0 +1,38 @@
+---
+// Latest (ADR 0009): the newest post leads with its opening words; the rest follow as rows. Each opens where it lives.
+import Icon from "./Icon.astro";
+import { loadLatest } from "../adapters/feeds/load";
+
+const NAMES = { substack: "Substack", youtube: "YouTube" } as const;
+const entries = await loadLatest();
+const longDate = (iso: string) => new Date(iso).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+---
+{entries.length === 0 ? (
+  <p class="placeholder">[nothing published yet]</p>
+) : (
+  <ol class="entries">
+    {entries.map((e, i) => (
+      <li>
+        <a class:list={["post", { lead: i === 0 }]} href={e.url} target="_blank" rel="noopener" data-entry-post>
+          <time datetime={e.date}>{longDate(e.date)}</time>
+          <span class="title">{e.title}</span>
+          {i === 0 && e.excerpt && <span class="excerpt">{e.excerpt}</span>}
+          <span class="via"><Icon name={e.via} />{NAMES[e.via]}<Icon name="out" size={13} class="out" /></span>
+        </a>
+      </li>
+    ))}
+  </ol>
+)}
+
+<style>
+  .entries { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 28px; }
+  .post { display: flex; flex-direction: column; gap: 8px; text-decoration: none; }
+  .post:hover .title, .post:focus-visible .title { text-decoration: underline; text-underline-offset: .2em; text-decoration-thickness: 1px; }
+  time { font: 400 12px var(--mono); color: var(--mute); }
+  .title { font-size: 20px; line-height: 28px; font-weight: 500; }
+  .lead .title { font-size: 28px; line-height: 34px; letter-spacing: -.01em; }
+  .excerpt { color: var(--ink-2); max-width: 62ch; }
+  .via { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; }
+  .via :global(.out) { color: var(--signal); }
+  @media (min-width: 900px) { .lead .title { font-size: 32px; line-height: 38px; } }
+</style>

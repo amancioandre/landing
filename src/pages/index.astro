@@ -5,12 +5,13 @@ import Section from "../ui/Section.astro";
 import Footer from "../ui/Footer.astro";
 import Range from "../ui/Range.astro";
 import WriteLetter from "../ui/WriteLetter.astro";
+import LatestList from "../ui/LatestList.astro";
 ---
 <Base title="André Amnc">
   <Bar />
   <Range />
   <main>
-    <Section id="latest" number="01" label="Latest" draft><p class="build-note">[Latest arrives in slice 4]</p></Section>
+    <Section id="latest" number="01" label="Latest" draft><LatestList /></Section>
     <Section id="interests" number="02" label="Interests" draft><p class="build-note">[the interests carousel arrives in slice 5]</p></Section>
     <Section id="write" number="03" label="write to me"><WriteLetter /></Section>
   </main>
