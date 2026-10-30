@@ -90,20 +90,25 @@ void main() {
 
   // The nook between 02 and 03: the light never falls on the front of the foreground trees, it only fills the gaps
   // between their foliage, showing the trees behind in the plate's own tones; a slow smoke climbs and drifts right.
-  float glow = 0., smoke = 0., gap = 0.;
+  float glow = 0., smoke = 0., gap = 0., tipLight = 0.;
   if (night > .5 && nookAt.z > .5) {
     vec2 d = (uv - nookAt.xy) * vec2(cover.z / cover.w, 1.);
     float r = nookLight.x;
     float breathe = .88 + .12 * sin(time * .9) * sin(time * .53 + 1.3);
     glow = exp(-(d.x * d.x / (.003 * r * r) + d.y * d.y / (.0016 * r * r))) * breathe * smoothstep(-.035, .006, -d.y + .012);
     gap = 1. - smoothstep(.12, .22, dark);
+    // Tree tips: foliage whose top meets lighter air just above it. They catch some of the glow and the lit smoke.
+    float above = texture(plate, uv - vec2(0., 3. * cell.y / cover.w)).r;
+    float tip = (1. - gap) * smoothstep(.04, .18, above - base);
     float behind = smoothstep(.02, .4, 1. - lum);
     float up = -d.y - .006;
     float lean = up * up * 1.6 + sin(up * 11. - time * .5) * .004 * (1. + up * 30.);
     float column = (1. - smoothstep(.005 + up * .08, .012 + up * .17, abs(d.x - lean))) * step(0., up)
                  * (1. - smoothstep(.04 * nookSmoke.x, .16 * nookSmoke.x, up));
-    smoke = nookLight.z * column * gap
+    float plume = nookLight.z * column
           * smoothstep(.32 + up * 1.4, .6 + up * 1.4, fbm(vec2((d.x - lean) * 50., uv.y * 16. + time * .12 * nookSmoke.y)));
+    smoke = plume * gap;
+    tipLight = tip * (glow * nookLight.y * .16 + plume * .12) + (1. - gap) * glow * .04;   // a touch, never a crown
     dark = max(dark, glow * gap * nookLight.y * (.3 + .4 * behind));
     if (smoke > .04) dark = max(dark, .14 + smoke * .22);
     g = floor(dark * (glyphs - 1.) + .5);
@@ -118,7 +123,7 @@ void main() {
   float ink = texture(atlas, vec2((g + local.x) / atlasSize, (local.y + bold) * .5)).a;
   vec3 day = vec3(.933, .922, .898), dusk = vec3(.047);
   // Starlight: the near ground a little brighter than the far range; the nook's light warms what it reaches.
-  float reached = clamp(glow * gap * nookLight.y * 1.6 + smoke * .6, 0., 1.);
+  float reached = clamp(glow * gap * nookLight.y * 1.6 + smoke * .6 + tipLight, 0., 1.);
   vec3 starlit = min(nightInk * mix(.72, 1.12, bold) * (1. + reached * .35), vec3(.86));
   starlit = mix(starlit, starlit * vec3(1.22, .84, .58), clamp(reached * nookLight.w, 0., .55 * nookLight.w));
   vec3 paper = mix(day, dusk, night), inkc = mix(dusk, starlit, night);
