@@ -77,5 +77,6 @@ export const PT_BR: Copy = {
     Hunter: "O que você perguntaria ao caçador?",
     Entrepreneur: "O que você perguntaria ao empreendedor?",
   },
+  offer: "Ler em português",
   footer: { channels: "Canais", languages: "Idiomas" },
 };

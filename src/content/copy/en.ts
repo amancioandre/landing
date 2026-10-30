@@ -79,5 +79,7 @@ export const EN = {
     Hunter: "What would you ask the hunter?",
     Entrepreneur: "What would you ask the entrepreneur?",
   },
+  // Claude's words (2026-10-30), for Andre to change; the translations follow them.
+  offer: "Read in English",
   footer: { channels: "Channels", languages: "Languages" },
 } as const satisfies Copy;

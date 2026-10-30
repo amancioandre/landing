@@ -5,6 +5,8 @@ import Icon from "./Icon.astro";
 import type { Copy } from "../content/copy/copy";
 import type { InterestStop } from "../content/interests";
 import { CENTRE, objectPosition } from "../domain/interests/framing";
+import { OFFERS } from "../content/copy";
+import { OFFERS_ID } from "../adapters/languages/offer";
 interface Props { copy: Copy; stops: readonly InterestStop[] }
 const { copy, stops } = Astro.props;
 const n = (i: number) => String(i + 1).padStart(2, "0");
@@ -19,6 +21,8 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
       <button type="button" data-entry data-i={i} aria-pressed="false"><span class="n">{n(i)}</span>{stop.label}</button>
     ))}
   </nav>
+  <a class="offer" data-offer data-choose-language hidden><span class="n" data-code></span><span data-words></span></a>
+  <script type="application/json" id={OFFERS_ID} set:html={JSON.stringify(OFFERS)}></script>
   <div class="tether" data-tether hidden aria-hidden="true"></div>
   <div class="card" data-card hidden aria-live="polite">
     {stops.map((stop) => (
@@ -40,14 +44,25 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   import { mountRange } from "../adapters/range/range-view";
   import { STOPS } from "../content/interests";
   mountRange(document.querySelector<HTMLElement>("[data-range]")!, STOPS);
+  import { mountOffer } from "../adapters/languages/offer";
+  mountOffer(document.querySelector<HTMLAnchorElement>("[data-offer]")!);
 </script>
 
 <style>
   .range { position: relative; height: 100svh; min-height: 600px; overflow: hidden; }
   @media (max-height: 599px) { .range { min-height: 0; } }
   canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .stop, .index, .tether { opacity: calc(1 - var(--leave, 0)); }
-  .range:global([data-leaving]) :is(.stop, .index, .card) { pointer-events: none; }
+  .stop, .index, .tether, .offer { opacity: calc(1 - var(--leave, 0)); }
+  .range:global([data-leaving]) :is(.stop, .index, .card, .offer) { pointer-events: none; }
+  /* The offer (canvas row 11, C): a mark in the sky opposite the index, its code in red like a waypoint's number. */
+  .offer {
+    position: absolute; z-index: 2; right: var(--gutter); top: calc(84px + 3svh); display: flex; align-items: baseline; gap: 8px;
+    text-decoration: none; font: 400 14px/1 var(--sans); letter-spacing: .06em; color: var(--ink-2); padding: 4px 0;
+    background: var(--paper); box-shadow: 0 0 0 3px var(--paper);
+  }
+  .offer[hidden] { display: none; }
+  .offer .n { font: 500 11px var(--mono); color: var(--signal); }
+  .offer:hover, .offer:focus-visible { color: var(--ink); }
   .stop {
     position: absolute; z-index: 2; transform: translate(-50%, calc(-100% - 12px)); border: 0; padding: 4px 6px; cursor: pointer;
     font: 500 12px/1 var(--mono); color: var(--signal); background: var(--paper); box-shadow: 0 0 0 3px var(--paper);
@@ -86,6 +101,8 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   .card:global(.sheet) ul { justify-items: start; }
   @media (min-width: 700px) {
     .index { top: 22%; left: auto; right: clamp(24px, 3vw, 56px); justify-items: end; }
+    .offer { top: 22%; right: auto; left: clamp(24px, 3vw, 56px); gap: 10px; font-size: 15px; }
+    .offer .n { font-size: 12px; }
     .index button { font-size: 15px; padding: 0; text-align: right; }
     .card { position: absolute; z-index: 3; width: 240px; padding: 0 0 6px 14px; }
     .card h3 { margin-top: 10px; }

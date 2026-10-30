@@ -77,5 +77,6 @@ export const RU: Copy = {
     Hunter: "О чём ты хочешь спросить охотника?",
     Entrepreneur: "О чём ты хочешь спросить предпринимателя?",
   },
+  offer: "Читать на русском",
   footer: { channels: "Каналы", languages: "Языки" },
 };

@@ -77,5 +77,6 @@ export const IT: Copy = {
     Hunter: "Cosa chiederesti al cacciatore?",
     Entrepreneur: "Cosa chiederesti all’imprenditore?",
   },
+  offer: "Leggi in italiano",
   footer: { channels: "Canali", languages: "Lingue" },
 };

@@ -1,5 +1,6 @@
 import type { Copy } from "./copy";
-import type { Language } from "../../domain/languages/languages";
+import { LANGUAGES, pathFor, type Language } from "../../domain/languages/languages";
+import type { Offer } from "../../domain/languages/offer";
 import { EN } from "./en";
 import { PT_BR } from "./pt-br";
 import { ES_ES } from "./es-es";
@@ -25,3 +26,8 @@ export function copyIn(language: Language): Copy {
   if (!copy) throw new Error(`No words for ${language.tag}`);
   return copy;
 }
+
+/** Every language's offer, each in its own words, for the range to show the one a reader's browser prefers. */
+export const OFFERS: readonly Offer[] = LANGUAGES.map((l) => ({
+  tag: l.tag, path: pathFor(l), code: l.tag.split("-")[0].toUpperCase(), words: COPIES[l.tag].offer,
+}));

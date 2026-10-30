@@ -77,5 +77,6 @@ export const KO: Copy = {
     Hunter: "사냥꾼에게 무엇을 묻고 싶나요?",
     Entrepreneur: "기업가에게 무엇을 묻고 싶나요?",
   },
+  offer: "한국어로 읽기",
   footer: { channels: "채널", languages: "언어" },
 };

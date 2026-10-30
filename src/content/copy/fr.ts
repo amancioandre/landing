@@ -77,5 +77,6 @@ export const FR: Copy = {
     Hunter: "Que demanderais-tu au chasseur ?",
     Entrepreneur: "Que demanderais-tu à l’entrepreneur ?",
   },
+  offer: "Lire en français",
   footer: { channels: "Chaînes", languages: "Langues" },
 };

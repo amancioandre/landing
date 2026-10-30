@@ -77,5 +77,6 @@ export const ZH_HANS: Copy = {
     Hunter: "你想问猎人什么？",
     Entrepreneur: "你想问创业者什么？",
   },
+  offer: "阅读简体中文版",
   footer: { channels: "频道", languages: "语言" },
 };

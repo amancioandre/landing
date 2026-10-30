@@ -77,5 +77,6 @@ export const UK: Copy = {
     Hunter: "Про що ти хочеш запитати мисливця?",
     Entrepreneur: "Про що ти хочеш запитати підприємця?",
   },
+  offer: "Читати українською",
   footer: { channels: "Канали", languages: "Мови" },
 };

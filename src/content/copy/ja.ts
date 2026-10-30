@@ -77,5 +77,6 @@ export const JA: Copy = {
     Hunter: "ハンターに何を聞きたいですか？",
     Entrepreneur: "起業家に何を聞きたいですか？",
   },
+  offer: "日本語で読む",
   footer: { channels: "チャンネル", languages: "言語" },
 };

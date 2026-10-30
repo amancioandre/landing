@@ -24,5 +24,6 @@ export interface Copy {
   };
   prompts: readonly string[];               // Andre's questions, in his order
   asks: Record<InterestName, string>;       // "What would you ask the …?", one per interest
+  offer: string;   // in this language, offering this language to a reader whose browser prefers it
   footer: { channels: string; languages: string };
 }

@@ -15,7 +15,7 @@ const { copy, language } = Astro.props;
   <a href={`mailto:${CONTACT_ADDRESS}`}>{CONTACT_ADDRESS}</a>
   <nav class="languages" aria-label={copy.footer.languages}>
     {LANGUAGES.map((l) => (
-      <a href={pathFor(l)} lang={l.tag} hreflang={l.tag} aria-current={l === language ? "page" : undefined}>{l.name}</a>
+      <a href={pathFor(l)} data-choose-language lang={l.tag} hreflang={l.tag} aria-current={l === language ? "page" : undefined}>{l.name}</a>
     ))}
   </nav>
   <a href="/rss.xml">RSS</a>
