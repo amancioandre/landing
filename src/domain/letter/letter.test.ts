@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { advance, back, compose, fold, startLetter, unfold, write } from "./letter";
+import { advance, answering, back, compose, fold, startLetter, unfold, write } from "./letter";
 
 describe("a letter", () => {
   it("starts on the message, carrying the prompt it answers", () => {
@@ -63,5 +63,16 @@ describe("composing the message to send", () => {
   it("leaves the prompt out when there was none", () => {
     const result = compose(write(advance(write(startLetter(), "Hi")), "me@example.com"));
     expect(result).toEqual({ ok: true, message: { note: "Hi", from: "me@example.com" } });
+  });
+});
+
+describe("answering a prompt", () => {
+  it("takes the prompt showing when the writer begins", () => {
+    expect(answering(startLetter(), "Tell me a story").prompt).toBe("Tell me a story");
+  });
+
+  it("keeps the first prompt once words are written, even if another shows later", () => {
+    const begun = write(answering(startLetter(), "Hello!"), "Hi");
+    expect(answering(begun, "Tell me a story").prompt).toBe("Hello!");
   });
 });

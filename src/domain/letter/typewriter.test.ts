@@ -35,3 +35,11 @@ describe("the typewriter in the bar", () => {
     expect(released.phase).toBe("erase");
   });
 });
+
+describe("starting the typewriter", () => {
+  it("can open with its first prompt already whole, holding", () => {
+    const opened = startTyping(PROMPTS, { whole: true });
+    expect(visible(opened, PROMPTS)).toBe("Hi!");
+    expect(opened.phase).toBe("hold");
+  });
+});
