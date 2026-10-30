@@ -1,0 +1,10 @@
+.docs/
+node_modules/
+dist/
+.astro/
+prototype/
+.impeccable/mocks/
+.impeccable/build/
+test-results/
+playwright-report/
+.features-gen/

@@ -1,0 +1,25 @@
+{
+  "name": "andreamnc-landing",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:bdd": "bddgen && playwright test",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "@fontsource/jost": "^5.3.0",
+    "astro": "^7.4.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@playwright/test": "^1.64.1",
+    "playwright-bdd": "^9.2.1",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.5"
+  }
+}
