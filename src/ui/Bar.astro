@@ -39,11 +39,14 @@ const SECTIONS = [["latest", "Latest"], ["interests", "Interests"]] as const;   
 </script>
 
 <style>
+  /* Over the range the bar is bare, its words on their own paper; past the range it docks on paper. */
   .bar {
-    position: sticky; top: 0; z-index: 10; background: var(--paper);
+    position: fixed; inset: 0 0 auto; z-index: 10; background: transparent; transition: background-color .35s var(--ease);
     display: grid; grid-template-columns: minmax(0, 1fr) auto; row-gap: 14px; padding: 18px var(--gutter);
   }
-  .mark { font-size: 14px; font-weight: 500; letter-spacing: .26em; white-space: nowrap; text-decoration: none; }
+  .bar:global([data-docked]) { background: var(--paper); }
+  .mark { font-size: 14px; font-weight: 500; letter-spacing: .26em; white-space: nowrap; text-decoration: none; width: fit-content; }
+  .mark, .ask, .sections a, .panel { background: var(--paper); box-shadow: 0 0 0 4px var(--paper); }
   .letter { grid-column: 1 / -1; grid-row: 2; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
   .ask {
     align-self: flex-start; background: none; border: 0; padding: 0; cursor: pointer; text-align: left;

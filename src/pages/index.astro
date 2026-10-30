@@ -3,11 +3,12 @@ import Base from "../layouts/Base.astro";
 import Bar from "../ui/Bar.astro";
 import Section from "../ui/Section.astro";
 import Footer from "../ui/Footer.astro";
+import Range from "../ui/Range.astro";
 import WriteLetter from "../ui/WriteLetter.astro";
 ---
 <Base title="André Amnc">
   <Bar />
-  <div class="range" aria-label="The range"><p class="build-note">[the range arrives in slice 3]</p></div>
+  <Range />
   <main>
     <Section id="latest" number="01" label="Latest" draft><p class="build-note">[Latest arrives in slice 4]</p></Section>
     <Section id="interests" number="02" label="Interests" draft><p class="build-note">[the interests carousel arrives in slice 5]</p></Section>
@@ -15,7 +16,3 @@ import WriteLetter from "../ui/WriteLetter.astro";
   </main>
   <Footer />
 </Base>
-
-<style>
-  .range { height: 100svh; min-height: 600px; display: grid; place-items: center; }
-</style>
