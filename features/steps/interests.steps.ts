@@ -32,6 +32,19 @@ When("I ask for the previous interest", async ({ page }) => {
   await section(page).getByRole("button", { name: "Previous interest" }).click();
 });
 
+Then("the card for {string} is still in view to the left, out of focus", async ({ page }, name: string) => {
+  const slide = card(page, name), focused = section(page).locator("[data-slide][data-focus]");
+  await expect(slide).not.toHaveAttribute("data-focus", "");
+  await page.waitForTimeout(900);   // let the strip finish moving
+  const box = (await slide.locator(".figure").boundingBox())!, now = (await focused.locator(".figure").boundingBox())!;
+  expect(box.x).toBeLessThan(now.x);
+  // What is actually drawn at the visible middle of its leftover part must be that card, not something clipping it.
+  const left = Math.max(box.x, 0), x = left + (box.x + box.width - left) / 2, y = box.y + box.height / 2;
+  expect(box.x + box.width).toBeGreaterThan(8);
+  const hit = await page.evaluate(([px, py, label]) => !!document.elementFromPoint(px, py)?.closest(`[data-slide="${label}"]`), [x, y, name] as const);
+  expect(hit).toBe(true);
+});
+
 When("I put the keyboard on the interests", async ({ page }) => {
   await section(page).locator("[data-track]").focus();
 });

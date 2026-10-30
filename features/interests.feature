@@ -22,6 +22,11 @@ Feature: Interests
     When I ask for the previous interest
     Then "Hunter" is the interest in focus
 
+  Scenario: The interest that leaves to the left stays in view, out of focus
+    When I ask for the next interest
+    Then "Writer" is the interest in focus
+    And the card for "Outdoorsman" is still in view to the left, out of focus
+
   Scenario: The keyboard moves too
     When I put the keyboard on the interests
     And I press "ArrowRight"
