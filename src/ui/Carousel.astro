@@ -21,7 +21,7 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   <div class="viewport">
     <div class="track" data-track tabindex="0" role="group" aria-roledescription="carousel" aria-label="Interests, one at a time; use the arrow keys" style={`--focus: ${START}`}>
       {STOPS.map((stop, i) => (
-        <article class="slide" data-slide={stop.label} aria-roledescription="slide" aria-label={`${i + 1} of ${STOPS.length}: ${stop.label}`}>
+        <article class="slide" id={`interest-${stop.label.toLowerCase()}`} data-slide={stop.label} aria-roledescription="slide" aria-label={`${i + 1} of ${STOPS.length}: ${stop.label}`}>
           <button class="figure" type="button" data-pick aria-label={`Show ${stop.label}`} tabindex="-1">
             {stop.photo ? (
               <>

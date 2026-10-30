@@ -76,7 +76,15 @@ export function mountCarousel(root: HTMLElement, start: number): void {
   };
   addEventListener("resize", () => { frame(); frontier(); });
 
+  // A link to #interest-<name> (from the menu) brings that card into focus.
+  const fromHash = () => {
+    const i = slides.findIndex((slide) => `#${slide.id}` === location.hash);
+    if (i >= 0) show(select(state, i));
+  };
+  addEventListener("hashchange", fromHash);
+
   frame();
   show(state);
+  fromHash();
   draw();
 }
