@@ -1,0 +1,21 @@
+---
+import "@fontsource/jost/400.css";
+import "@fontsource/jost/500.css";
+import "../styles/base.css";
+import { themeCss } from "../design/css";
+
+interface Props { title: string }
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <style is:inline set:html={themeCss()}></style>
+  </head>
+  <body id="top">
+    <slot />
+  </body>
+</html>

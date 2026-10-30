@@ -1,0 +1,28 @@
+---
+import Icon from "./Icon.astro";
+import { CHANNELS, CONTACT_ADDRESS } from "../content/channels";
+---
+<footer class="foot">
+  <nav class="channels" aria-label="Channels">
+    {CHANNELS.map((c) => (
+      <a href={c.url} target="_blank" rel="noopener" aria-label={c.name} title={c.name}><Icon name={c.icon} size={20} /></a>
+    ))}
+  </nav>
+  <a href={`mailto:${CONTACT_ADDRESS}`}>{CONTACT_ADDRESS}</a>
+  <span>English</span>
+  <a href="/rss.xml">RSS</a>
+  <small>© 2026 André Amnc</small>
+</footer>
+
+<style>
+  .foot {
+    width: var(--column); margin: 96px auto 0; padding: 24px 0 64px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px;
+    font-size: 14px; font-weight: 500; color: var(--ink-2);
+  }
+  .channels { display: flex; gap: 22px; color: var(--ink); }
+  .channels a { display: grid; place-items: center; width: 44px; height: 44px; margin: -12px; }
+  .channels a:hover, .channels a:focus-visible { color: var(--signal); }
+  small { font: inherit; font-weight: 400; color: var(--mute); margin-left: auto; }
+  @media (max-width: 699px) { .channels { width: 100%; } small { width: 100%; margin-left: 0; } }
+</style>

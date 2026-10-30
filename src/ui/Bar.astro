@@ -1,0 +1,29 @@
+---
+// The bar: the name, the letter at its centre, the way around. The typewriter letter arrives in slice 2.
+const SECTIONS = [["latest", "Latest"], ["interests", "Interests"]] as const;   // labels are Claude's drafts
+---
+<header class="bar">
+  <a class="mark" href="#top">ANDRÉ AMNC</a>
+  <a class="write" href="#write">write to me</a>
+  <nav class="sections" aria-label="Sections">
+    {SECTIONS.map(([id, label]) => <a href={`#${id}`}><span class="draft">{label}</span></a>)}
+  </nav>
+</header>
+
+<style>
+  .bar {
+    position: sticky; top: 0; z-index: 10; background: var(--paper);
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; row-gap: 14px; padding: 18px var(--gutter);
+  }
+  .mark { font-size: 14px; font-weight: 500; letter-spacing: .26em; white-space: nowrap; text-decoration: none; }
+  .write { grid-column: 1 / -1; grid-row: 2; font-size: 15px; font-weight: 500; letter-spacing: .04em; color: var(--signal); }
+  .sections { display: none; }
+  @media (min-width: 700px) {
+    .bar { grid-template-columns: minmax(0, 1fr) min(560px, 40vw) minmax(0, 1fr); padding: 24px clamp(24px, 3vw, 56px); align-items: baseline; }
+    .mark { font-size: 16px; letter-spacing: .32em; }
+    .write { grid-column: 2; grid-row: 1; justify-self: center; }
+  }
+  @media (min-width: 1080px) {
+    .sections { display: flex; justify-self: end; gap: 32px; font-size: 14px; letter-spacing: .14em; }
+  }
+</style>

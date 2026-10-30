@@ -1,0 +1,24 @@
+---
+// A section on the column, with its handler (number and label) hanging in the margin against it (ADR 0015).
+interface Props { id: string; number: string; label: string; draft?: boolean }
+const { id, number, label, draft = false } = Astro.props;
+---
+<section id={id} aria-labelledby={`${id}-label`}>
+  <div class="handler">
+    <span class="number">{number}</span>
+    <h2 class="label" id={`${id}-label`}><span class:list={{ draft }}>{label}</span></h2>
+  </div>
+  <div class="column"><slot /></div>
+</section>
+
+<style>
+  section { display: flex; flex-direction: column; gap: 20px; padding: 72px var(--gutter) 0; }
+  .handler { display: flex; gap: 12px; align-items: baseline; }
+  .number { font: 400 12px var(--mono); color: var(--mute); }
+  .label { font-size: 15px; line-height: 1.4; font-weight: 500; letter-spacing: .14em; }
+  @media (min-width: 900px) {
+    section { display: grid; grid-template-columns: minmax(0, 1fr) var(--column) minmax(0, 1fr); align-items: start; padding: 96px 0 0; gap: 0; }
+    .handler { grid-column: 1; justify-self: end; padding-right: 28px; }
+    .column { grid-column: 2; }
+  }
+</style>

@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Bar from "../ui/Bar.astro";
+import Section from "../ui/Section.astro";
+import Footer from "../ui/Footer.astro";
+---
+<Base title="André Amnc">
+  <Bar />
+  <div class="range" aria-label="The range"><p class="build-note">[the range arrives in slice 3]</p></div>
+  <main>
+    <Section id="latest" number="01" label="Latest" draft><p class="build-note">[Latest arrives in slice 4]</p></Section>
+    <Section id="interests" number="02" label="Interests" draft><p class="build-note">[the interests carousel arrives in slice 5]</p></Section>
+    <Section id="write" number="03" label="write to me"><p class="build-note">[the letter arrives in slice 2]</p></Section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .range { height: 100svh; min-height: 600px; display: grid; place-items: center; }
+</style>
