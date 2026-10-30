@@ -2,6 +2,7 @@
 // The interests, read sideways (canvas row 3): one card in focus; the rest wait with their photo drawn in glyphs.
 import Icon from "./Icon.astro";
 import { STOPS } from "../content/interests";
+import { CENTRE, objectPosition } from "../domain/interests/framing";
 const START = 1;   // as on the canvas: the second card in focus, so the first peeks in from the left
 const n = (i: number) => String(i + 1).padStart(2, "0");
 ---
@@ -26,7 +27,7 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
             {stop.photo ? (
               <>
                 <canvas aria-hidden="true"></canvas>
-                <img src={stop.photo.src} alt={stop.photo.alt} loading="lazy" />
+                <img src={stop.photo.src} alt={stop.photo.alt} loading="lazy" data-focus={(stop.photo.focus ?? CENTRE).join(",")} style={`object-position: ${objectPosition(stop.photo.focus ?? CENTRE)}`} />
               </>
             ) : <span class="empty">photo to come</span>}
           </button>

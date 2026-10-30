@@ -1,4 +1,5 @@
 import { glyphFor, inkAt, SOFT } from "../../domain/interests/glyph-picture";
+import { CENTRE, cropFor, type Focus } from "../../domain/interests/framing";
 
 
 /** Draws a photo in glyphs onto a transparent canvas, in the canvas's text colour, so both themes follow. */
@@ -8,14 +9,15 @@ export function drawGlyphs(canvas: HTMLCanvasElement, img: HTMLImageElement): vo
   const dpr = Math.min(3, devicePixelRatio || 1), cw = 3, ch = 5;   // fine cells: more detail in each picture
   const cols = Math.ceil(width / cw), rows = Math.ceil(height / ch);
 
-  // The photo at one pixel per cell, cropped like object-fit: cover, and a blurred copy for the tone around each cell.
+  // The photo at one pixel per cell, cropped like the photo above it (cover, slid to its focus), and a blurred copy for the tone around each cell.
+  const focus = (img.dataset.focus?.split(",").map(Number) as unknown as Focus | undefined) ?? CENTRE;
+  const crop = cropFor({ width: img.naturalWidth, height: img.naturalHeight }, { width, height }, focus);
   const sample = (blur: number) => {
     const c = document.createElement("canvas");
     c.width = cols; c.height = rows;
     const g = c.getContext("2d", { willReadFrequently: true })!;
-    const s = Math.max(width / img.naturalWidth, height / img.naturalHeight), sw = width / s, sh = height / s;
     g.filter = blur ? `blur(${blur}px)` : "none";
-    g.drawImage(img, (img.naturalWidth - sw) / 2, (img.naturalHeight - sh) / 2, sw, sh, 0, 0, cols, rows);
+    g.drawImage(img, crop.x, crop.y, crop.width, crop.height, 0, 0, cols, rows);
     return g.getImageData(0, 0, cols, rows).data;
   };
   const tone = sample(0), around = sample(4);

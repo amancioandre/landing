@@ -3,6 +3,7 @@
 // and one card per interest held by a red tether. Layout and drawing live in adapters/range.
 import Icon from "./Icon.astro";
 import { STOPS } from "../content/interests";
+import { CENTRE, objectPosition } from "../domain/interests/framing";
 const n = (i: number) => String(i + 1).padStart(2, "0");
 ---
 <section class="range" data-range aria-label="The range: five interests">
@@ -19,7 +20,7 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   <div class="card" data-card hidden aria-live="polite">
     {STOPS.map((stop) => (
       <article data-card-for={stop.label} hidden>
-        {stop.photo ? <img src={stop.photo.src} alt={stop.photo.alt} loading="lazy" /> : <div class="empty">photo to come</div>}
+        {stop.photo ? <img src={stop.photo.src} alt={stop.photo.alt} loading="lazy" style={`object-position: ${objectPosition(stop.photo.focus ?? CENTRE)}`} /> : <div class="empty">photo to come</div>}
         <h3>{stop.label}</h3>
         <p class:list={["say", { placeholder: !stop.line }]}>{stop.line ?? "[a line in your words]"}</p>
         <ul>
