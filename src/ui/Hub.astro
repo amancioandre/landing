@@ -1,0 +1,31 @@
+---
+// The one long page (ADR 0009), in any of the hub's languages.
+import Base from "../layouts/Base.astro";
+import Bar from "./Bar.astro";
+import Section from "./Section.astro";
+import Footer from "./Footer.astro";
+import Range from "./Range.astro";
+import WriteLetter from "./WriteLetter.astro";
+import LatestList from "./LatestList.astro";
+import Carousel from "./Carousel.astro";
+import Intro from "./Intro.astro";
+import { copyIn } from "../content/copy";
+import { stopsIn } from "../content/interests";
+import type { Language } from "../domain/languages/languages";
+
+interface Props { language: Language }
+const { language } = Astro.props;
+const copy = copyIn(language);
+const stops = stopsIn(copy);
+---
+<Base title="André Amnc" language={language} copy={copy}>
+  <Bar copy={copy} stops={stops} />
+  <Range copy={copy} stops={stops} />
+  <main>
+    <Intro copy={copy} />
+    <Section id="latest" number="01" label={copy.sections.latest}><LatestList copy={copy} language={language} /></Section>
+    <Section id="interests" number="02" label={copy.sections.interests}><Carousel copy={copy} stops={stops} /></Section>
+    <Section id="write" number="03" label={copy.sections.write}><WriteLetter copy={copy} /></Section>
+  </main>
+  <Footer copy={copy} language={language} />
+</Base>

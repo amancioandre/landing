@@ -1,11 +1,14 @@
 ---
 // The bar: the name, the letter at its centre (it types Andre's questions), the way around.
 import Icon from "./Icon.astro";
-import { STOPS } from "../content/interests";
+import type { Copy } from "../content/copy/copy";
+import type { InterestStop } from "../content/interests";
 import { CHANNELS, CONTACT_ADDRESS } from "../content/channels";
-const SECTIONS = [["latest", "Latest"], ["interests", "Interests"]] as const;
+interface Props { copy: Copy; stops: readonly InterestStop[] }
+const { copy, stops } = Astro.props;
+const SECTIONS = [["latest", copy.sections.latest], ["interests", copy.sections.interests]] as const;
 const n = (i: number) => String(i + 1).padStart(2, "0");
-const slug = (label: string) => `interest-${label.toLowerCase()}`;
+const slug = (name: string) => `interest-${name.toLowerCase()}`;
 ---
 <header class="bar">
   <h1 class="mark"><a href="#top">André Amnc</a></h1>
@@ -14,36 +17,36 @@ const slug = (label: string) => `interest-${label.toLowerCase()}`;
     <button class="ask" type="button" data-ask aria-expanded="false" aria-controls="bar-panel"></button>
     <div class="panel" id="bar-panel" data-panel hidden>
       <p class="said" data-said hidden></p>
-      <label class="sr-only" for="bar-note">Your message</label>
+      <label class="sr-only" for="bar-note">{copy.letter.message}</label>
       <textarea id="bar-note" rows="2"></textarea>
-      <label class="sr-only" for="bar-from">Your email</label>
-      <input id="bar-from" type="email" autocomplete="email" placeholder="Your email, so I can reply" hidden />
+      <label class="sr-only" for="bar-from">{copy.letter.email}</label>
+      <input id="bar-from" type="email" autocomplete="email" placeholder={copy.letter.emailPlaceholder} hidden />
       <div class="row">
-        <button class="key" type="button" data-key><Icon name="enter" size={13} /><span>enter</span></button>
-        <button class="quiet" type="button" data-back hidden>Edit message</button>
-        <button class="quiet" type="button" data-again>Another question</button>
+        <button class="key" type="button" data-key><Icon name="enter" size={13} /><span>{copy.letter.enter}</span></button>
+        <button class="quiet" type="button" data-back hidden>{copy.letter.edit}</button>
+        <button class="quiet" type="button" data-again>{copy.letter.another}</button>
       </div>
       <p class="status" role="status"></p>
     </div>
   </div>
 
-  <nav class="sections" aria-label="Sections">
+  <nav class="sections" aria-label={copy.sections.nav}>
     {SECTIONS.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
   </nav>
 
-  <button class="menu-button" type="button" data-menu-button aria-label="Menu" aria-expanded="false" aria-controls="menu">
+  <button class="menu-button" type="button" data-menu-button aria-label={copy.sections.menu} aria-expanded="false" aria-controls="menu">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 9h18M3 15h18" /></svg>
   </button>
-  <nav class="menu" id="menu" data-menu aria-label="Menu" hidden>
+  <nav class="menu" id="menu" data-menu aria-label={copy.sections.menu} hidden>
     <ol class="menu-sections">
-      <li><a href="#latest"><span class="n">01</span><span class="name">Latest</span></a></li>
+      <li><a href="#latest"><span class="n">01</span><span class="name">{copy.sections.latest}</span></a></li>
       <li>
-        <a href="#interests"><span class="n">02</span><span class="name">Interests</span></a>
-        <ol class="menu-interests" aria-label="Interests">
-          {STOPS.map((stop, i) => <li><a href={`#${slug(stop.label)}`}><span class="n">{n(i)}</span>{stop.label}</a></li>)}
+        <a href="#interests"><span class="n">02</span><span class="name">{copy.sections.interests}</span></a>
+        <ol class="menu-interests" aria-label={copy.sections.interests}>
+          {stops.map((stop, i) => <li><a href={`#${slug(stop.name)}`}><span class="n">{n(i)}</span>{stop.label}</a></li>)}
         </ol>
       </li>
-      <li><a href="#write" class="act"><span class="n">03</span><span class="name">write to me</span></a></li>
+      <li><a href="#write" class="act"><span class="n">03</span><span class="name">{copy.sections.write}</span></a></li>
     </ol>
     <div class="menu-foot">
       <div class="menu-channels">
@@ -55,13 +58,14 @@ const slug = (label: string) => `interest-${label.toLowerCase()}`;
 </header>
 
 <script>
-  import { mountBar, OPENING } from "../adapters/letter/bar";
+  import { mountBar } from "../adapters/letter/bar";
+  import { readWords } from "../adapters/letter/words";
   import { shortEnough } from "../domain/letter/prompts";
-  import { ROTATION } from "../content/prompts";
   import { CONTACT_ADDRESS } from "../content/channels";
-  // Only questions that fit the bar on one line: about 46 characters on wide screens, 36 on phones.
+  // Only questions that fit the bar on one line: about 46 columns on wide screens, 36 on phones.
   const max = matchMedia("(min-width: 700px)").matches ? 46 : 36;
-  mountBar(document.querySelector<HTMLElement>("[data-bar-letter]")!, [OPENING, ...shortEnough(ROTATION, max)], CONTACT_ADDRESS);
+  const words = readWords();
+  mountBar(document.querySelector<HTMLElement>("[data-bar-letter]")!, words, shortEnough(words.prompts, max), CONTACT_ADDRESS);
   import { mountMenu } from "../adapters/menu/menu";
   mountMenu(document.querySelector<HTMLElement>("header.bar")!);
 </script>

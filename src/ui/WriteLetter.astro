@@ -2,30 +2,33 @@
 // The write-to-me section's letter (ADR 0016): a prompt in view, a roomy field, then the address to reply to.
 import Icon from "./Icon.astro";
 import { CONTACT_ADDRESS } from "../content/channels";
+import type { Copy } from "../content/copy/copy";
+interface Props { copy: Copy }
+const { copy } = Astro.props;
 ---
 <div class="letter" data-section-letter>
   <p class="prompt" data-prompt aria-live="polite"></p>
   <p class="said" data-said hidden></p>
-  <label class="sr-only" for="write-note">Your message</label>
+  <label class="sr-only" for="write-note">{copy.letter.message}</label>
   <div class="field">
     <span class="pipe" aria-hidden="true"></span>
     <textarea id="write-note" rows="7"></textarea>
   </div>
-  <label class="sr-only" for="write-from">Your email</label>
-  <input id="write-from" type="email" autocomplete="email" placeholder="Your email, so I can reply" hidden />
+  <label class="sr-only" for="write-from">{copy.letter.email}</label>
+  <input id="write-from" type="email" autocomplete="email" placeholder={copy.letter.emailPlaceholder} hidden />
   <div class="row">
-    <button class="key" type="button" data-key><Icon name="enter" size={14} /><span>enter</span></button>
-    <button class="quiet" type="button" data-back hidden>Edit message</button>
-    <span class="or">or write to <a href={`mailto:${CONTACT_ADDRESS}`}>{CONTACT_ADDRESS}</a></span>
+    <button class="key" type="button" data-key><Icon name="enter" size={14} /><span>{copy.letter.enter}</span></button>
+    <button class="quiet" type="button" data-back hidden>{copy.letter.edit}</button>
+    <span class="or">{copy.letter.orWriteTo} <a href={`mailto:${CONTACT_ADDRESS}`}>{CONTACT_ADDRESS}</a></span>
   </div>
   <p class="status" role="status"></p>
 </div>
 
 <script>
   import { mountSection } from "../adapters/letter/section";
-  import { ROTATION } from "../content/prompts";
+  import { readWords } from "../adapters/letter/words";
   import { CONTACT_ADDRESS } from "../content/channels";
-  mountSection(document.querySelector<HTMLElement>("[data-section-letter]")!, ROTATION, CONTACT_ADDRESS);
+  mountSection(document.querySelector<HTMLElement>("[data-section-letter]")!, readWords(), CONTACT_ADDRESS);
 </script>
 
 <style>

@@ -2,27 +2,30 @@
 // The first screen (ADR 0002): the ASCII range, five waypoints on the trail, the index in the sky (ADR 0011),
 // and one card per interest held by a red tether. Layout and drawing live in adapters/range.
 import Icon from "./Icon.astro";
-import { STOPS } from "../content/interests";
+import type { Copy } from "../content/copy/copy";
+import type { InterestStop } from "../content/interests";
 import { CENTRE, objectPosition } from "../domain/interests/framing";
+interface Props { copy: Copy; stops: readonly InterestStop[] }
+const { copy, stops } = Astro.props;
 const n = (i: number) => String(i + 1).padStart(2, "0");
 ---
-<section class="range" data-range aria-label="The range: five interests">
+<section class="range" data-range aria-label={copy.range.label}>
   <canvas aria-hidden="true"></canvas>
-  {STOPS.map((stop, i) => (
+  {stops.map((stop, i) => (
     <button class="stop" type="button" data-stop data-i={i} aria-pressed="false" aria-label={`${n(i)} ${stop.label}`}>{n(i)}</button>
   ))}
-  <nav class="index" aria-label="Interests">
-    {STOPS.map((stop, i) => (
+  <nav class="index" aria-label={copy.range.index}>
+    {stops.map((stop, i) => (
       <button type="button" data-entry data-i={i} aria-pressed="false"><span class="n">{n(i)}</span>{stop.label}</button>
     ))}
   </nav>
   <div class="tether" data-tether hidden aria-hidden="true"></div>
   <div class="card" data-card hidden aria-live="polite">
-    {STOPS.map((stop) => (
-      <article data-card-for={stop.label} hidden>
-        {stop.photo ? <img src={stop.photo.src} alt={stop.photo.alt} loading="lazy" style={`object-position: ${objectPosition(stop.photo.focus ?? CENTRE)}`} /> : <div class="empty">photo to come</div>}
+    {stops.map((stop) => (
+      <article data-card-for={stop.name} hidden>
+        {stop.photo ? <img src={stop.photo.src} alt={stop.photo.alt} loading="lazy" style={`object-position: ${objectPosition(stop.photo.focus ?? CENTRE)}`} /> : <div class="empty">{copy.range.photoToCome}</div>}
         <h3>{stop.label}</h3>
-        <p class:list={["say", { placeholder: !stop.line }]}>{stop.line ?? "[a line in your words]"}</p>
+        <p class:list={["say", { placeholder: !stop.line }]}>{stop.line ?? copy.range.lineToCome}</p>
         <ul>
           {stop.links.map((link) => (
             <li><a href={link.url} target="_blank" rel="noopener">{link.icon && <Icon name={link.icon} />}{link.label}<Icon name="out" size={13} class="out" /></a></li>

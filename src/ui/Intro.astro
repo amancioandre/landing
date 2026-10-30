@@ -1,9 +1,11 @@
 ---
 // Andre's paragraph about the site, opening the page below the range (.docs/copy/interest-lines.md).
-import { SITE } from "../content/site";
+import type { Copy } from "../content/copy/copy";
+interface Props { copy: Copy }
+const { copy } = Astro.props;
 ---
 <div class="intro">
-  <p>{SITE.summary} {SITE.more}</p>
+  <p>{copy.site.summary} {copy.site.more}</p>
 </div>
 
 <style>

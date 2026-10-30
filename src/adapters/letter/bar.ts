@@ -1,15 +1,15 @@
 import { lock, release, startTyping, tick, visible, lockedPrompt, type Typing } from "../../domain/letter/typewriter";
 import { LetterForm, formParts } from "./letter-form";
 import { postOffice } from "./post-office";
+import type { LetterWords } from "../../domain/letter/words";
 
 const TICK_MS = 45, HOLD_TICKS = 60;
-export const OPENING = "write to me";   // typed first; a letter opened on it answers no particular question
-
-/** The bar's write-to-me: types the prompts; one click locks the question and puts the caret in the letter. */
-export function mountBar(root: HTMLElement, prompts: readonly string[], address: string): void {
+/** The bar's write-to-me: types the opening, then the prompts; one click locks the question and puts the caret in the letter. */
+export function mountBar(root: HTMLElement, words: LetterWords, shortPrompts: readonly string[], address: string): void {
+  const prompts = [words.opening, ...shortPrompts];
   const ask = root.querySelector<HTMLButtonElement>("[data-ask]")!;
   const panel = root.querySelector<HTMLElement>("[data-panel]")!;
-  const form = new LetterForm(formParts(panel), postOffice("bar"), address);
+  const form = new LetterForm(formParts(panel), postOffice("bar"), words, address);
   const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
   let typing: Typing = startTyping(prompts, { whole: true });
 
@@ -25,7 +25,7 @@ export function mountBar(root: HTMLElement, prompts: readonly string[], address:
     typing = lock(at >= 0 ? { ...typing, at } : typing, prompts);
     render();
     const prompt = lockedPrompt(typing, prompts);
-    form.begin(prompt === OPENING ? undefined : prompt);
+    form.begin(prompt === words.opening ? undefined : prompt);
   };
   const close = () => {
     if (!typing.locked) return;

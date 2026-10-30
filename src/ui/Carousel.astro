@@ -1,39 +1,43 @@
 ---
 // The interests, read sideways (canvas row 3): one card in focus; the rest wait with their photo drawn in glyphs.
 import Icon from "./Icon.astro";
-import { STOPS } from "../content/interests";
+import type { Copy } from "../content/copy/copy";
+import type { InterestStop } from "../content/interests";
 import { CENTRE, objectPosition } from "../domain/interests/framing";
+import { fill } from "../domain/languages/fill";
+interface Props { copy: Copy; stops: readonly InterestStop[] }
+const { copy, stops } = Astro.props;
 const START = 1;   // as on the canvas: the second card in focus, so the first peeks in from the left
 const n = (i: number) => String(i + 1).padStart(2, "0");
 ---
 <div class="carousel" data-carousel>
   <div class="head">
-    <nav class="choose" aria-label="All interests">
-      {STOPS.map((stop, i) => (
+    <nav class="choose" aria-label={copy.carousel.all}>
+      {stops.map((stop, i) => (
         <button type="button" data-choose aria-pressed="false" aria-label={stop.label}><span class="n">{n(i)}</span><span class="name">{stop.label}</span></button>
       ))}
     </nav>
     <div class="arrows">
-      <button type="button" data-prev aria-label="Previous interest"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg></button>
-      <button type="button" data-next aria-label="Next interest"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></button>
+      <button type="button" data-prev aria-label={copy.carousel.previous}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg></button>
+      <button type="button" data-next aria-label={copy.carousel.next}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></button>
     </div>
   </div>
 
   <div class="viewport">
-    <div class="track" data-track tabindex="0" role="group" aria-roledescription="carousel" aria-label="Interests, one at a time; use the arrow keys" style={`--focus: ${START}`}>
-      {STOPS.map((stop, i) => (
-        <article class="slide" id={`interest-${stop.label.toLowerCase()}`} data-slide={stop.label} aria-roledescription="slide" aria-label={`${i + 1} of ${STOPS.length}: ${stop.label}`}>
-          <button class="figure" type="button" data-pick aria-label={`Show ${stop.label}`} tabindex="-1">
+    <div class="track" data-track tabindex="0" role="group" aria-roledescription={copy.carousel.carouselRole} aria-label={copy.carousel.strip} style={`--focus: ${START}`}>
+      {stops.map((stop, i) => (
+        <article class="slide" id={`interest-${stop.name.toLowerCase()}`} data-slide={stop.name} aria-roledescription={copy.carousel.slideRole} aria-label={fill(copy.carousel.slide, { n: i + 1, total: stops.length, name: stop.label })}>
+          <button class="figure" type="button" data-pick aria-label={fill(copy.carousel.show, { name: stop.label })} tabindex="-1">
             {stop.photo ? (
               <>
                 <canvas aria-hidden="true"></canvas>
                 <img src={stop.photo.src} alt={stop.photo.alt} loading="lazy" data-focus={(stop.photo.focus ?? CENTRE).join(",")} style={`object-position: ${objectPosition(stop.photo.focus ?? CENTRE)}`} />
               </>
-            ) : <span class="empty">photo to come</span>}
+            ) : <span class="empty">{copy.range.photoToCome}</span>}
           </button>
           <div class="body" data-body>
             <div class="title"><span class="n">{n(i)}</span><h3>{stop.label}</h3></div>
-            <p class:list={["line", { placeholder: !stop.line }]}>{stop.line ?? "[a line in your words]"}</p>
+            <p class:list={["line", { placeholder: !stop.line }]}>{stop.line ?? copy.range.lineToCome}</p>
             <ul class="links">
               {stop.links.map((link) => (
                 <li><a href={link.url} target="_blank" rel="noopener">{link.icon && <Icon name={link.icon} />}{link.label}<Icon name="out" size={13} class="out" /></a></li>

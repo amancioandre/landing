@@ -2,13 +2,17 @@
 // Latest (ADR 0009): the newest post leads with its opening words; the rest follow as rows. Each opens where it lives.
 import Icon from "./Icon.astro";
 import { loadLatest } from "../adapters/feeds/load";
+import type { Copy } from "../content/copy/copy";
+import type { Language } from "../domain/languages/languages";
+interface Props { copy: Copy; language: Language }
+const { copy, language } = Astro.props;
 
 const NAMES = { substack: "Substack", youtube: "YouTube" } as const;
 const entries = await loadLatest();
-const longDate = (iso: string) => new Date(iso).toLocaleDateString("en", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+const longDate = (iso: string) => new Date(iso).toLocaleDateString(language.tag, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 ---
 {entries.length === 0 ? (
-  <p class="placeholder">[nothing published yet]</p>
+  <p class="placeholder">{copy.latest.nothingYet}</p>
 ) : (
   <ol class="entries">
     {entries.map((e, i) => (

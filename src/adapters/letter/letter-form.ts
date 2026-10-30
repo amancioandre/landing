@@ -1,5 +1,7 @@
 import { advance, answering, back, fold, startLetter, unfold, write, type Draft, type Letter } from "../../domain/letter/letter";
 import { sendLetter, type LetterSender, type Outcome } from "../../domain/letter/send";
+import { fill } from "../../domain/languages/fill";
+import type { LetterWords } from "../../domain/letter/words";
 
 export interface FormParts {
   root: HTMLElement;
@@ -11,12 +13,11 @@ export interface FormParts {
   back?: HTMLButtonElement;
 }
 
-// Status lines, approved by Andre (2026-10-29).
-const say = (address: string): Record<Outcome, string> => ({
+const say = (words: LetterWords, address: string): Record<Outcome, string> => ({
   "not-ready": "",
-  "bad-email": "That email doesn't look right.",
-  failed: `It didn't go through. Write to ${address} instead.`,
-  sent: "Sent. Thank you.",
+  "bad-email": words.badEmail,
+  failed: fill(words.failed, { address }),
+  sent: words.sent,
 });
 
 /** Binds one letter's fields to the Letter domain. The section and the bar each own one. */
@@ -25,8 +26,8 @@ export class LetterForm {
   private draft: Draft = null;
   private readonly lines: Record<Outcome, string>;
 
-  constructor(private readonly parts: FormParts, private readonly sender: LetterSender, address: string) {
-    this.lines = say(address);
+  constructor(private readonly parts: FormParts, private readonly sender: LetterSender, words: LetterWords, address: string) {
+    this.lines = say(words, address);
     parts.note.addEventListener("input", () => this.update(parts.note.value));
     parts.from.addEventListener("input", () => this.update(parts.from.value));
     parts.note.addEventListener("keydown", (e) => this.onKey(e));
