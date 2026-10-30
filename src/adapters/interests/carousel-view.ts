@@ -42,6 +42,7 @@ export function mountCarousel(root: HTMLElement, start: number): void {
     slides.forEach((slide, i) => {
       const on = i === state.focus;
       slide.toggleAttribute("data-focus", on);
+      slide.toggleAttribute("data-before", i < state.focus);
       slide.querySelector("[data-body]")!.toggleAttribute("inert", !on);
     });
     entries.forEach((b, i) => b.setAttribute("aria-pressed", String(i === state.focus)));

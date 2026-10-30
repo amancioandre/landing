@@ -80,8 +80,13 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   .figure img { object-fit: cover; filter: grayscale(1); }
   .slide:global([data-focus]) .figure { cursor: default; }
   .empty { position: absolute; inset: 0; display: grid; place-items: center; border: 1px dashed var(--mark); font: 12px var(--mono); color: var(--mute); }
-  .body { display: flex; flex-direction: column; gap: 12px; opacity: .32; transition: opacity .7s ease; }
-  .slide:global([data-focus]) .body { opacity: 1; }
+  .body { display: flex; flex-direction: column; gap: 12px; transition: opacity .7s ease; }
+  /* Cards waiting their turn fade, their name a little less, so it still reads from across the strip. */
+  .body > * { opacity: .32; transition: opacity .7s ease; }
+  .body > .title { opacity: .5; }
+  .slide:global([data-focus]) .body > * { opacity: 1; }
+  /* The cards already passed show only their glyphs at the screen's edge: their words would be cut mid-line. */
+  .slide:global([data-before]) .body { opacity: 0; }
   .title { display: flex; gap: 12px; align-items: baseline; }
   .title .n { font: 500 12px var(--mono); color: var(--signal); }
   h3 { font-size: 28px; line-height: 34px; font-weight: 500; letter-spacing: -.01em; }
@@ -97,5 +102,5 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
     .choose button { align-items: baseline; padding-top: 13px; justify-content: start; min-width: 0; }
     h3 { font-size: 32px; line-height: 38px; }
   }
-  @media (prefers-reduced-motion: reduce) { .track, .body { transition: none; } }
+  @media (prefers-reduced-motion: reduce) { .track, .body, .body > * { transition: none; } }
 </style>
