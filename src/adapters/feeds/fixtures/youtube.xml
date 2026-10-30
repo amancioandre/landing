@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+ <title>André Amnc</title>
+ <entry>
+  <id>yt:video:abc123</id>
+  <title>A film title</title>
+  <link rel="alternate" href="https://www.youtube.com/watch?v=abc123"/>
+  <published>2026-10-20T15:00:00+00:00</published>
+  <media:group><media:description>What the film is about, in its own words.</media:description></media:group>
+ </entry>
+</feed>
