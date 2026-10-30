@@ -78,3 +78,9 @@ Then("the {string} photograph is framed on Andre, at the left of the picture", a
   const position = await card(page, name).locator("img").evaluate((img) => getComputedStyle(img).objectPosition);
   expect(parseFloat(position)).toBeLessThan(50);
 });
+
+Then("the card for {string} leads to Instagram {string} at {string}", async ({ page }, name: string, handle: string, url: string) => {
+  const link = card(page, name).getByRole("link", { name: handle });
+  await expect(link).toHaveAttribute("href", url);
+  await expect(link).toHaveAttribute("target", "_blank");
+});

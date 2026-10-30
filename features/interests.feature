@@ -39,3 +39,7 @@ Feature: Interests
   Scenario: Every interest has Andre's photograph, framed on its subject
     Then every interest card shows a photograph
     And the "Hunter" photograph is framed on Andre, at the left of the picture
+
+  Scenario: Hunting has its own Instagram
+    When I choose "Hunter" among the interests
+    Then the card for "Hunter" leads to Instagram "@gamescout.ca" at "https://www.instagram.com/gamescout.ca"
