@@ -10,14 +10,20 @@ Then("{string} is the interest in focus", async ({ page }, name: string) => {
   await expect(section(page).locator("[data-slide][data-focus]")).toHaveCount(1);
 });
 
+const span = async (page: Page, slide: ReturnType<typeof card>) => {
+  await page.waitForTimeout(900);   // let the strip settle
+  const fig = slide.locator(".figure");
+  return { from: Number(await fig.getAttribute("data-from")), to: Number(await fig.getAttribute("data-to")) };
+};
+
 Then("its photo shows", async ({ page }) => {
-  const focused = section(page).locator("[data-slide][data-focus]");
-  await expect(focused.locator("img")).toHaveCSS("opacity", "1");
+  expect(await span(page, section(page).locator("[data-slide][data-focus]"))).toEqual({ from: 0, to: 1 });
 });
 
 Then("the card for {string} shows its photo drawn in glyphs", async ({ page }, name: string) => {
   await expect(card(page, name).locator("canvas")).toBeVisible();
-  await expect(card(page, name).locator("img")).toHaveCSS("opacity", "0");
+  const { from, to } = await span(page, card(page, name));
+  expect(to - from).toBe(0);
 });
 
 When("I choose {string} among the interests", async ({ page }, name: string) => {
