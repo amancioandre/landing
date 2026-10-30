@@ -1,0 +1,32 @@
+# The letter's Worker (ADR 0023): tested, then deployed to Cloudflare when its code or the letter's rules change.
+# Kept apart from site.yml, so a Worker problem never holds back the site or its daily rebuild.
+name: worker
+
+on:
+  push:
+    branches: [main]
+    paths: [worker/**, src/domain/letter/**, package-lock.json, .github/workflows/worker.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: worker
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with: { node-version-file: .nvmrc, cache: npm }
+      - run: npm ci
+      - run: npx vitest run src/domain/letter worker
+      - run: npx tsc -p worker/tsconfig.json
+      - run: npx wrangler deploy
+        working-directory: worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
