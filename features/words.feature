@@ -10,3 +10,9 @@ Feature: Andre's words
 
   Scenario: The page opens with Andre's paragraph
     Then below the range the page opens with "My way of presenting myself to the world, creatively and playfully"
+
+  Scenario: The section names are Andre's now, no longer marked as drafts
+    Then the section names "Latest" and "Interests" carry no draft mark
+
+  Scenario: A card shows no short piece until there is content for it
+    Then no carousel card shows a placeholder piece

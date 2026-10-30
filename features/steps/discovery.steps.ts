@@ -79,3 +79,14 @@ Then("it mentions {string}", async ({}, words: string) => {
   expect(body).toContain(words);
 });
 
+
+Then("the section names {string} and {string} carry no draft mark", async ({ page }, a: string, b: string) => {
+  for (const name of [a, b]) {
+    await expect(page.locator("main section > .handler", { hasText: name }).locator(".draft")).toHaveCount(0);
+    await expect(page.getByRole("banner").locator(".draft", { hasText: name })).toHaveCount(0);
+  }
+});
+
+Then("no carousel card shows a placeholder piece", async ({ page }) => {
+  await expect(page.locator("#interests .piece")).toHaveCount(0);
+});
