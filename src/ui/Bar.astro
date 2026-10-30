@@ -8,7 +8,7 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
 const slug = (label: string) => `interest-${label.toLowerCase()}`;
 ---
 <header class="bar">
-  <a class="mark" href="#top">ANDRÉ AMNC</a>
+  <h1 class="mark"><a href="#top">André Amnc</a></h1>
 
   <div class="letter" data-bar-letter>
     <button class="ask" type="button" data-ask aria-expanded="false" aria-controls="bar-panel"></button>
@@ -47,7 +47,7 @@ const slug = (label: string) => `interest-${label.toLowerCase()}`;
     </ol>
     <div class="menu-foot">
       <div class="menu-channels">
-        {CHANNELS.map((c) => <a href={c.url} target="_blank" rel="noopener" aria-label={c.name} title={c.name}><Icon name={c.icon} size={20} /></a>)}
+        {CHANNELS.map((c) => <a href={c.url} target="_blank" rel="me noopener" aria-label={c.name} title={c.name}><Icon name={c.icon} size={20} /></a>)}
       </div>
       <a class="menu-mail" href={`mailto:${CONTACT_ADDRESS}`}>{CONTACT_ADDRESS}</a>
     </div>
@@ -73,7 +73,8 @@ const slug = (label: string) => `interest-${label.toLowerCase()}`;
     display: grid; grid-template-columns: minmax(0, 1fr) auto; row-gap: 14px; padding: 18px var(--gutter);
   }
   .bar:global([data-docked]) { background: var(--paper); }
-  .mark { font-size: 14px; font-weight: 500; letter-spacing: .26em; white-space: nowrap; text-decoration: none; width: fit-content; }
+  .mark { font-size: 14px; line-height: 1.6; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; white-space: nowrap; width: fit-content; }
+  .mark a { text-decoration: none; }
   .mark, .ask, .sections a, .panel { background: var(--paper); box-shadow: 0 0 0 4px var(--paper); }
   .letter { grid-column: 1 / -1; grid-row: 2; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
   .ask {

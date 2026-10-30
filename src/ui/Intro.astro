@@ -1,0 +1,16 @@
+---
+// Andre's paragraph about the site, opening the page below the range (.docs/copy/interest-lines.md).
+import { SITE } from "../content/site";
+---
+<div class="intro">
+  <p>{SITE.summary} {SITE.more}</p>
+</div>
+
+<style>
+  .intro { padding: 96px var(--gutter) 0; }
+  p { font-size: 20px; line-height: 32px; color: var(--ink-2); max-width: 34em; }
+  @media (min-width: 900px) {
+    .intro { width: var(--column); margin: 0 auto; padding: 120px 0 0; }
+    p { font-size: 24px; line-height: 38px; }
+  }
+</style>

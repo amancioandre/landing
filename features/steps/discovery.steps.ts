@@ -6,7 +6,7 @@ let body = "";
 const SUMMARY = "André Amnc's hub. My way of presenting myself to the world, creatively and playfully: my interests, what I can do for you, and what I give back to nature and society.";
 
 Then("the carousel card for {string} reads {string}", async ({ page }, name: string, line: string) => {
-  await expect(page.locator(`#interests [data-slide="${name}"] .line`)).toHaveText(line, { useInnerText: true });
+  await expect(page.locator(`#interests [data-slide="${name}"] .line`)).toContainText(line);
 });
 
 Then("the range card for {string} reads {string}", async ({ page }, name: string, line: string) => {

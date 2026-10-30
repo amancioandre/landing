@@ -5,7 +5,7 @@ import { CHANNELS, CONTACT_ADDRESS } from "../content/channels";
 <footer class="foot">
   <nav class="channels" aria-label="Channels">
     {CHANNELS.map((c) => (
-      <a href={c.url} target="_blank" rel="noopener" aria-label={c.name} title={c.name}><Icon name={c.icon} size={20} /></a>
+      <a href={c.url} target="_blank" rel="me noopener" aria-label={c.name} title={c.name}><Icon name={c.icon} size={20} /></a>
     ))}
   </nav>
   <a href={`mailto:${CONTACT_ADDRESS}`}>{CONTACT_ADDRESS}</a>
