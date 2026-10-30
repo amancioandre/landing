@@ -21,3 +21,13 @@ describe("shortEnough", () => {
     expect(shortEnough(["Hello!", "Tell me a story", "What keeps you up at night?"], 16)).toEqual(["Hello!", "Tell me a story"]);
   });
 });
+
+describe("shortEnough, in wide scripts", () => {
+  it("counts a Chinese, Japanese or Korean character as two columns, the room it takes on screen", () => {
+    expect(shortEnough(["今日は外に出ましたか？", "物語を聞かせて"], 16)).toEqual(["物語を聞かせて"]);
+  });
+
+  it("counts Cyrillic letters as one column, like Latin ones", () => {
+    expect(shortEnough(["Расскажи мне историю"], 20)).toEqual(["Расскажи мне историю"]);
+  });
+});
