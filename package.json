@@ -9,7 +9,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:bdd": "bddgen && playwright test",
-    "check": "astro check"
+    "check": "astro check",
+    "collect:now": "rolldown scripts/collect-now.ts --platform node --format esm --file node_modules/.cache/collect-now.mjs --log-level warn && node node_modules/.cache/collect-now.mjs"
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.3.0",
