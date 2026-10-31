@@ -96,7 +96,7 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
   .card :global(.out) { color: var(--mute); transition: color .2s ease; }
   .card a:hover :global(.out), .card a:focus-visible :global(.out) { color: var(--signal); }
   .card h3, .card .say, .card li { width: fit-content; background: var(--paper); box-shadow: 0 0 0 3px var(--paper); }
-  /* The sheet: always on phones, and wherever a card can't hang clear of the index and the other waypoints. */
+  /* The sheet: always on phones, and for every card whenever any one of them can't hang clear of the index and the other waypoints. */
   .card:global(.sheet) {
     position: fixed; left: 0 !important; right: 0; top: auto !important; bottom: 0; z-index: 5; width: auto;
     padding: 16px 16px 22px; background: var(--paper); border-top: 1px solid var(--signal); text-align: left;

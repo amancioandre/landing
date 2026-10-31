@@ -28,7 +28,7 @@ Feature: The range
     Then the card for "Hunter" opens with a link to "Films on YouTube"
 
   Scenario: Every card draws its line again as it opens
-    Given I am on a wide screen
+    Given I am on a large screen
     When I choose "Writer" in the index
     And the card has finished opening
     And I choose "Hunter" in the index
@@ -41,6 +41,11 @@ Feature: The range
     Then the card covers neither the index nor another waypoint
     When I choose "Entrepreneur" in the index
     Then the card covers neither the index nor another waypoint
+
+  Scenario: On a laptop screen every card opens the same way
+    Given I am on a laptop screen
+    When I choose each interest in the index in turn
+    Then every card opened the same way, all hanging on their lines or all as a strip at the foot
 
   Scenario: Clicking away puts the card away
     When I choose "Writer" in the index

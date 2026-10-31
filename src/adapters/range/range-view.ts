@@ -4,7 +4,7 @@ import { ORIGINAL, PLATES } from "../../content/plates";
 import type { InterestStop } from "../../content/interests";
 import { nearMap } from "./near-map";
 import { nookShown } from "../../domain/range/night";
-import { placeCard } from "../../domain/range/card-place";
+import { placeCards } from "../../domain/range/card-place";
 import { NIGHT } from "../../content/night";
 import { RangeRenderer } from "./renderer";
 import { seeInterest } from "../letter/visit";
@@ -58,24 +58,43 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
     place();
   };
 
-  // The card hangs above its waypoint on the tether; near the right edge it flips. On phones it is a sheet.
-  // The card hangs above its waypoint on the tether, on whichever side covers nothing (domain/range/card-place);
-  // when no side is clear, and always on phones, it opens as a sheet at the foot of the screen.
+  // Every card hangs above its waypoint on the tether, on whichever side covers nothing (domain/range/card-place).
+  // The range shows its cards one way: when any card can't hang clear, and always on phones, all open as a sheet.
   const index = root.querySelector<HTMLElement>(".index")!;
   const boxIn = (el: Element) => {
     const r = el.getBoundingClientRect(), o = root.getBoundingClientRect();
     return { x: r.left - o.left, y: r.top - o.top, width: r.width, height: r.height };
   };
+  // Each card's size as it would hang, measured unseen one at a time (the cards differ in height).
+  const hangingSizes = () => {
+    const wasHidden = holder.hidden;
+    holder.classList.remove("sheet");
+    holder.style.visibility = "hidden";
+    holder.hidden = false;
+    const sizes = cards.map((card) => {
+      cards.forEach((c) => (c.hidden = c !== card));
+      return { width: holder.offsetWidth || 254, height: holder.offsetHeight };
+    });
+    cards.forEach((c, k) => (c.hidden = k !== chosen));
+    holder.hidden = wasHidden;
+    holder.style.visibility = "";
+    return sizes;
+  };
+  const pointOf = (w: HTMLElement) => ({ x: parseFloat(w.style.left), y: parseFloat(w.style.top) });
+  const hangingPlacements = () => {
+    if (innerWidth < 700) return null;
+    const sizes = hangingSizes();
+    return placeCards({
+      cards: waypoints.map((w, k) => ({
+        at: pointOf(w), size: sizes[k], obstacles: [boxIn(index), ...waypoints.filter((_, j) => j !== k).map(boxIn)],
+      })),
+      screen: { width: root.clientWidth, height: root.clientHeight }, top: 96,
+    });
+  };
   const hang = (i: number) => {
     seeInterest(holder, cards[i]?.dataset.cardFor);
-    const at = waypoints[i];
-    const x = parseFloat(at.style.left), y = parseFloat(at.style.top);
-    holder.classList.remove("sheet");
-    const place = innerWidth < 700 ? null : placeCard({
-      at: { x, y }, size: { width: holder.offsetWidth || 254, height: holder.offsetHeight },
-      screen: { width: root.clientWidth, height: root.clientHeight }, top: 96,
-      obstacles: [boxIn(index), ...waypoints.filter((_, k) => k !== i).map(boxIn)],
-    });
+    const { x, y } = pointOf(waypoints[i]);
+    const place = hangingPlacements()?.[i] ?? null;
     holder.classList.toggle("sheet", !place);
     tether.hidden = !place;
     if (place) {

@@ -94,3 +94,27 @@ Then("the card covers neither the index nor another waypoint", async ({ page }) 
     expect(hits((await stop.boundingBox())!), `the card covers waypoint ${await stop.textContent()}`).toBe(false);
   }
 });
+
+Given("I am on a large screen", async ({ page }) => {
+  await page.setViewportSize({ width: 1680, height: 1050 });
+  await page.reload();
+});
+
+Given("I am on a laptop screen", async ({ page }) => {
+  await page.setViewportSize({ width: 1346, height: 900 });
+  await page.reload();
+});
+
+const ways: string[] = [];
+When("I choose each interest in the index in turn", async ({ page }) => {
+  ways.length = 0;
+  for (const entry of await range(page).getByRole("navigation", { name: "Interests" }).getByRole("button").all()) {
+    await entry.click();
+    ways.push(await card(page).evaluate((el) => (el.classList.contains("sheet") ? "strip" : "hanging")));
+  }
+});
+
+Then("every card opened the same way, all hanging on their lines or all as a strip at the foot", async () => {
+  expect(ways).toHaveLength(5);
+  expect(new Set(ways).size, `the cards opened as ${ways.join(", ")}`).toBe(1);
+});
