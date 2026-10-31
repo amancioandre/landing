@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { placeCard } from "./card-place";
+import { placeCard, placeCards } from "./card-place";
 
 const screen = { width: 800, height: 900 };
 const size = { width: 240, height: 300 };
@@ -33,5 +33,18 @@ describe("where a card hangs (it must never cover the index or another waypoint)
 
   it("gives up when the card can't fit between the bar and its waypoint", () => {
     expect(placeCard({ at: { x: 200, y: 300 }, size, screen, top: BAR, obstacles: [] })).toBeNull();
+  });
+});
+
+describe("how the range presents its cards (one way for all of them, never a mix)", () => {
+  const card = (x: number, y: number) => ({ at: { x, y }, size, obstacles: [index] });
+
+  it("hangs every card when every card can hang", () => {
+    expect(placeCards({ cards: [card(200, 600), card(470, 600)], screen, top: BAR }))
+      .toEqual([{ side: "right", left: 200, top: 270 }, { side: "left", left: 230, top: 270 }]);
+  });
+
+  it("opens every card as a sheet when even one of them can't hang", () => {
+    expect(placeCards({ cards: [card(200, 300), card(200, 600)], screen, top: BAR })).toBeNull();
   });
 });
