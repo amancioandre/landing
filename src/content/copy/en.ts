@@ -8,7 +8,7 @@ export const EN = {
     more: "I hope you experience my interests as I do, through the links and content I bring to you: software engineering and the code I am working on (or playing with!), an outdoorsman's videos and articles, the novels and short stories I am creating, hunting adventures throughout British Columbia, and the hardships of entrepreneurship in the age of AI.",
     imageAlt: "The ASCII mountain range on andreamnc.com",
   },
-  sections: { latest: "Latest", interests: "Interests", write: "write to me", nav: "Sections", menu: "Menu" },
+  sections: { latest: "Latest", interests: "Interests", now: "Now", write: "write to me", nav: "Sections", menu: "Menu" },
   interests: {
     Engineer: {
       label: "Engineer",
@@ -44,6 +44,11 @@ export const EN = {
     carouselRole: "carousel", slideRole: "slide",
   },
   latest: { nothingYet: "[nothing published yet]" },
+  now: {
+    kinds: { note: "Note", story: "Story", post: "Post", code: "Code" },
+    previous: "Previous", next: "Next", strip: "Now, one at a time; use the arrow keys", slide: "{n} of {total}: {kind}",
+    open: { note: "Read on {where}", story: "Read on {where}", post: "See on {where}", code: "Code on GitHub" },
+  },
   letter: {
     opening: "write to me",
     message: "Your message", email: "Your email", emailPlaceholder: "Your email, so I can reply", enter: "enter",

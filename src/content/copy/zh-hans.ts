@@ -7,7 +7,7 @@ export const ZH_HANS: Copy = {
     more: "希望你能像我一样体验我的兴趣，通过我带给你的链接和内容：软件工程，以及我正在做（或在玩！）的代码；一个户外人的视频和文章；我正在创作的长篇和短篇小说；遍及不列颠哥伦比亚的狩猎冒险；还有 AI 时代创业的艰辛。",
     imageAlt: "andreamnc.com 上的 ASCII 山脉",
   },
-  sections: { latest: "最新", interests: "兴趣", write: "给我写信", nav: "栏目", menu: "菜单" },
+  sections: { latest: "最新", interests: "兴趣", now: "此刻", write: "给我写信", nav: "栏目", menu: "菜单" },
   interests: {
     Engineer: {
       label: "工程师",
@@ -43,6 +43,11 @@ export const ZH_HANS: Copy = {
     carouselRole: "轮播", slideRole: "幻灯片",
   },
   latest: { nothingYet: "［暂无发布内容］" },
+  now: {
+    kinds: { note: "笔记", story: "故事", post: "帖子", code: "代码" },
+    previous: "上一个", next: "下一个", strip: "此刻，一次一件；用方向键浏览", slide: "第 {n} 项，共 {total} 项：{kind}",
+    open: { note: "在 {where} 阅读", story: "在 {where} 阅读", post: "在 {where} 查看", code: "GitHub 上的代码" },
+  },
   letter: {
     opening: "给我写信",
     message: "你的留言", email: "你的邮箱", emailPlaceholder: "你的邮箱，方便我回复", enter: "回车",

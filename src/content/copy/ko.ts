@@ -7,7 +7,7 @@ export const KO: Copy = {
     more: "내가 관심사를 경험하는 그대로, 내가 전하는 링크와 콘텐츠를 통해 당신도 경험하길 바라요. 소프트웨어 엔지니어링과 지금 작업 중인(혹은 가지고 노는!) 코드, 아웃도어맨의 영상과 글, 내가 쓰고 있는 장편과 단편 소설, 브리티시컬럼비아 곳곳에서의 사냥 모험, 그리고 AI 시대 창업의 고단함까지.",
     imageAlt: "andreamnc.com의 ASCII 산맥",
   },
-  sections: { latest: "최근", interests: "관심사", write: "편지 보내기", nav: "섹션", menu: "메뉴" },
+  sections: { latest: "최근", interests: "관심사", now: "지금", write: "편지 보내기", nav: "섹션", menu: "메뉴" },
   interests: {
     Engineer: {
       label: "엔지니어",
@@ -43,6 +43,11 @@ export const KO: Copy = {
     carouselRole: "캐러셀", slideRole: "슬라이드",
   },
   latest: { nothingYet: "[아직 게시된 글이 없어요]" },
+  now: {
+    kinds: { note: "노트", story: "이야기", post: "게시물", code: "코드" },
+    previous: "이전", next: "다음", strip: "지금, 하나씩. 화살표 키를 쓰세요", slide: "{total}개 중 {n}번째: {kind}",
+    open: { note: "{where}에서 읽기", story: "{where}에서 읽기", post: "{where}에서 보기", code: "GitHub의 코드" },
+  },
   letter: {
     opening: "편지 보내기",
     message: "메시지", email: "이메일", emailPlaceholder: "답장받을 이메일", enter: "Enter",

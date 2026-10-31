@@ -7,7 +7,7 @@ export const ZH_HANT: Copy = {
     more: "希望你能像我一樣體驗我的興趣，透過我帶給你的連結與內容：軟體工程，以及我正在做（或在玩！）的程式碼；一個戶外人的影片與文章；我正在創作的長篇與短篇小說；遍及卑詩省的狩獵冒險；還有 AI 時代創業的艱辛。",
     imageAlt: "andreamnc.com 上的 ASCII 山脈",
   },
-  sections: { latest: "最新", interests: "興趣", write: "給我寫信", nav: "單元", menu: "選單" },
+  sections: { latest: "最新", interests: "興趣", now: "此刻", write: "給我寫信", nav: "單元", menu: "選單" },
   interests: {
     Engineer: {
       label: "工程師",
@@ -43,6 +43,11 @@ export const ZH_HANT: Copy = {
     carouselRole: "輪播", slideRole: "投影片",
   },
   latest: { nothingYet: "［尚無發布內容］" },
+  now: {
+    kinds: { note: "筆記", story: "故事", post: "貼文", code: "程式碼" },
+    previous: "上一個", next: "下一個", strip: "此刻，一次一件；用方向鍵瀏覽", slide: "第 {n} 項，共 {total} 項：{kind}",
+    open: { note: "在 {where} 閱讀", story: "在 {where} 閱讀", post: "在 {where} 查看", code: "GitHub 上的程式碼" },
+  },
   letter: {
     opening: "給我寫信",
     message: "你的留言", email: "你的電子郵件", emailPlaceholder: "你的電子郵件，方便我回信", enter: "Enter",

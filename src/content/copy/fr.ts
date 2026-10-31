@@ -7,7 +7,7 @@ export const FR: Copy = {
     more: "J’espère que tu vivras mes centres d’intérêt comme je les vis, à travers les liens et les contenus que je t’apporte : le génie logiciel et le code sur lequel je travaille (ou avec lequel je m’amuse !), les vidéos et articles d’un aventurier du plein air, les romans et nouvelles que j’écris, des aventures de chasse à travers la Colombie-Britannique, et les difficultés de l’entrepreneuriat à l’ère de l’IA.",
     imageAlt: "La chaîne de montagnes en ASCII d’andreamnc.com",
   },
-  sections: { latest: "Récent", interests: "Centres d’intérêt", write: "écris-moi", nav: "Sections", menu: "Menu" },
+  sections: { latest: "Récent", interests: "Centres d’intérêt", now: "Maintenant", write: "écris-moi", nav: "Sections", menu: "Menu" },
   interests: {
     Engineer: {
       label: "Ingénieur",
@@ -43,6 +43,11 @@ export const FR: Copy = {
     carouselRole: "carrousel", slideRole: "diapositive",
   },
   latest: { nothingYet: "[rien de publié pour l’instant]" },
+  now: {
+    kinds: { note: "Note", story: "Récit", post: "Publication", code: "Code" },
+    previous: "Précédent", next: "Suivant", strip: "Maintenant, un à la fois ; utilise les flèches", slide: "{n} sur {total} : {kind}",
+    open: { note: "Lire sur {where}", story: "Lire sur {where}", post: "Voir sur {where}", code: "Code sur GitHub" },
+  },
   letter: {
     opening: "écris-moi",
     message: "Ton message", email: "Ton e-mail", emailPlaceholder: "Ton e-mail, pour que je puisse répondre", enter: "entrée",

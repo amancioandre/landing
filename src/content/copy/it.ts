@@ -7,7 +7,7 @@ export const IT: Copy = {
     more: "Spero che tu viva i miei interessi come li vivo io, attraverso i link e i contenuti che ti porto: l’ingegneria del software e il codice su cui sto lavorando (o con cui sto giocando!), i video e gli articoli di un avventuriero all’aria aperta, i romanzi e i racconti che sto creando, avventure di caccia in tutta la Columbia Britannica e le fatiche dell’imprenditoria nell’era dell’IA.",
     imageAlt: "La catena montuosa in ASCII di andreamnc.com",
   },
-  sections: { latest: "Ultimi", interests: "Interessi", write: "scrivimi", nav: "Sezioni", menu: "Menu" },
+  sections: { latest: "Ultimi", interests: "Interessi", now: "Ora", write: "scrivimi", nav: "Sezioni", menu: "Menu" },
   interests: {
     Engineer: {
       label: "Ingegnere",
@@ -43,6 +43,11 @@ export const IT: Copy = {
     carouselRole: "carosello", slideRole: "diapositiva",
   },
   latest: { nothingYet: "[ancora niente di pubblicato]" },
+  now: {
+    kinds: { note: "Nota", story: "Racconto", post: "Post", code: "Codice" },
+    previous: "Precedente", next: "Successivo", strip: "Ora, uno alla volta; usa le frecce", slide: "{n} di {total}: {kind}",
+    open: { note: "Leggi su {where}", story: "Leggi su {where}", post: "Guarda su {where}", code: "Codice su GitHub" },
+  },
   letter: {
     opening: "scrivimi",
     message: "Il tuo messaggio", email: "La tua email", emailPlaceholder: "La tua email, così posso risponderti", enter: "invio",

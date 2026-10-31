@@ -7,7 +7,7 @@ export const JA: Copy = {
     more: "私が関心ごとを味わっているように、お届けするリンクやコンテンツを通して、あなたにも味わってもらえたら嬉しいです。ソフトウェアエンジニアリングと、いま取り組んでいる（あるいは遊んでいる！）コード、アウトドアマンとしての動画や記事、執筆中の長編小説や短編小説、ブリティッシュコロンビア各地での狩猟の冒険、そしてAI時代の起業の苦労。",
     imageAlt: "andreamnc.com の ASCII の山並み",
   },
-  sections: { latest: "最新", interests: "関心ごと", write: "手紙をください", nav: "セクション", menu: "メニュー" },
+  sections: { latest: "最新", interests: "関心ごと", now: "いま", write: "手紙をください", nav: "セクション", menu: "メニュー" },
   interests: {
     Engineer: {
       label: "エンジニア",
@@ -43,6 +43,11 @@ export const JA: Copy = {
     carouselRole: "カルーセル", slideRole: "スライド",
   },
   latest: { nothingYet: "［まだ何も公開されていません］" },
+  now: {
+    kinds: { note: "メモ", story: "物語", post: "投稿", code: "コード" },
+    previous: "前へ", next: "次へ", strip: "いま、ひとつずつ。矢印キーで移動", slide: "{total}件中{n}件目：{kind}",
+    open: { note: "{where}で読む", story: "{where}で読む", post: "{where}で見る", code: "GitHubのコード" },
+  },
   letter: {
     opening: "手紙をください",
     message: "メッセージ", email: "メールアドレス", emailPlaceholder: "返信用のメールアドレス", enter: "Enter",

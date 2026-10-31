@@ -7,7 +7,7 @@ export const PT_BR: Copy = {
     more: "Espero que você viva meus interesses como eu vivo, pelos links e conteúdos que trago para você: engenharia de software e o código em que estou trabalhando (ou brincando!), vídeos e artigos de um aventureiro ao ar livre, os romances e contos que estou criando, aventuras de caça por toda a Colúmbia Britânica e as dificuldades de empreender na era da IA.",
     imageAlt: "A cordilheira em ASCII de andreamnc.com",
   },
-  sections: { latest: "Recentes", interests: "Interesses", write: "escreva para mim", nav: "Seções", menu: "Menu" },
+  sections: { latest: "Recentes", interests: "Interesses", now: "Agora", write: "escreva para mim", nav: "Seções", menu: "Menu" },
   interests: {
     Engineer: {
       label: "Engenheiro",
@@ -43,6 +43,11 @@ export const PT_BR: Copy = {
     carouselRole: "carrossel", slideRole: "slide",
   },
   latest: { nothingYet: "[nada publicado ainda]" },
+  now: {
+    kinds: { note: "Nota", story: "Conto", post: "Post", code: "Código" },
+    previous: "Anterior", next: "Próximo", strip: "Agora, um de cada vez; use as setas", slide: "{n} de {total}: {kind}",
+    open: { note: "Leia no {where}", story: "Leia no {where}", post: "Veja no {where}", code: "Código no GitHub" },
+  },
   letter: {
     opening: "escreva para mim",
     message: "Sua mensagem", email: "Seu e-mail", emailPlaceholder: "Seu e-mail, para eu responder", enter: "enter",
