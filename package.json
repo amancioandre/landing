@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "npm run collect:now; astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "test": "vitest run",

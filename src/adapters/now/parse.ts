@@ -9,6 +9,8 @@ const WORDS = 220;   // characters of a note's or post's own opening, cut at a w
 // Public.md: nothing from these folders reaches a public surface unless Andre asks for that piece.
 const PRIVATE = new Set(["journal", "people", "body", "telos", "notes", "storytelling"]);
 export const mayRead = (path: string) => !path.split("/").some((part) => PRIVATE.has(part));
+/** A vault file whose change can change the Now: a readable note, outside Obsidian's own folders. */
+export const mayCarryTag = (path: string) => path.endsWith(".md") && mayRead(path) && !path.split("/").some((part) => part.startsWith("."));
 
 type Front = Record<string, string | string[]>;
 

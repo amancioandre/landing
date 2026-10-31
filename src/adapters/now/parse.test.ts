@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fromNote, fromRepos, fromBuffer, mayRead } from "./parse";
+import { fromNote, fromRepos, fromBuffer, mayRead, mayCarryTag } from "./parse";
 
 const note = (front: string, body = "Back from the ridge with a shoulder to smoke.\n\nMore below.") => `---\n${front}\n---\n${body}`;
 
@@ -60,5 +60,12 @@ describe("a post reaches the Now through Buffer's own tag", () => {
   });
   it("leaves untagged posts, and posts not yet sent", () => {
     expect(fromBuffer([post([]), post(["andreamnc"], { status: "draft" })])).toEqual([]);
+  });
+});
+
+describe("which vault changes can change the Now", () => {
+  it("a note outside the private folders", () => expect(mayCarryTag("public/now/smoke.md")).toBe(true));
+  it.each(["journal/2026-10-31.md", "public/web/image.png", ".obsidian/workspace.json", "public/.trash/old.md"])("not %s", (path) => {
+    expect(mayCarryTag(path)).toBe(false);
   });
 });
