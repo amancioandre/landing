@@ -7,7 +7,7 @@ export function mountMenu(bar: HTMLElement): void {
     button.setAttribute("aria-expanded", String(open));
     bar.toggleAttribute("data-menu-open", open);
   };
-  button.addEventListener("click", () => set(panel.hidden));
+  button.addEventListener("click", () => set(panel.hidden !== false));
   panel.addEventListener("click", (e) => { if ((e.target as Element).closest("a")) set(false); });
   addEventListener("keydown", (e) => { if (e.key === "Escape" && !panel.hidden) { set(false); button.focus(); } });
   document.addEventListener("click", (e) => { if (!panel.hidden && !bar.contains(e.target as Node)) set(false); });
