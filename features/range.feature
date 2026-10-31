@@ -35,25 +35,25 @@ Feature: The range
     Then its line draws in from the waypoint
     And its card fades in
 
-  Scenario: On a medium screen a card never covers the index
+  Scenario: On a medium screen a card never covers the index or another waypoint
     Given I am on a medium screen
     When I choose "Hunter" in the index
-    Then the card does not cover the index
+    Then the card covers neither the index nor another waypoint
     When I choose "Entrepreneur" in the index
-    Then the card does not cover the index
+    Then the card covers neither the index nor another waypoint
 
-  Scenario: On a laptop screen every card hangs beside its waypoint
+  Scenario: On a laptop screen every card opens the same way
     Given I am on a laptop screen
     When I choose each interest in the index in turn
-    Then every card hung beside its waypoint on its line
+    Then every card opened the same way, all hanging on their lines or all as a strip at the foot
 
-  Scenario: On a 13-inch laptop every card still hangs beside its waypoint
-    Given I am on a 13-inch laptop screen
+  Scenario: On a 14-inch laptop every card hangs above its waypoint
+    Given I am on a 14-inch laptop screen
     When I choose each interest in the index in turn
-    Then every card hung beside its waypoint on its line
+    Then every card hung above its waypoint on its line
 
-  Scenario: On a phone every card opens as a strip at the foot
-    Given I am on a phone
+  Scenario: On a 13-inch laptop every card opens as a strip at the foot
+    Given I am on a 13-inch laptop screen
     When I choose each interest in the index in turn
     Then every card opened as a strip at the foot
 

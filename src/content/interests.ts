@@ -19,9 +19,9 @@ export interface InterestStop {
 type Place = Pick<InterestStop, "name" | "at" | "links"> & { photo: { src: string; focus?: Focus } };
 
 const PLACES: readonly Place[] = [
-  { name: "Engineer", at: [199, 608], photo: { src: "/img/engineer.jpg", focus: [0.55, 0.6] },
+  { name: "Engineer", at: [199, 680], photo: { src: "/img/engineer.jpg", focus: [0.55, 0.6] },
     links: [{ label: "Code on GitHub", url: "https://github.com/amancioandre", icon: "github" }] },
-  { name: "Outdoorsman", at: [596, 679], photo: { src: "/img/outdoorsman.jpg", focus: [0.5, 0.3] },
+  { name: "Outdoorsman", at: [596, 704], photo: { src: "/img/outdoorsman.jpg", focus: [0.5, 0.3] },
     links: [{ label: "Films on YouTube", url: "https://www.youtube.com/@andre-amnc", icon: "youtube" }, { label: "@andre.amnc", url: "https://www.instagram.com/andre.amnc/", icon: "instagram" }] },
   { name: "Writer", at: [937, 742], photo: { src: "/img/writer.jpg", focus: [0.47, 0.5] },
     links: [{ label: "Stories on Substack", url: "https://andramnc.substack.com", icon: "substack" }, { label: "Patreon", url: "https://www.patreon.com/c/andreamnc", icon: "patreon" }] },
