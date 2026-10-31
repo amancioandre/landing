@@ -82,17 +82,12 @@ Given("I am on a medium screen", async ({ page }) => {
   await page.reload();
 });
 
-Then("the card covers neither the index nor another waypoint", async ({ page }) => {
+Then("the card does not cover the index", async ({ page }) => {
   await page.waitForTimeout(600);
-  const shown = card(page).locator("[data-card-for]:not([hidden])");
-  const box = (await shown.boundingBox())!;
-  const hits = (b: { x: number; y: number; width: number; height: number }) =>
-    box.x < b.x + b.width && b.x < box.x + box.width && box.y < b.y + b.height && b.y < box.y + box.height;
+  const box = (await card(page).locator("[data-card-for]:not([hidden])").boundingBox())!;
   const index = (await range(page).getByRole("navigation", { name: "Interests" }).boundingBox())!;
-  expect(hits(index), "the card covers the index").toBe(false);
-  for (const stop of await range(page).locator("[data-stop][aria-pressed=false]").all()) {
-    expect(hits((await stop.boundingBox())!), `the card covers waypoint ${await stop.textContent()}`).toBe(false);
-  }
+  const hits = box.x < index.x + index.width && index.x < box.x + box.width && box.y < index.y + index.height && index.y < box.y + box.height;
+  expect(hits, "the card covers the index").toBe(false);
 });
 
 Given("I am on a large screen", async ({ page }) => {
@@ -110,11 +105,28 @@ When("I choose each interest in the index in turn", async ({ page }) => {
   ways.length = 0;
   for (const entry of await range(page).getByRole("navigation", { name: "Interests" }).getByRole("button").all()) {
     await entry.click();
-    ways.push(await card(page).evaluate((el) => (el.classList.contains("sheet") ? "strip" : "hanging")));
+    await page.waitForTimeout(550);   // the line has drawn in
+    ways.push(await card(page).evaluate((el) => {
+      if (el.classList.contains("sheet")) return "strip";
+      const tether = document.querySelector<HTMLElement>("[data-tether]")!;
+      const line = tether.getBoundingClientRect(), box = el.getBoundingClientRect();
+      const across = !tether.hidden && line.width > 20 && line.height < 4;
+      const level = line.top >= box.top && line.top <= box.bottom;
+      const meets = Math.abs(line.right - box.left) < 2 || Math.abs(line.left - box.right) < 2;
+      return across && level && meets ? "beside" : `adrift (across ${across}, level ${level}, meets ${meets})`;
+    }));
   }
 });
 
-Then("every card opened the same way, all hanging on their lines or all as a strip at the foot", async () => {
-  expect(ways).toHaveLength(5);
-  expect(new Set(ways).size, `the cards opened as ${ways.join(", ")}`).toBe(1);
+Given("I am on a 13-inch laptop screen", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 789 });
+  await page.reload();
+});
+
+Then("every card hung beside its waypoint on its line", async () => {
+  expect(ways, `the cards opened as ${ways.join(", ")}`).toEqual(Array(5).fill("beside"));
+});
+
+Then("every card opened as a strip at the foot", async () => {
+  expect(ways, `the cards opened as ${ways.join(", ")}`).toEqual(Array(5).fill("strip"));
 });

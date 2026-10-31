@@ -58,8 +58,9 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
     place();
   };
 
-  // Every card hangs above its waypoint on the tether, on whichever side covers nothing (domain/range/card-place).
-  // The range shows its cards one way: when any card can't hang clear, and always on phones, all open as a sheet.
+  // Every card hangs beside its waypoint's number on a red line, on whichever side keeps clear of the index
+  // (domain/range/card-place). The range shows its cards one way: when any card can't hang, and always on phones,
+  // all open as a sheet.
   const index = root.querySelector<HTMLElement>(".index")!;
   const boxIn = (el: Element) => {
     const r = el.getBoundingClientRect(), o = root.getBoundingClientRect();
@@ -86,14 +87,14 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
     const sizes = hangingSizes();
     return placeCards({
       cards: waypoints.map((w, k) => ({
-        at: pointOf(w), size: sizes[k], obstacles: [boxIn(index), ...waypoints.filter((_, j) => j !== k).map(boxIn)],
+        at: pointOf(w), size: sizes[k], avoid: [boxIn(index)],
       })),
       screen: { width: root.clientWidth, height: root.clientHeight }, top: 96,
     });
   };
   const hang = (i: number) => {
     seeInterest(holder, cards[i]?.dataset.cardFor);
-    const { x, y } = pointOf(waypoints[i]);
+    const { x, y } = pointOf(waypoints[i]);   // the waypoint's foot, where the land's focus falls
     const place = hangingPlacements()?.[i] ?? null;
     holder.classList.toggle("sheet", !place);
     tether.hidden = !place;
@@ -101,9 +102,10 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
       holder.classList.toggle("flip", place.side === "left");
       holder.style.left = `${place.left}px`;
       holder.style.top = `${place.top}px`;
-      tether.style.left = `${x - 0.75}px`;
-      tether.style.top = `${place.top}px`;
-      tether.style.height = `${Math.max(0, y - 32 - place.top)}px`;
+      tether.classList.toggle("flip", place.side === "left");
+      tether.style.left = `${place.line.left}px`;
+      tether.style.top = `${place.line.y}px`;
+      tether.style.width = `${place.line.width}px`;
     }
     if (coverRect) renderer?.setFocus({ x: (x - coverRect.x) / coverRect.width, y: (y - coverRect.y) / coverRect.height });
   };
