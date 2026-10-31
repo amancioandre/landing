@@ -124,6 +124,17 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
     if (chosen >= 0 && !(e.target as Element).closest("[data-card], [data-stop], [data-entry]")) close();
   });
 
+  // The bar's interest links lead to the carousel's cards; when the Now holds section 02 instead, they open the range's.
+  document.addEventListener("click", (e) => {
+    const link = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#interest-"]');
+    if (!link || document.getElementById(link.hash.slice(1))) return;
+    const i = stops.findIndex((s) => link.hash === `#interest-${s.name.toLowerCase()}`);
+    if (i < 0) return;
+    e.preventDefault();
+    scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    choose(i);
+  });
+
   // Leaving the range: labels fade, the bar docks on paper, and the renderer rests once it is out of sight.
   const onScroll = () => {
     const h = root.offsetHeight, leave = Math.min(1, Math.max(0, scrollY / (h * 0.45)));

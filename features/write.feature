@@ -52,7 +52,7 @@ Feature: write to me
   Scenario: A letter tells Andre how the writer came and what they looked at
     Given letters can be delivered
     And I arrived from "https://www.youtube.com/watch?v=abc" through a link tagged "youtube" and "video"
-    When I choose "Hunter" among the interests
+    When I choose "Hunter" in the index
     And I write "Where do you hunt?" in the letter
     And I press enter in the letter
     And I write "me@example.com" in the letter

@@ -19,6 +19,10 @@ Feature: The range
     When I choose "Writer" in the index
     Then the card for "Writer" opens with a link to "Patreon"
 
+  Scenario: Hunting has its own Instagram
+    When I choose "Hunter" in the index
+    Then the card for "Hunter" opens with a link to "@gamescout.ca"
+
   Scenario: Choosing a waypoint opens the same card
     When I choose waypoint "04"
     Then the card for "Hunter" opens with a link to "Films on YouTube"

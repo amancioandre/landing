@@ -5,10 +5,6 @@ const { When, Then } = createBdd();
 let body = "";
 const SUMMARY = "André Amnc's hub. My way of presenting myself to the world, creatively and playfully: my interests, what I can do for you, and what I give back to nature and society.";
 
-Then("the carousel card for {string} reads {string}", async ({ page }, name: string, line: string) => {
-  await expect(page.locator(`#interests [data-slide="${name}"] .line`)).toContainText(line);
-});
-
 Then("the range card for {string} reads {string}", async ({ page }, name: string, line: string) => {
   await expect(page.locator(`[data-range] [data-card-for="${name}"] .say`)).toContainText(line);
 });
@@ -85,10 +81,6 @@ Then("the section names {string} and {string} carry no draft mark", async ({ pag
     await expect(page.locator("main section > .handler", { hasText: name }).locator(".draft")).toHaveCount(0);
     await expect(page.getByRole("banner").locator(".draft", { hasText: name })).toHaveCount(0);
   }
-});
-
-Then("no carousel card shows a placeholder piece", async ({ page }) => {
-  await expect(page.locator("#interests .piece")).toHaveCount(0);
 });
 
 const umami = (page: Page) => page.locator('head script[src="https://cloud.umami.is/script.js"]');

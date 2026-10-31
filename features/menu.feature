@@ -7,7 +7,7 @@ Feature: The menu on phones
 
   Scenario: The menu drops from the bar
     When I open the menu
-    Then the menu offers "Latest", "Interests" and "write to me"
+    Then the menu offers "Latest", "Now" and "write to me"
     And the menu lists the five interests with their numbers
     And the menu links to "Patreon" and to "hello@andreamnc.com"
 
@@ -17,11 +17,11 @@ Feature: The menu on phones
     Then the menu is closed
     And the page is at "write"
 
-  Scenario: Choosing an interest brings its card into focus
+  Scenario: Choosing an interest opens its card on the range
     When I open the menu
     And I choose "Hunter" in the menu
     Then the menu is closed
-    And "Hunter" is the interest in focus
+    And the card for "Hunter" opens with a link to "Films on YouTube"
 
   Scenario: Escape closes the menu
     When I open the menu

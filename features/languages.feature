@@ -9,23 +9,23 @@ Feature: The hub speaks every major language
   Scenario Outline: A translation is the same page in its own language
     Given I open the page at "<path>"
     Then the page says it is written in "<tag>"
-    And the sections are named "<latest>", "<interests>" and "<write>"
+    And the sections are named "<latest>", "<now>" and "<write>"
     And the footer marks "<name>" as the language I am reading
 
     Examples:
-      | path      | tag     | name                    | latest      | interests         | write           |
-      | /pt-br/   | pt-BR   | Português (Brasil)      | Recentes    | Interesses        | escreva para mim |
-      | /es-es/   | es-ES   | Español (España)        | Lo último   | Intereses         | escríbeme       |
-      | /es-419/  | es-419  | Español (Latinoamérica) | Lo último   | Intereses         | escríbeme       |
-      | /fr/      | fr      | Français                | Récent      | Centres d’intérêt | écris-moi       |
-      | /de/      | de      | Deutsch                 | Neu         | Interessen        | schreib mir     |
-      | /it/      | it      | Italiano                | Ultimi      | Interessi         | scrivimi        |
-      | /ja/      | ja      | 日本語                  | 最新        | 関心ごと          | 手紙をください  |
-      | /ko/      | ko      | 한국어                  | 최근        | 관심사            | 편지 보내기     |
-      | /zh-hans/ | zh-Hans | 简体中文                | 最新        | 兴趣              | 给我写信        |
-      | /zh-hant/ | zh-Hant | 繁體中文                | 最新        | 興趣              | 給我寫信        |
-      | /uk/      | uk      | Українська              | Нове        | Інтереси          | напиши мені     |
-      | /ru/      | ru      | Русский                 | Новое       | Интересы          | напиши мне      |
+      | path      | tag     | name                    | latest    | now        | write            |
+      | /pt-br/   | pt-BR   | Português (Brasil)      | Recentes  | Agora      | escreva para mim |
+      | /es-es/   | es-ES   | Español (España)        | Lo último | Ahora      | escríbeme        |
+      | /es-419/  | es-419  | Español (Latinoamérica) | Lo último | Ahora      | escríbeme        |
+      | /fr/      | fr      | Français                | Récent    | Maintenant | écris-moi        |
+      | /de/      | de      | Deutsch                 | Neu       | Jetzt      | schreib mir      |
+      | /it/      | it      | Italiano                | Ultimi    | Ora        | scrivimi         |
+      | /ja/      | ja      | 日本語                  | 最新      | いま       | 手紙をください   |
+      | /ko/      | ko      | 한국어                  | 최근      | 지금       | 편지 보내기      |
+      | /zh-hans/ | zh-Hans | 简体中文                | 最新      | 此刻       | 给我写信         |
+      | /zh-hant/ | zh-Hant | 繁體中文                | 最新      | 此刻       | 給我寫信         |
+      | /uk/      | uk      | Українська              | Нове      | Зараз      | напиши мені      |
+      | /ru/      | ru      | Русский                 | Новое     | Сейчас     | напиши мне       |
 
   Scenario: The bar types its questions in the page's language
     Given I open the page at "/de/"

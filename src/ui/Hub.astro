@@ -9,22 +9,30 @@ import WriteLetter from "./WriteLetter.astro";
 import LatestList from "./LatestList.astro";
 import Carousel from "./Carousel.astro";
 import Intro from "./Intro.astro";
+import NowCarousel from "./NowCarousel.astro";
 import { copyIn } from "../content/copy";
 import { stopsIn } from "../content/interests";
+import { loadNow } from "../adapters/now/load";
+import { showsNow } from "../domain/now/now";
 import type { Language } from "../domain/languages/languages";
 
 interface Props { language: Language }
 const { language } = Astro.props;
 const copy = copyIn(language);
 const stops = stopsIn(copy);
+const items = await loadNow();
+// Section 02 is the Now once Andre has tagged something; until then the Interests carousel keeps it (ADR 0027).
+const second = showsNow(items) ? { id: "now", label: copy.sections.now } : { id: "interests", label: copy.sections.interests };
 ---
 <Base title="André Amnc" language={language} copy={copy}>
-  <Bar copy={copy} stops={stops} />
+  <Bar copy={copy} stops={stops} second={second} />
   <Range copy={copy} stops={stops} />
   <main>
     <Intro copy={copy} />
     <Section id="latest" number="01" label={copy.sections.latest}><LatestList copy={copy} language={language} /></Section>
-    <Section id="interests" number="02" drop={16} label={copy.sections.interests}><Carousel copy={copy} stops={stops} /></Section>
+    {second.id === "now"
+      ? <Section id="now" number="02" drop={16} label={second.label}><NowCarousel copy={copy} language={language} items={items} /></Section>
+      : <Section id="interests" number="02" drop={16} label={second.label}><Carousel copy={copy} stops={stops} /></Section>}
     <Section id="write" number="03" drop={14} label={copy.sections.write}><WriteLetter copy={copy} /></Section>
   </main>
   <Footer copy={copy} language={language} />

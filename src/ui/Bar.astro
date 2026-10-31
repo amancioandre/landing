@@ -4,9 +4,9 @@ import Icon from "./Icon.astro";
 import type { Copy } from "../content/copy/copy";
 import type { InterestStop } from "../content/interests";
 import { CHANNELS, CONTACT_ADDRESS } from "../content/channels";
-interface Props { copy: Copy; stops: readonly InterestStop[] }
-const { copy, stops } = Astro.props;
-const SECTIONS = [["latest", copy.sections.latest], ["interests", copy.sections.interests]] as const;
+interface Props { copy: Copy; stops: readonly InterestStop[]; second: { id: string; label: string } }   // section 02: the Now or the Interests
+const { copy, stops, second } = Astro.props;
+const SECTIONS = [["latest", copy.sections.latest], [second.id, second.label]] as const;
 const n = (i: number) => String(i + 1).padStart(2, "0");
 const slug = (name: string) => `interest-${name.toLowerCase()}`;
 ---
@@ -41,7 +41,7 @@ const slug = (name: string) => `interest-${name.toLowerCase()}`;
     <ol class="menu-sections">
       <li><a href="#latest"><span class="n">01</span><span class="name">{copy.sections.latest}</span></a></li>
       <li>
-        <a href="#interests"><span class="n">02</span><span class="name">{copy.sections.interests}</span></a>
+        <a href={`#${second.id}`}><span class="n">02</span><span class="name">{second.label}</span></a>
         <ol class="menu-interests" aria-label={copy.sections.interests}>
           {stops.map((stop, i) => <li><a href={`#${slug(stop.name)}`}><span class="n">{n(i)}</span>{stop.label}</a></li>)}
         </ol>

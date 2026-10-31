@@ -1,9 +1,9 @@
 Feature: The hub page
-  One long page: the range first, then Latest, Interests and write to me, then the footer (ADR 0009, ADR 0016).
+  One long page: the range first, then Latest, Now and write to me, then the footer (ADR 0009, ADR 0016).
 
   Scenario: The sections come in order, each with its number
     Given I open the home page
-    Then the sections are "Latest", "Interests" and "write to me", numbered "01", "02" and "03"
+    Then the sections are "Latest", "Now" and "write to me", numbered "01", "02" and "03"
 
   Scenario: The name leads back to the top
     Given I open the home page
