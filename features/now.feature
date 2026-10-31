@@ -31,6 +31,11 @@ Feature: Now
     And I press "End"
     Then the Now goes no further on
 
+  Scenario: A swipe moves the focus with it
+    When I swipe the Now one card along
+    Then the "Post" card is in focus
+    And the Now counts "02 / 05"
+
   Scenario: The keyboard moves too
     When I put the keyboard on the Now
     And I press "End"

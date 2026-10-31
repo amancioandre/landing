@@ -31,10 +31,13 @@ export function mountNow(root: HTMLElement): void {
     cards.forEach((card, i) => { if (Math.abs(card.getBoundingClientRect().left - start) < Math.abs(cards[best].getBoundingClientRect().left - start)) best = i; });
     return best;
   };
-  strip.addEventListener("scrollend", () => {
+  const settled = () => {
     if (steering) { steering = false; return; }
     show(select(state, nearest()), false);
-  });
+  };
+  // Browsers without scrollend settle the strip once it has been still for a moment.
+  if ("onscrollend" in window) strip.addEventListener("scrollend", settled);
+  else { let still = 0; strip.addEventListener("scroll", () => { clearTimeout(still); still = window.setTimeout(settled, 120); }); }
 
   back.addEventListener("click", () => show(previous(state), true));
   on.addEventListener("click", () => show(next(state), true));

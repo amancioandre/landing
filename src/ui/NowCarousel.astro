@@ -61,8 +61,7 @@ const way = (i: Item) => fill(copy.now.open[i.kind as Kind], { where: i.where })
   .strip::after { content: ""; flex: none; width: max(0px, calc(100% - 420px)); }
   /* Each kind keeps its own width (layout B): a note is short, a story has room to open. */
   .card { flex: none; scroll-snap-align: start; width: min(var(--w), calc(100vw - 2 * var(--gutter) - 24px)); display: flex; flex-direction: column; gap: 14px;
-    opacity: .45; transition: opacity .5s ease; }
-  .card:global([data-focus]) { opacity: 1; }
+  }
   .note { --w: 300px; } .post { --w: 300px; } .code { --w: 320px; } .story { --w: 380px; }
   .kind { display: flex; align-items: center; gap: 8px; color: var(--ink-2); font: 500 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; }
   .where { margin-left: auto; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--mute); }
@@ -79,5 +78,4 @@ const way = (i: Item) => fill(copy.now.open[i.kind as Kind], { where: i.where })
   .foot :global(.out) { color: var(--mute); transition: color .2s ease; }
   .foot a:hover :global(.out), .foot a:focus-visible :global(.out) { color: var(--signal); }
   @media (min-width: 900px) { .strip { --gap: 40px; margin-right: calc(-1 * (100vw - 100%) / 2); } }
-  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
 </style>

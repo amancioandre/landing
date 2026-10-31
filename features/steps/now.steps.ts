@@ -76,3 +76,10 @@ Then("the Now goes no further on", async ({ page }) => {
   await expect(section(page).getByRole("button", { name: "Next", exact: true })).toBeDisabled();
   await expect(section(page).locator("[data-now-card]").last()).toHaveAttribute("data-focus", "");
 });
+
+When("I swipe the Now one card along", async ({ page }) => {
+  await section(page).locator("[data-strip]").evaluate((strip) => {
+    const [a, b] = strip.querySelectorAll<HTMLElement>("[data-now-card]");
+    strip.scrollTo({ left: b.offsetLeft - a.offsetLeft });
+  });
+});
