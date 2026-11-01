@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { parseSubstack, parseYouTube } from "./parse";
+import { fullSize, parseSubstack, parseYouTube } from "./parse";
 
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), "utf8");
 
@@ -16,7 +16,13 @@ describe("reading Andre's feeds", () => {
     expect(parseYouTube(fixture("youtube.xml"))).toEqual([{
       title: "A film title", url: "https://www.youtube.com/watch?v=abc123", via: "youtube",
       date: "2026-10-20T15:00:00.000Z", excerpt: "What the film is about, in its own words.",
+      picture: "https://i2.ytimg.com/vi/abc123/hqdefault.jpg",
     }]);
+  });
+
+  it("knows where YouTube keeps the full-size picture of a video's cover", () => {
+    expect(fullSize("https://i2.ytimg.com/vi/abc123/hqdefault.jpg")).toBe("https://i2.ytimg.com/vi/abc123/maxresdefault.jpg");
+    expect(fullSize("https://example.com/cover.jpg")).toBe("https://example.com/cover.jpg");
   });
 
   it("reads an empty channel as no entries", () => {

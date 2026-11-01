@@ -7,6 +7,7 @@ export interface Entry {
   readonly url: string;
   readonly via: Source;
   readonly excerpt?: string;  // the post's own opening words
+  readonly picture?: string;  // the post's own cover, where it lives (canvas row 22, B)
 }
 
 const valid = (e: Entry) => e.title.trim().length > 0 && !Number.isNaN(Date.parse(e.date));

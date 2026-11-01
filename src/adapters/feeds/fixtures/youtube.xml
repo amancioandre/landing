@@ -6,6 +6,6 @@
   <title>A film title</title>
   <link rel="alternate" href="https://www.youtube.com/watch?v=abc123"/>
   <published>2026-10-20T15:00:00+00:00</published>
-  <media:group><media:description>What the film is about, in its own words.</media:description></media:group>
+  <media:group><media:thumbnail url="https://i2.ytimg.com/vi/abc123/hqdefault.jpg" width="480" height="360"/><media:description>What the film is about, in its own words.</media:description></media:group>
  </entry>
 </feed>

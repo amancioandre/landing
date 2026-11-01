@@ -20,5 +20,9 @@ export function parseYouTube(feed: string): Entry[] {
   return list(xml.parse(feed)?.feed?.entry).map((entry: Record<string, any>) => ({
     title: text(entry.title), url: text(list(entry.link)[0]?.["@href"]), date: iso(text(entry.published)), via: "youtube" as const,
     excerpt: excerpt(text(entry["media:group"]?.["media:description"]), EXCERPT),
+    picture: text(entry["media:group"]?.["media:thumbnail"]?.["@url"]) || undefined,
   }));
 }
+
+/** The feed names a small, letterboxed cover; YouTube keeps the full 16:9 one beside it (not for every video). */
+export const fullSize = (picture: string): string => picture.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg");
