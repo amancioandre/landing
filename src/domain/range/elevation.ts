@@ -9,7 +9,7 @@ export function pickElevation(width: number, height: number): Elevation {
 }
 
 // One glyph per Ansel Adams zone, X (paper) down to 0. Below the ridge, cells are 4px and only round glyphs read.
-const RAMPS = { full: " .,:;!io%#@", round: " ..::-+oo*O" } as const;
+export const RAMPS = { full: " .,:;!io%#@", round: " ..::-+oo*O" } as const;
 export const rampFor = (e: Elevation) => (e === "ridge" ? RAMPS.full : RAMPS.round);
 export const glyphCell = (e: Elevation) => (e === "ridge" ? 5 : 4);
 
