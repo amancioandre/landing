@@ -62,6 +62,7 @@ const groups: { legend: string; rows: Row[] }[] = [
     border: 0; padding: 0; cursor: pointer; color: var(--ink-2); background: var(--paper); box-shadow: 0 0 0 3px var(--paper);
     opacity: calc(1 - var(--leave, 0));
   }
+  :global([data-leaving]) :is(.open, .settings) { pointer-events: none; }
   .open:hover, .open:focus-visible, .open[aria-expanded="true"] { color: var(--signal); }
   .settings {
     position: absolute; z-index: 6; right: var(--gutter); bottom: 70px; width: min(312px, calc(100% - 2 * var(--gutter)));
