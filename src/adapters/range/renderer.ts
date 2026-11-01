@@ -1,6 +1,7 @@
 import { FRAGMENT, VERTEX } from "./shader";
 import type { Rect } from "../../domain/range/geometry";
 import type { NightLook } from "../../content/night";
+import type { Look } from "../../domain/range/settings";
 
 /** Everything the shader needs for one layout; computed by the range view from the domain. */
 export interface Scene {
@@ -14,7 +15,8 @@ export interface Scene {
 
 const FRAME_MS = 1000 / 30;   // fog and wind move slowly; 30 frames a second is plenty and halves the GPU's work
 const UNIFORMS = ["plate", "atlas", "terrain", "depth", "res", "cell", "cover", "focus", "time", "glyphs",
-  "atlasSize", "boldFrom", "boldMist", "fogScale", "edge", "night", "nightInk", "nookAt", "nookLight", "nookSmoke"] as const;
+  "atlasSize", "boldFrom", "boldMist", "fogScale", "edge", "night", "nightInk", "nookAt", "nookLight", "nookSmoke",
+  "weather", "look", "windTime"] as const;
 
 /** Draws the range into a canvas with WebGL2. Owns only drawing: layout comes from the domain. */
 export class RangeRenderer {
@@ -26,6 +28,10 @@ export class RangeRenderer {
   private running = false;
   private visible = true;
   private last = -Infinity;
+  private nook: NightLook["nook"] | null = null;
+  private wind = 1;              // the wind clock's speed and direction, from the visitor's settings
+  private windTime = 0;
+  private ticked = -1;
 
   static create(canvas: HTMLCanvasElement): RangeRenderer | null {
     const gl = canvas.getContext("webgl2", { premultipliedAlpha: true, antialias: false });
@@ -86,9 +92,21 @@ export class RangeRenderer {
   /** The night's glyph colour and the nook's light, as tuned by Andre (content/night.ts). */
   setNightLook(look: NightLook): void {
     const { gl, u } = this;
+    this.nook = look.nook;
     gl.uniform3f(u.nightInk, ...look.ink);
-    gl.uniform4f(u.nookLight, look.nook.radius, look.nook.glow, look.nook.smoke, look.nook.warmth);
     gl.uniform2f(u.nookSmoke, look.nook.smokeHeight, look.nook.smokeSpeed);
+    this.setLook({ fog: 1, wind: 1, windDirection: 1, clouds: 1, fire: 1, smoke: 1, ink: look.ink, nearLift: true, stars: 1, contrast: 1, mist: 1 });
+  }
+
+  /** The visitor's settings, as multiples of the range as drawn (domain/range/settings). */
+  setLook(look: Look): void {
+    const { gl, u, nook } = this;
+    gl.uniform4f(u.weather, look.fog, look.wind, look.windDirection, look.clouds);
+    gl.uniform4f(u.look, look.contrast, look.mist, look.stars, look.nearLift ? 1 : 0);
+    gl.uniform3f(u.nightInk, ...look.ink);
+    if (nook) gl.uniform4f(u.nookLight, nook.radius * (0.5 + 0.5 * look.fire), nook.glow * look.fire, nook.smoke * look.smoke, nook.warmth);
+    this.wind = look.wind * look.windDirection;
+    this.draw(performance.now());
   }
 
   /** Where the nook is on the plate now (fractions), and whether it shows. */
@@ -113,6 +131,10 @@ export class RangeRenderer {
     const { gl, u, focus } = this;
     focus.level += (focus.target - focus.level) * (this.calm ? 1 : 0.1);
     gl.uniform1f(u.time, this.calm ? 0 : ms / 1000);
+    // The wind keeps its own clock, so a change of speed or direction carries on from where the fog is.
+    if (!this.calm && this.ticked >= 0) this.windTime += ((ms - this.ticked) / 1000) * this.wind;
+    this.ticked = ms;
+    gl.uniform1f(u.windTime, this.windTime);
     gl.uniform3f(u.focus, focus.x, focus.y, focus.level);
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);

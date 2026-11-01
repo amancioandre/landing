@@ -5,6 +5,7 @@ import type { InterestStop } from "../../content/interests";
 import { nearMap } from "./near-map";
 import { nookShown } from "../../domain/range/night";
 import { placeCards } from "../../domain/range/card-place";
+import { AS_DRAWN, cellFor, lookOf, rampOf, type RangeSettings } from "../../domain/range/settings";
 import { NIGHT } from "../../content/night";
 import { RangeRenderer } from "./renderer";
 import { seeInterest } from "../letter/visit";
@@ -14,7 +15,9 @@ const loadImage = (src: string) => new Promise<HTMLImageElement>((ok, fail) => {
 });
 
 /** The first screen: lays the waypoints, index and card out from the domain, and hands the renderer its scene. */
-export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): void {
+export interface Range { apply(settings: RangeSettings): void }
+
+export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): Range {
   const canvas = root.querySelector("canvas")!;
   const waypoints = [...root.querySelectorAll<HTMLButtonElement>("[data-stop]")];
   const entries = [...root.querySelectorAll<HTMLButtonElement>("[data-entry]")];
@@ -27,6 +30,7 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
   const isNight = () => document.documentElement.dataset.theme === "night";
   let elevation: Elevation | null = null, plate: HTMLImageElement | null = null, original: Rect | null = null, coverRect: Rect | null = null;
   let chosen = -1;
+  let settings = AS_DRAWN;
 
   const place = () => {
     if (!plate || !elevation) return;
@@ -42,7 +46,7 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
     if (!renderer) return;
     lightTheNook();
     renderer.layout({
-      cover: coverRect, ramp: rampFor(elevation), cellPx: glyphCell(elevation), bold: boldFor(elevation),
+      cover: coverRect, ramp: rampOf(settings.characters, rampFor(elevation)), cellPx: cellFor(glyphCell(elevation), settings.glyphSize), bold: boldFor(elevation),
       boldMist: PLATES[elevation].nearBy === "walk", fog: fogStrength(screen.width),
     });
   };
@@ -140,7 +144,7 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
   }
   // A click anywhere off the card puts it away (ADR 0013).
   document.addEventListener("click", (e) => {
-    if (chosen >= 0 && !(e.target as Element).closest("[data-card], [data-stop], [data-entry]")) close();
+    if (chosen >= 0 && !(e.target as Element).closest("[data-card], [data-stop], [data-entry], [data-settings], [data-settings-open]")) close();
   });
 
   // The bar's interest links lead to the carousel's cards; when the Now holds section 02 instead, they open the range's.
@@ -180,4 +184,14 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): v
   let resizing: ReturnType<typeof setTimeout>;
   addEventListener("resize", () => { clearTimeout(resizing); resizing = setTimeout(layout, 150); });
   layout().then(() => { night(); onScroll(); renderer?.start(); });
+
+  return {
+    // The visitor's settings: the look at once; the glyphs' size and characters need the range laid out again.
+    apply(next) {
+      const redraw = next.glyphSize !== settings.glyphSize || next.characters !== settings.characters;
+      settings = next;
+      renderer?.setLook(lookOf(next));
+      if (redraw) place();
+    },
+  };
 }

@@ -16,6 +16,10 @@ uniform float time, glyphs, atlasSize, boldFrom, boldMist, fogScale, edge, night
 uniform vec3 nightInk, nookAt;
 uniform vec4 nookLight;   // radius, glow, smoke, warmth
 uniform vec2 nookSmoke;   // height, speed
+// The visitor's settings (domain/range/settings), each 1 as drawn: fog, wind, wind direction, clouds; contrast,
+// mist at the foot, stars, Starlight's lift of the near ground. windTime runs at the wind's speed, signed by its direction.
+uniform vec4 weather, look;
+uniform float windTime;
 out vec4 color;
 
 float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
@@ -32,8 +36,9 @@ void main() {
   float base = texture(plate, uv).r;
 
   float trees = smoothstep(.55, .2, base) * smoothstep(.42, .62, uv.y);
-  float gust = pow(.5 + .5 * sin(time * .6 - uv.x * 6.), 3.);
-  float dx = (sin(time * 2.2 + uv.y * 170. + uv.x * 35.) * .35 + gust) * .0018 * trees * uv.y * (1. - night * .6);   // a lighter breeze at night
+  float gust = pow(.5 + .5 * sin(windTime * .6 - uv.x * 6.), 3.);
+  float dx = (sin(time * 2.2 + uv.y * 170. + uv.x * 35.) * .35 + gust) * .0018 * trees * uv.y * (1. - night * .6)
+           * weather.y * weather.z;   // a lighter breeze at night
 
   // Average the cell's footprint, not one point, so tone reads as wash instead of speckle.
   vec2 q = uv + vec2(dx, 0.), h = cell / cover.zw * .25;
@@ -41,30 +46,32 @@ void main() {
              + texture(plate, q + vec2(-h.x, h.y)).r + texture(plate, q + vec2(h.x, h.y)).r) * .25;
 
   float mist = smoothstep(.6, .82, lum) * (1. - smoothstep(.92, .985, lum)) * smoothstep(.05, .12, 1. - base);
-  float drift = fbm(uv * vec2(2.6, 6.) - vec2(time * .03, time * .004));
+  float drift = fbm(uv * vec2(2.6, 6.) - vec2(windTime * .03, time * .004));
   lum += (drift - .5) * .2 * mist;
-  float shadow = fbm(uv * vec2(1.4, 2.2) - vec2(time * .012, 0.));
+  float shadow = fbm(uv * vec2(1.4, 2.2) - vec2(windTime * .012, 0.));
   float body = smoothstep(.08, .2, 1. - base);
-  lum -= smoothstep(.55, .75, shadow) * .07 * body * (1. - night);   // a clear night: no cloud shadow
+  lum -= smoothstep(.55, .75, shadow) * .07 * weather.w * body * (1. - night);   // a clear night: no cloud shadow
 
   // Fog banks: white patches that drift gently left to right across the slopes.
   // Fog moves like a fluid: a warped flow field carries dense banks rightward,
   // covering the slopes and revealing them again as it passes.
   vec2 fq = uv * vec2(1.6, 4.);
   vec2 flow = vec2(fbm(fq + vec2(0., time * .05)), fbm(fq + vec2(5.2, 1.3) - vec2(time * .04)));
-  float bank = fbm(fq + 1.8 * flow - vec2(time * .025, 0.));
+  float bank = fbm(fq + 1.8 * flow - vec2(windTime * .025, 0.));
   float band = smoothstep(.3, .45, uv.y) * (1. - smoothstep(.8, .95, uv.y));
   // Smaller screens see less of the range, so the same banks would bury it: thinner, sparser fog there.
-  float fog = smoothstep(mix(.54, .44, fogScale), mix(.68, .62, fogScale), bank) * band * body * mix(.55, 1., fogScale) * (1. - night);   // and no fog
+  float thicker = (weather.x - 1.) * .1;   // more fog lowers the banks' threshold, so they cover more
+  float fog = smoothstep(mix(.54, .44, fogScale) - thicker, mix(.68, .62, fogScale) - thicker, bank) * band * body
+            * mix(.55, 1., fogScale) * min(weather.x, 1.) * (1. - night);   // and no fog
 
   // Dodge and burn: push each cell away from its neighbourhood, the way Adams separated forms in fog.
   vec2 r = cell / cover.zw * 6.;
   float around = (texture(plate, uv + vec2(r.x, 0.)).r + texture(plate, uv - vec2(r.x, 0.)).r
                 + texture(plate, uv + vec2(0., r.y)).r + texture(plate, uv - vec2(0., r.y)).r) * .25;
-  lum += (lum - around) * .6 * body;
+  lum += (lum - around) * .6 * look.x * body;
 
   // N+1: expand the mid-tones around Zone V; keep snow and fog (IX-X) white and blacks anchored.
-  float zone = clamp((lum - .62) * 1.2 + .62, 0., 1.);
+  float zone = clamp((lum - .62) * (1. + .2 * look.x) + .62, 0., 1.);
   zone = lum > .9 ? lum : zone;
   float dark = pow(clamp((.94 - zone) / .8, 0., 1.), .75);
   float lift = focus.z * (1. - smoothstep(.02, .14, length((uv - focus.xy) * vec2(1.77, 1.))));
@@ -76,7 +83,7 @@ void main() {
   // The edge only ever reaches up, so the last row is always clear; fine jitter keeps any stretch from running flat.
   float tear = fbm(vec2(c.x * .03, 7.)) * .12 + fbm(vec2(c.x * .35, 3.)) * .035;
   float raw = (res.y - c.y * cell.y) / res.y;
-  float fade = 1. - smoothstep(0., mix(.1, .26, edge), raw - tear);
+  float fade = 1. - smoothstep(0., max(.015, mix(.1, .26, edge) * look.y), raw - tear);
   fade = clamp(fade + (fbm(c * vec2(.06, .14) + 11.) - .5) * .5 * fade * (1. - fade) * 2., 0., 1.);   // patchy, like drifting fog
   dark *= 1. - fade;
   // Dither where the glyph steps down, so each step breaks raggedly instead of along a smooth contour.
@@ -92,7 +99,7 @@ void main() {
   // between their foliage, showing the trees behind in the plate's own tones; a slow smoke climbs and drifts right.
   float glow = 0., smoke = 0., gap = 0., tipLight = 0.;
   if (night > .5 && nookAt.z > .5) {
-    vec2 d = (uv - nookAt.xy) * vec2(cover.z / cover.w, 1.);
+    vec2 d = (uv - nookAt.xy) * vec2(cover.z / cover.w * weather.z, 1.);   // mirrored when the wind is from the east: the smoke leans downwind
     float r = nookLight.x;
     float breathe = .88 + .12 * sin(time * .9) * sin(time * .53 + 1.3);
     glow = exp(-(d.x * d.x / (.003 * r * r) + d.y * d.y / (.0016 * r * r))) * breathe * smoothstep(-.035, .006, -d.y + .012);
@@ -116,7 +123,7 @@ void main() {
 
   // A few faint stars in the clear sky.
   if (night > .5 && g < .5) {
-    float star = step(.9965, hash(c * 1.37 + 2.1)) * step(.93, base) * step(uv.y, .42);
+    float star = step(1. - .0035 * look.z, hash(c * 1.37 + 2.1)) * step(.93, base) * step(uv.y, .42);
     if (star > 0.) { g = 1. + step(.6, hash(c + 9.)); bold = 0.; }
   }
 
@@ -124,7 +131,7 @@ void main() {
   vec3 day = vec3(.933, .922, .898), dusk = vec3(.047);
   // Starlight: the near ground a little brighter than the far range; the nook's light warms what it reaches.
   float reached = clamp(glow * gap * nookLight.y * 1.6 + smoke * .6 + tipLight, 0., 1.);
-  vec3 starlit = min(nightInk * mix(.72, 1.12, bold) * (1. + reached * .35), vec3(.86));
+  vec3 starlit = min(nightInk * mix(1., mix(.72, 1.12, bold), look.w) * (1. + reached * .35), vec3(.86));
   starlit = mix(starlit, starlit * vec3(1.22, .84, .58), clamp(reached * nookLight.w, 0., .55 * nookLight.w));
   vec3 paper = mix(day, dusk, night), inkc = mix(dusk, starlit, night);
   vec3 rgb = mix(paper, inkc, ink * (.8 + .2 * dark));
