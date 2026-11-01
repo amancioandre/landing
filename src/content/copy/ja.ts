@@ -37,6 +37,12 @@ export const JA: Copy = {
   },
   links: { "Code on GitHub": "GitHub のコード", "Films on YouTube": "YouTube の映像", "Stories on Substack": "Substack の物語" },
   range: { label: "山並み：5つの関心ごと", index: "関心ごと", photoToCome: "写真は準備中", lineToCome: "［あなたの言葉で一行］" },
+  settings: {
+    name: "設定", weather: "天気", fog: "霧", wind: "風", from: "風向き", west: "西", east: "東", clouds: "雲", time: "時間",
+    clock: "自分の時計", day: "昼", night: "夜", campfire: "焚き火", fire: "火", smoke: "煙", ink: "インク", moonlight: "月明かり",
+    starlight: "星明かり", faint: "淡く", stars: "星", ascii: "ASCII", glyphs: "文字の大きさ", characters: "文字",
+    asDrawn: "そのまま", full: "フル", round: "丸", contrast: "コントラスト", mist: "もや",
+  },
   carousel: {
     all: "すべての関心ごと", previous: "前の関心ごと", next: "次の関心ごと",
     strip: "関心ごとを一つずつ。矢印キーで移動できます", slide: "{total}件中{n}件目：{name}", show: "{name}を表示",

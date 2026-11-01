@@ -38,6 +38,13 @@ export const EN = {
   },
   links: { "Code on GitHub": "Code on GitHub", "Films on YouTube": "Films on YouTube", "Stories on Substack": "Stories on Substack" },
   range: { label: "The range: five interests", index: "Interests", photoToCome: "photo to come", lineToCome: "[a line in your words]" },
+  settings: {
+    name: "Settings", weather: "Weather", fog: "Fog", wind: "Wind", from: "From", west: "west", east: "east",
+    clouds: "Clouds", time: "Time", clock: "My clock", day: "Day", night: "Night", campfire: "Campfire",
+    fire: "Fire", smoke: "Smoke", ink: "Ink", moonlight: "Moonlight", starlight: "Starlight", faint: "Faint",
+    stars: "Stars", ascii: "ASCII", glyphs: "Glyphs", characters: "Characters", asDrawn: "As drawn",
+    full: "Full", round: "Round", contrast: "Contrast", mist: "Mist",
+  },
   carousel: {
     all: "All interests", previous: "Previous interest", next: "Next interest",
     strip: "Interests, one at a time; use the arrow keys", slide: "{n} of {total}: {name}", show: "Show {name}",

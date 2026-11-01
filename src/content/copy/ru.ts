@@ -37,6 +37,14 @@ export const RU: Copy = {
   },
   links: { "Code on GitHub": "Код на GitHub", "Films on YouTube": "Фильмы на YouTube", "Stories on Substack": "Истории на Substack" },
   range: { label: "Хребет: пять интересов", index: "Интересы", photoToCome: "фото позже", lineToCome: "[строка твоими словами]" },
+  settings: {
+    name: "Настройки", weather: "Погода", fog: "Туман", wind: "Ветер", from: "С", west: "запада",
+    east: "востока", clouds: "Облака", time: "Время", clock: "Мои часы", day: "День", night: "Ночь",
+    campfire: "Костёр", fire: "Огонь", smoke: "Дым", ink: "Чернила", moonlight: "Лунный свет",
+    starlight: "Звёздный свет", faint: "Бледные", stars: "Звёзды", ascii: "ASCII", glyphs: "Знаки",
+    characters: "Набор знаков", asDrawn: "Как нарисовано", full: "Полный", round: "Круглый",
+    contrast: "Контраст", mist: "Дымка",
+  },
   carousel: {
     all: "Все интересы", previous: "Предыдущий интерес", next: "Следующий интерес",
     strip: "Интересы, по одному; используй стрелки", slide: "{n} из {total}: {name}", show: "Показать: {name}",

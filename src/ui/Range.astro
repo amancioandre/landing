@@ -2,6 +2,7 @@
 // The first screen (ADR 0002): the ASCII range, five waypoints on the trail, the index in the sky (ADR 0011),
 // and one card per interest held by a red tether. Layout and drawing live in adapters/range.
 import Icon from "./Icon.astro";
+import RangeSettings from "./RangeSettings.astro";
 import type { Copy } from "../content/copy/copy";
 import type { InterestStop } from "../content/interests";
 import { CENTRE, objectPosition } from "../domain/interests/framing";
@@ -38,12 +39,15 @@ const n = (i: number) => String(i + 1).padStart(2, "0");
       </article>
     ))}
   </div>
+  <RangeSettings copy={copy} />
 </section>
 
 <script>
   import { mountRange } from "../adapters/range/range-view";
   import { STOPS } from "../content/interests";
-  mountRange(document.querySelector<HTMLElement>("[data-range]")!, STOPS);
+  import { mountSettings } from "../adapters/range/settings-view";
+  const range = mountRange(document.querySelector<HTMLElement>("[data-range]")!, STOPS);
+  mountSettings(document.querySelector("[data-settings-open]")!, document.querySelector("[data-settings]")!, range.apply);
   import { mountOffer } from "../adapters/languages/offer";
   mountOffer(document.querySelector<HTMLAnchorElement>("[data-offer]")!);
 </script>

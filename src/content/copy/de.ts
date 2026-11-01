@@ -37,6 +37,14 @@ export const DE: Copy = {
   },
   links: { "Code on GitHub": "Code auf GitHub", "Films on YouTube": "Filme auf YouTube", "Stories on Substack": "Geschichten auf Substack" },
   range: { label: "Die Bergkette: fünf Interessen", index: "Interessen", photoToCome: "Foto folgt", lineToCome: "[ein Satz in deinen Worten]" },
+  settings: {
+    name: "Einstellungen", weather: "Wetter", fog: "Nebel", wind: "Wind", from: "Aus", west: "West",
+    east: "Ost", clouds: "Wolken", time: "Zeit", clock: "Meine Uhr", day: "Tag", night: "Nacht",
+    campfire: "Lagerfeuer", fire: "Feuer", smoke: "Rauch", ink: "Tinte", moonlight: "Mondlicht",
+    starlight: "Sternenlicht", faint: "Schwach", stars: "Sterne", ascii: "ASCII", glyphs: "Zeichen",
+    characters: "Zeichensatz", asDrawn: "Wie gezeichnet", full: "Voll", round: "Rund", contrast: "Kontrast",
+    mist: "Dunst",
+  },
   carousel: {
     all: "Alle Interessen", previous: "Vorheriges Interesse", next: "Nächstes Interesse",
     strip: "Interessen, eins nach dem anderen; nutze die Pfeiltasten", slide: "{n} von {total}: {name}", show: "{name} zeigen",

@@ -37,6 +37,14 @@ export const FR: Copy = {
   },
   links: { "Code on GitHub": "Code sur GitHub", "Films on YouTube": "Films sur YouTube", "Stories on Substack": "Histoires sur Substack" },
   range: { label: "La chaîne : cinq centres d’intérêt", index: "Centres d’intérêt", photoToCome: "photo à venir", lineToCome: "[une phrase avec tes mots]" },
+  settings: {
+    name: "Réglages", weather: "Météo", fog: "Brouillard", wind: "Vent", from: "De l’", west: "ouest",
+    east: "est", clouds: "Nuages", time: "Heure", clock: "Mon heure", day: "Jour", night: "Nuit",
+    campfire: "Feu de camp", fire: "Feu", smoke: "Fumée", ink: "Encre", moonlight: "Clair de lune",
+    starlight: "Lumière des étoiles", faint: "Pâle", stars: "Étoiles", ascii: "ASCII", glyphs: "Glyphes",
+    characters: "Caractères", asDrawn: "Tel quel", full: "Complets", round: "Ronds", contrast: "Contraste",
+    mist: "Brume",
+  },
   carousel: {
     all: "Tous les centres d’intérêt", previous: "Centre d’intérêt précédent", next: "Centre d’intérêt suivant",
     strip: "Centres d’intérêt, un à la fois ; utilise les flèches du clavier", slide: "{n} sur {total} : {name}", show: "Afficher {name}",

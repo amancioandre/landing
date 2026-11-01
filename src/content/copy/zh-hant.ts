@@ -37,6 +37,12 @@ export const ZH_HANT: Copy = {
   },
   links: { "Code on GitHub": "GitHub 上的程式碼", "Films on YouTube": "YouTube 上的影片", "Stories on Substack": "Substack 上的故事" },
   range: { label: "山脈：五個興趣", index: "興趣", photoToCome: "照片即將上線", lineToCome: "［用你的話寫一句］" },
+  settings: {
+    name: "設定", weather: "天氣", fog: "霧", wind: "風", from: "風向", west: "西", east: "東", clouds: "雲", time: "時間",
+    clock: "我的時鐘", day: "白天", night: "夜晚", campfire: "營火", fire: "火", smoke: "煙", ink: "墨色", moonlight: "月光",
+    starlight: "星光", faint: "淡", stars: "星星", ascii: "ASCII", glyphs: "字形", characters: "字元", asDrawn: "原樣",
+    full: "完整", round: "圓潤", contrast: "對比", mist: "薄霧",
+  },
   carousel: {
     all: "全部興趣", previous: "上一個興趣", next: "下一個興趣",
     strip: "興趣，一次一個；可使用方向鍵", slide: "第 {n} 個，共 {total} 個：{name}", show: "顯示{name}",

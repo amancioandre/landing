@@ -37,6 +37,14 @@ export const UK: Copy = {
   },
   links: { "Code on GitHub": "Код на GitHub", "Films on YouTube": "Фільми на YouTube", "Stories on Substack": "Історії на Substack" },
   range: { label: "Хребет: п’ять інтересів", index: "Інтереси", photoToCome: "фото згодом", lineToCome: "[рядок твоїми словами]" },
+  settings: {
+    name: "Налаштування", weather: "Погода", fog: "Туман", wind: "Вітер", from: "З", west: "заходу",
+    east: "сходу", clouds: "Хмари", time: "Час", clock: "Мій годинник", day: "День", night: "Ніч",
+    campfire: "Багаття", fire: "Вогонь", smoke: "Дим", ink: "Чорнило", moonlight: "Місячне світло",
+    starlight: "Зоряне світло", faint: "Бліде", stars: "Зорі", ascii: "ASCII", glyphs: "Знаки",
+    characters: "Набір знаків", asDrawn: "Як намальовано", full: "Повний", round: "Круглий",
+    contrast: "Контраст", mist: "Серпанок",
+  },
   carousel: {
     all: "Усі інтереси", previous: "Попередній інтерес", next: "Наступний інтерес",
     strip: "Інтереси, по одному; користуйся стрілками", slide: "{n} з {total}: {name}", show: "Показати: {name}",

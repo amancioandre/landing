@@ -37,6 +37,14 @@ export const ES_ES: Copy = {
   },
   links: { "Code on GitHub": "Código en GitHub", "Films on YouTube": "Vídeos en YouTube", "Stories on Substack": "Historias en Substack" },
   range: { label: "La cordillera: cinco intereses", index: "Intereses", photoToCome: "foto próximamente", lineToCome: "[una frase con tus palabras]" },
+  settings: {
+    name: "Ajustes", weather: "Tiempo", fog: "Niebla", wind: "Viento", from: "Desde", west: "oeste",
+    east: "este", clouds: "Nubes", time: "Hora", clock: "Mi reloj", day: "Día", night: "Noche",
+    campfire: "Hoguera", fire: "Fuego", smoke: "Humo", ink: "Tinta", moonlight: "Luz de luna",
+    starlight: "Luz de estrellas", faint: "Tenue", stars: "Estrellas", ascii: "ASCII", glyphs: "Glifos",
+    characters: "Caracteres", asDrawn: "Como está", full: "Completos", round: "Redondos", contrast: "Contraste",
+    mist: "Bruma",
+  },
   carousel: {
     all: "Todos los intereses", previous: "Interés anterior", next: "Interés siguiente",
     strip: "Intereses, de uno en uno; usa las flechas del teclado", slide: "{n} de {total}: {name}", show: "Mostrar {name}",

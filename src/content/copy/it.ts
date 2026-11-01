@@ -37,6 +37,13 @@ export const IT: Copy = {
   },
   links: { "Code on GitHub": "Codice su GitHub", "Films on YouTube": "Film su YouTube", "Stories on Substack": "Storie su Substack" },
   range: { label: "La catena: cinque interessi", index: "Interessi", photoToCome: "foto in arrivo", lineToCome: "[una frase con le tue parole]" },
+  settings: {
+    name: "Impostazioni", weather: "Meteo", fog: "Nebbia", wind: "Vento", from: "Da", west: "ovest",
+    east: "est", clouds: "Nuvole", time: "Ora", clock: "Il mio orologio", day: "Giorno", night: "Notte",
+    campfire: "Fuoco", fire: "Fiamma", smoke: "Fumo", ink: "Inchiostro", moonlight: "Luna", starlight: "Luce delle stelle",
+    faint: "Tenue", stars: "Stelle", ascii: "ASCII", glyphs: "Glifi", characters: "Caratteri",
+    asDrawn: "Come disegnato", full: "Pieni", round: "Tondi", contrast: "Contrasto", mist: "Foschia",
+  },
   carousel: {
     all: "Tutti gli interessi", previous: "Interesse precedente", next: "Interesse successivo",
     strip: "Interessi, uno alla volta; usa le frecce", slide: "{n} di {total}: {name}", show: "Mostra {name}",

@@ -1,0 +1,94 @@
+---
+// The range's settings (canvas row 21, A; Andre, 2026-10-31): an icon at the range's lower right opens a small panel
+// that turns the weather, the time of day, the campfire, the night's ink and the ASCII itself. Behaviour: adapters/range/settings-view.
+import Icon from "./Icon.astro";
+import type { Copy } from "../content/copy/copy";
+import { AS_DRAWN } from "../domain/range/settings";
+interface Props { copy: Copy }
+const t = Astro.props.copy.settings;
+const amount = (name: keyof typeof AS_DRAWN) => Math.round((AS_DRAWN[name] as number) * 100);
+type Row = { name: keyof typeof AS_DRAWN; label: string; night?: boolean; day?: boolean } & (
+  { options?: undefined } | { options: readonly (readonly [string, string])[] });
+const groups: { legend: string; rows: Row[] }[] = [
+  { legend: t.weather, rows: [
+    { name: "fog", label: t.fog, day: true },
+    { name: "wind", label: t.wind },
+    { name: "windFrom", label: t.from, options: [["west", `← ${t.west}`], ["east", `${t.east} →`]] },
+    { name: "clouds", label: t.clouds, day: true },
+    { name: "time", label: t.time, options: [["clock", t.clock], ["day", t.day], ["night", t.night]] },
+  ] },
+  { legend: t.campfire, rows: [{ name: "fire", label: t.fire, night: true }, { name: "smoke", label: t.smoke, night: true }] },
+  { legend: t.night, rows: [
+    { name: "nightInk", label: t.ink, night: true, options: [["moonlight", t.moonlight], ["starlight", t.starlight], ["faint", t.faint]] },
+    { name: "stars", label: t.stars, night: true },
+  ] },
+  { legend: t.ascii, rows: [
+    { name: "glyphSize", label: t.glyphs },
+    { name: "characters", label: t.characters, options: [["as drawn", t.asDrawn], ["full", t.full], ["round", t.round]] },
+    { name: "contrast", label: t.contrast },
+    { name: "mist", label: t.mist },
+  ] },
+];
+---
+<button class="open" type="button" data-settings-open aria-expanded="false" aria-controls="range-settings" aria-label={t.name}>
+  <Icon name="settings" size={20} />
+</button>
+<form class="settings" id="range-settings" data-settings role="group" aria-label={t.name} hidden>
+  {groups.map((group) => (
+    <fieldset>
+      <legend>{group.legend}</legend>
+      {group.rows.map((row) => row.options ? (
+        <div class:list={["row", { night: row.night, day: row.day }]} role="radiogroup" aria-label={row.label}>
+          <span class="name" aria-hidden="true">{row.label}</span>
+          <span class="choices">
+            {row.options.map(([value, words]) => (
+              <label><input type="radio" name={row.name} value={value} checked={AS_DRAWN[row.name] === value} /><span>{words}</span></label>
+            ))}
+          </span>
+        </div>
+      ) : (
+        <label class:list={["row", { night: row.night, day: row.day }]}>
+          <span class="name">{row.label}</span>
+          <input type="range" name={row.name} min="0" max="100" value={amount(row.name)} />
+        </label>
+      ))}
+    </fieldset>
+  ))}
+</form>
+
+<style>
+  .open {
+    position: absolute; z-index: 6; right: var(--gutter); bottom: 18px; width: 40px; height: 40px; display: grid; place-items: center;
+    border: 0; padding: 0; cursor: pointer; color: var(--ink-2); background: var(--paper); box-shadow: 0 0 0 3px var(--paper);
+    opacity: calc(1 - var(--leave, 0));
+  }
+  .open:hover, .open:focus-visible, .open[aria-expanded="true"] { color: var(--signal); }
+  .settings {
+    position: absolute; z-index: 6; right: var(--gutter); bottom: 70px; width: min(312px, calc(100% - 2 * var(--gutter)));
+    max-height: calc(100% - 150px); overflow: auto; overscroll-behavior: contain;
+    padding: 6px 18px 16px; background: var(--paper); border: 1px solid var(--mark);
+    font: 400 14px/1 var(--sans); letter-spacing: .04em; color: var(--ink-2);
+  }
+  .settings[hidden] { display: none; }
+  fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 12px; }
+  legend { padding: 14px 0 10px; font: 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+  .row { display: grid; grid-template-columns: 84px 1fr; align-items: center; gap: 12px; min-height: 20px; }
+  /* Night-only rows rest by day, fog and clouds by night (the night is clear); both can still be set ahead. */
+  :global([data-theme="day"]) .row.night, :global([data-theme="night"]) .row.day { opacity: .45; }
+  input[type="range"] {
+    appearance: none; width: 100%; height: 20px; margin: 0; background: transparent; cursor: pointer;
+  }
+  input[type="range"]::-webkit-slider-runnable-track { height: 1.5px; background: var(--mark); }
+  input[type="range"]::-moz-range-track { height: 1.5px; background: var(--mark); }
+  input[type="range"]::-webkit-slider-thumb { appearance: none; width: 11px; height: 11px; margin-top: -4.75px; border: 0; border-radius: 50%; background: var(--signal); }
+  input[type="range"]::-moz-range-thumb { width: 11px; height: 11px; border: 0; border-radius: 50%; background: var(--signal); }
+  input[type="range"]:focus-visible { outline: 1px solid var(--signal); outline-offset: 2px; }
+  .choices { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; }
+  .choices label { position: relative; cursor: pointer; }
+  .choices input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .choices span { display: inline-block; padding-bottom: 3px; border-bottom: 1.5px solid transparent; }
+  .choices input:checked + span { color: var(--ink); border-bottom-color: var(--signal); }
+  .choices input:focus-visible + span { outline: 1px solid var(--signal); outline-offset: 2px; }
+  @media (min-width: 700px) { .open, .settings { right: clamp(24px, 3vw, 56px); } }
+  @media (prefers-reduced-motion: no-preference) { .open { transition: color .2s ease; } }
+</style>

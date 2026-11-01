@@ -11,6 +11,7 @@ const PATHS = {
   story: "M3 5.5c3-1.2 6-1.2 9 .6 3-1.8 6-1.8 9-.6v13c-3-1.2-6-1.2-9 .6-3-1.8-6-1.8-9-.6zM12 6.1v13.6",
   out: "M7 17 17 7M8 7h9v9",
   enter: "M20 4v7a4 4 0 0 1-4 4H4M9 10l-5 5 5 5",
+  settings: "M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1M17 6a2 2 0 1 1-4 0 2 2 0 0 1 4 0M11 12a2 2 0 1 1-4 0 2 2 0 0 1 4 0M19 18a2 2 0 1 1-4 0 2 2 0 0 1 4 0",
 } as const;
 
 interface Props { name: keyof typeof PATHS; size?: number; label?: string; class?: string }

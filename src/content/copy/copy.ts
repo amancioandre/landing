@@ -16,6 +16,7 @@ export interface Copy {
   interests: Record<InterestName, InterestWords>;
   links: Record<string, string>;   // link labels that need translating, keyed by the English; proper names stay as they are
   range: { label: string; index: string; photoToCome: string; lineToCome: string };
+  settings: Record<"name" | "weather" | "fog" | "wind" | "from" | "west" | "east" | "clouds" | "time" | "clock" | "day" | "night" | "campfire" | "fire" | "smoke" | "ink" | "moonlight" | "starlight" | "faint" | "stars" | "ascii" | "glyphs" | "characters" | "asDrawn" | "full" | "round" | "contrast" | "mist", string>;   // the range's settings panel (canvas row 21)
   carousel: { all: string; previous: string; next: string; strip: string; slide: string; show: string; carouselRole: string; slideRole: string };
   latest: { nothingYet: string };
   now: {   // the carousel of what Andre tagged (ADR 0027); `{where}` is the place the thing lives

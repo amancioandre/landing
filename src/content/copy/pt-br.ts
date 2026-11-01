@@ -37,6 +37,13 @@ export const PT_BR: Copy = {
   },
   links: { "Code on GitHub": "Código no GitHub", "Films on YouTube": "Filmes no YouTube", "Stories on Substack": "Histórias no Substack" },
   range: { label: "A cordilheira: cinco interesses", index: "Interesses", photoToCome: "foto em breve", lineToCome: "[uma frase com suas palavras]" },
+  settings: {
+    name: "Ajustes", weather: "Clima", fog: "Neblina", wind: "Vento", from: "De", west: "oeste", east: "leste",
+    clouds: "Nuvens", time: "Hora", clock: "Meu relógio", day: "Dia", night: "Noite", campfire: "Fogueira",
+    fire: "Fogo", smoke: "Fumaça", ink: "Tinta", moonlight: "Luar", starlight: "Luz das estrelas",
+    faint: "Fraca", stars: "Estrelas", ascii: "ASCII", glyphs: "Glifos", characters: "Caracteres",
+    asDrawn: "Como desenhado", full: "Completos", round: "Redondos", contrast: "Contraste", mist: "Bruma",
+  },
   carousel: {
     all: "Todos os interesses", previous: "Interesse anterior", next: "Próximo interesse",
     strip: "Interesses, um de cada vez; use as setas do teclado", slide: "{n} de {total}: {name}", show: "Mostrar {name}",

@@ -37,6 +37,12 @@ export const ZH_HANS: Copy = {
   },
   links: { "Code on GitHub": "GitHub 上的代码", "Films on YouTube": "YouTube 上的影片", "Stories on Substack": "Substack 上的故事" },
   range: { label: "山脉：五个兴趣", index: "兴趣", photoToCome: "照片即将上线", lineToCome: "［用你的话写一句］" },
+  settings: {
+    name: "设置", weather: "天气", fog: "雾", wind: "风", from: "风向", west: "西", east: "东", clouds: "云", time: "时间",
+    clock: "我的时钟", day: "白天", night: "夜晚", campfire: "篝火", fire: "火", smoke: "烟", ink: "墨色", moonlight: "月光",
+    starlight: "星光", faint: "淡", stars: "星星", ascii: "ASCII", glyphs: "字形", characters: "字符", asDrawn: "原样",
+    full: "完整", round: "圆润", contrast: "对比度", mist: "薄雾",
+  },
   carousel: {
     all: "全部兴趣", previous: "上一个兴趣", next: "下一个兴趣",
     strip: "兴趣，一次一个；可使用方向键", slide: "第 {n} 个，共 {total} 个：{name}", show: "显示{name}",

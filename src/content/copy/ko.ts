@@ -37,6 +37,12 @@ export const KO: Copy = {
   },
   links: { "Code on GitHub": "GitHub의 코드", "Films on YouTube": "YouTube의 영상", "Stories on Substack": "Substack의 이야기" },
   range: { label: "산맥: 다섯 가지 관심사", index: "관심사", photoToCome: "사진 준비 중", lineToCome: "[당신의 말로 한 줄]" },
+  settings: {
+    name: "설정", weather: "날씨", fog: "안개", wind: "바람", from: "방향", west: "서쪽", east: "동쪽", clouds: "구름",
+    time: "시간", clock: "내 시계", day: "낮", night: "밤", campfire: "모닥불", fire: "불", smoke: "연기", ink: "잉크",
+    moonlight: "달빛", starlight: "별빛", faint: "희미하게", stars: "별", ascii: "ASCII", glyphs: "글리프",
+    characters: "문자", asDrawn: "그대로", full: "가득", round: "둥글게", contrast: "대비", mist: "옅은 안개",
+  },
   carousel: {
     all: "모든 관심사", previous: "이전 관심사", next: "다음 관심사",
     strip: "관심사를 하나씩 보여 줘요. 화살표 키를 사용하세요", slide: "{total}개 중 {n}번째: {name}", show: "{name} 보기",
