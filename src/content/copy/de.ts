@@ -45,11 +45,7 @@ export const DE: Copy = {
     characters: "Zeichensatz", asDrawn: "Wie gezeichnet", full: "Voll", round: "Rund", contrast: "Kontrast",
     mist: "Dunst",
   },
-  carousel: {
-    all: "Alle Interessen", previous: "Vorheriges Interesse", next: "Nächstes Interesse",
-    strip: "Interessen, eins nach dem anderen; nutze die Pfeiltasten", slide: "{n} von {total}: {name}", show: "{name} zeigen",
-    carouselRole: "Karussell", slideRole: "Folie",
-  },
+  carousel: { carouselRole: "Karussell", slideRole: "Folie" },   // the Now carousel's roles, for screen readers
   latest: { nothingYet: "[noch nichts veröffentlicht]" },
   now: {
     kinds: { note: "Notiz", story: "Geschichte", post: "Beitrag", code: "Code" },

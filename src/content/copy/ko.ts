@@ -43,11 +43,7 @@ export const KO: Copy = {
     moonlight: "달빛", starlight: "별빛", faint: "희미하게", stars: "별", ascii: "ASCII", glyphs: "글리프",
     characters: "문자", asDrawn: "그대로", full: "가득", round: "둥글게", contrast: "대비", mist: "옅은 안개",
   },
-  carousel: {
-    all: "모든 관심사", previous: "이전 관심사", next: "다음 관심사",
-    strip: "관심사를 하나씩 보여 줘요. 화살표 키를 사용하세요", slide: "{total}개 중 {n}번째: {name}", show: "{name} 보기",
-    carouselRole: "캐러셀", slideRole: "슬라이드",
-  },
+  carousel: { carouselRole: "캐러셀", slideRole: "슬라이드" },   // the Now carousel's roles, for screen readers
   latest: { nothingYet: "[아직 게시된 글이 없어요]" },
   now: {
     kinds: { note: "노트", story: "이야기", post: "게시물", code: "코드" },

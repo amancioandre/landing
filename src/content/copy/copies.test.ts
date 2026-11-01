@@ -16,8 +16,6 @@ describe("every language has the whole page", () => {
 
   it.each(Object.entries(COPIES))("%s keeps every blank the English fills in", (_, copy) => {
     expect(blanks(copy.letter.failed)).toEqual(["{address}"]);
-    expect(blanks(copy.carousel.slide)).toEqual(blanks("{n}{total}{name}"));
-    expect(blanks(copy.carousel.show)).toEqual(["{name}"]);
     expect(blanks(copy.now.slide)).toEqual(blanks("{n}{total}{kind}"));
     expect(blanks(copy.now.open.story)).toEqual(["{where}"]);
     expect(blanks(copy.now.open.post)).toEqual(["{where}"]);

@@ -45,11 +45,7 @@ export const FR: Copy = {
     characters: "Caractères", asDrawn: "Tel quel", full: "Complets", round: "Ronds", contrast: "Contraste",
     mist: "Brume",
   },
-  carousel: {
-    all: "Tous les centres d’intérêt", previous: "Centre d’intérêt précédent", next: "Centre d’intérêt suivant",
-    strip: "Centres d’intérêt, un à la fois ; utilise les flèches du clavier", slide: "{n} sur {total} : {name}", show: "Afficher {name}",
-    carouselRole: "carrousel", slideRole: "diapositive",
-  },
+  carousel: { carouselRole: "carrousel", slideRole: "diapositive" },   // the Now carousel's roles, for screen readers
   latest: { nothingYet: "[rien de publié pour l’instant]" },
   now: {
     kinds: { note: "Note", story: "Récit", post: "Publication", code: "Code" },

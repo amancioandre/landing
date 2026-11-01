@@ -4,9 +4,12 @@ import Icon from "./Icon.astro";
 import type { Copy } from "../content/copy/copy";
 import type { InterestStop } from "../content/interests";
 import { CHANNELS, CONTACT_ADDRESS } from "../content/channels";
-interface Props { copy: Copy; stops: readonly InterestStop[]; second: { id: string; label: string } }   // section 02: the Now or the Interests
-const { copy, stops, second } = Astro.props;
-const SECTIONS = [["latest", copy.sections.latest], [second.id, second.label]] as const;
+import type { Section } from "../domain/page/sections";
+interface Props { copy: Copy; stops: readonly InterestStop[]; sections: readonly Section[] }
+const { copy, stops, sections } = Astro.props;
+const NAMES = { latest: copy.sections.latest, now: copy.sections.now, write: copy.sections.write };
+// The bar names the sections to read; write to me lives in the bar itself, as the letter.
+const SECTIONS = sections.filter((s) => s.id !== "write").map((s) => [s.id, NAMES[s.id]] as const);
 const n = (i: number) => String(i + 1).padStart(2, "0");
 const slug = (name: string) => `interest-${name.toLowerCase()}`;
 ---
@@ -39,14 +42,16 @@ const slug = (name: string) => `interest-${name.toLowerCase()}`;
   </button>
   <nav class="menu" id="menu" data-menu aria-label={copy.sections.menu} hidden>
     <ol class="menu-sections">
-      <li><a href="#latest"><span class="n">01</span><span class="name">{copy.sections.latest}</span></a></li>
       <li>
-        <a href={`#${second.id}`}><span class="n">02</span><span class="name">{second.label}</span></a>
+        <!-- The interests live on the range, at the top of the page: each opens its card there. -->
+        <span class="group">{copy.sections.interests}</span>
         <ol class="menu-interests" aria-label={copy.sections.interests}>
           {stops.map((stop, i) => <li><a href={`#${slug(stop.name)}`}><span class="n">{n(i)}</span>{stop.label}</a></li>)}
         </ol>
       </li>
-      <li><a href="#write" class="act"><span class="n">03</span><span class="name">{copy.sections.write}</span></a></li>
+      {sections.map((s) => (
+        <li><a href={`#${s.id}`} class:list={{ act: s.id === "write" }}><span class="n">{s.number}</span><span class="name">{NAMES[s.id]}</span></a></li>
+      ))}
     </ol>
     <div class="menu-foot">
       <div class="menu-channels">
@@ -121,6 +126,7 @@ const slug = (name: string) => `interest-${name.toLowerCase()}`;
   .menu .n { font: 400 12px var(--mono); color: var(--mute); }
   .menu .name { font-size: 24px; line-height: 1.3; font-weight: 500; letter-spacing: -.01em; }
   .menu .act .name { color: var(--signal); letter-spacing: .02em; }
+  .menu-sections .group { display: block; padding: 8px 0 0 30px; font: 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
   .menu-interests { display: flex; flex-direction: column; margin-top: 6px !important; padding-left: 30px !important; }
   .menu-interests a { display: flex; gap: 12px; align-items: baseline; padding: 8px 0; font-size: 16px; text-decoration: none; }
   .menu-interests .n { font-weight: 500; font-size: 11px; color: var(--signal); }

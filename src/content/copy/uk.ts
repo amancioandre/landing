@@ -45,11 +45,7 @@ export const UK: Copy = {
     characters: "Набір знаків", asDrawn: "Як намальовано", full: "Повний", round: "Круглий",
     contrast: "Контраст", mist: "Серпанок",
   },
-  carousel: {
-    all: "Усі інтереси", previous: "Попередній інтерес", next: "Наступний інтерес",
-    strip: "Інтереси, по одному; користуйся стрілками", slide: "{n} з {total}: {name}", show: "Показати: {name}",
-    carouselRole: "карусель", slideRole: "слайд",
-  },
+  carousel: { carouselRole: "карусель", slideRole: "слайд" },   // the Now carousel's roles, for screen readers
   latest: { nothingYet: "[поки нічого не опубліковано]" },
   now: {
     kinds: { note: "Нотатка", story: "Оповідання", post: "Допис", code: "Код" },

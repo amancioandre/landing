@@ -7,13 +7,13 @@ import Footer from "./Footer.astro";
 import Range from "./Range.astro";
 import WriteLetter from "./WriteLetter.astro";
 import LatestList from "./LatestList.astro";
-import Carousel from "./Carousel.astro";
 import Intro from "./Intro.astro";
 import NowCarousel from "./NowCarousel.astro";
 import { copyIn } from "../content/copy";
 import { stopsIn } from "../content/interests";
 import { loadNow } from "../adapters/now/load";
 import { showsNow } from "../domain/now/now";
+import { sectionsOf } from "../domain/page/sections";
 import type { Language } from "../domain/languages/languages";
 
 interface Props { language: Language }
@@ -21,19 +21,17 @@ const { language } = Astro.props;
 const copy = copyIn(language);
 const stops = stopsIn(copy);
 const items = await loadNow();
-// Section 02 is the Now once Andre has tagged something; until then the Interests carousel keeps it (ADR 0027).
-const second = showsNow(items) ? { id: "now", label: copy.sections.now } : { id: "interests", label: copy.sections.interests };
+const sections = sectionsOf({ showsNow: showsNow(items) });
+const number = (id: string) => sections.find((s) => s.id === id)?.number ?? "";
 ---
 <Base title="André Amnc" language={language} copy={copy}>
-  <Bar copy={copy} stops={stops} second={second} />
+  <Bar copy={copy} stops={stops} sections={sections} />
   <Range copy={copy} stops={stops} />
   <main>
     <Intro copy={copy} />
-    <Section id="latest" number="01" label={copy.sections.latest}><LatestList copy={copy} language={language} /></Section>
-    {second.id === "now"
-      ? <Section id="now" number="02" drop={16} label={second.label}><NowCarousel copy={copy} language={language} items={items} /></Section>
-      : <Section id="interests" number="02" drop={16} label={second.label}><Carousel copy={copy} stops={stops} /></Section>}
-    <Section id="write" number="03" drop={14} label={copy.sections.write}><WriteLetter copy={copy} /></Section>
+    <Section id="latest" number={number("latest")} label={copy.sections.latest}><LatestList copy={copy} language={language} /></Section>
+    {number("now") && <Section id="now" number={number("now")} drop={16} label={copy.sections.now}><NowCarousel copy={copy} language={language} items={items} /></Section>}
+    <Section id="write" number={number("write")} drop={14} label={copy.sections.write}><WriteLetter copy={copy} /></Section>
   </main>
   <Footer copy={copy} language={language} />
 </Base>

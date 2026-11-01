@@ -43,11 +43,7 @@ export const JA: Copy = {
     starlight: "星明かり", faint: "淡く", stars: "星", ascii: "ASCII", glyphs: "文字の大きさ", characters: "文字",
     asDrawn: "そのまま", full: "フル", round: "丸", contrast: "コントラスト", mist: "もや",
   },
-  carousel: {
-    all: "すべての関心ごと", previous: "前の関心ごと", next: "次の関心ごと",
-    strip: "関心ごとを一つずつ。矢印キーで移動できます", slide: "{total}件中{n}件目：{name}", show: "{name}を表示",
-    carouselRole: "カルーセル", slideRole: "スライド",
-  },
+  carousel: { carouselRole: "カルーセル", slideRole: "スライド" },   // the Now carousel's roles, for screen readers
   latest: { nothingYet: "［まだ何も公開されていません］" },
   now: {
     kinds: { note: "メモ", story: "物語", post: "投稿", code: "コード" },

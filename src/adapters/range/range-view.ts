@@ -148,7 +148,7 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): R
     if (chosen >= 0 && !(e.target as Element).closest("[data-card], [data-stop], [data-entry], [data-settings], [data-settings-open]")) close();
   });
 
-  // The bar's interest links lead to the carousel's cards; when the Now holds section 02 instead, they open the range's.
+  // The menu's interest links open the range's cards: the range and its index carry the interests.
   document.addEventListener("click", (e) => {
     const link = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#interest-"]');
     if (!link || document.getElementById(link.hash.slice(1))) return;

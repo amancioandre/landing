@@ -45,11 +45,7 @@ export const RU: Copy = {
     characters: "Набор знаков", asDrawn: "Как нарисовано", full: "Полный", round: "Круглый",
     contrast: "Контраст", mist: "Дымка",
   },
-  carousel: {
-    all: "Все интересы", previous: "Предыдущий интерес", next: "Следующий интерес",
-    strip: "Интересы, по одному; используй стрелки", slide: "{n} из {total}: {name}", show: "Показать: {name}",
-    carouselRole: "карусель", slideRole: "слайд",
-  },
+  carousel: { carouselRole: "карусель", slideRole: "слайд" },   // the Now carousel's roles, for screen readers
   latest: { nothingYet: "[пока ничего не опубликовано]" },
   now: {
     kinds: { note: "Заметка", story: "Рассказ", post: "Пост", code: "Код" },

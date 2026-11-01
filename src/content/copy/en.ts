@@ -45,11 +45,7 @@ export const EN = {
     stars: "Stars", ascii: "ASCII", glyphs: "Glyphs", characters: "Characters", asDrawn: "As drawn",
     full: "Full", round: "Round", contrast: "Contrast", mist: "Mist",
   },
-  carousel: {
-    all: "All interests", previous: "Previous interest", next: "Next interest",
-    strip: "Interests, one at a time; use the arrow keys", slide: "{n} of {total}: {name}", show: "Show {name}",
-    carouselRole: "carousel", slideRole: "slide",
-  },
+  carousel: { carouselRole: "carousel", slideRole: "slide" },   // the Now carousel's roles, for screen readers
   latest: { nothingYet: "[nothing published yet]" },
   now: {
     kinds: { note: "Note", story: "Story", post: "Post", code: "Code" },

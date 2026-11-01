@@ -1,7 +1,7 @@
 // What the page notices about a visit, sent with a letter so Andre knows its context (ADR 0024).
 import type { Visit } from "../../domain/letter/delivery";
 
-export const INTEREST_SEEN = "interest-seen";   // the carousel and the range announce the interest a visitor looks at
+export const INTEREST_SEEN = "interest-seen";   // the range announces the interest a visitor looks at
 
 let lastInterest: string | undefined;
 let listening = false;

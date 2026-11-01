@@ -43,11 +43,7 @@ export const ZH_HANS: Copy = {
     starlight: "星光", faint: "淡", stars: "星星", ascii: "ASCII", glyphs: "字形", characters: "字符", asDrawn: "原样",
     full: "完整", round: "圆润", contrast: "对比度", mist: "薄雾",
   },
-  carousel: {
-    all: "全部兴趣", previous: "上一个兴趣", next: "下一个兴趣",
-    strip: "兴趣，一次一个；可使用方向键", slide: "第 {n} 个，共 {total} 个：{name}", show: "显示{name}",
-    carouselRole: "轮播", slideRole: "幻灯片",
-  },
+  carousel: { carouselRole: "轮播", slideRole: "幻灯片" },   // the Now carousel's roles, for screen readers
   latest: { nothingYet: "［暂无发布内容］" },
   now: {
     kinds: { note: "笔记", story: "故事", post: "帖子", code: "代码" },
