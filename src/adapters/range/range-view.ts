@@ -5,7 +5,7 @@ import type { InterestStop } from "../../content/interests";
 import { nearMap } from "./near-map";
 import { nookShown } from "../../domain/range/night";
 import { placeCards } from "../../domain/range/card-place";
-import { AS_DRAWN, cellFor, lookOf, rampOf, type RangeSettings } from "../../domain/range/settings";
+import { STARTING, cellFor, lookOf, rampOf, type RangeSettings } from "../../domain/range/settings";
 import { NIGHT } from "../../content/night";
 import { RangeRenderer } from "./renderer";
 import { seeInterest } from "../letter/visit";
@@ -27,10 +27,11 @@ export function mountRange(root: HTMLElement, stops: readonly InterestStop[]): R
   const bar = document.querySelector<HTMLElement>("header.bar");
   const renderer = RangeRenderer.create(canvas);
   renderer?.setNightLook(NIGHT);
+  renderer?.setLook(lookOf(STARTING));
   const isNight = () => document.documentElement.dataset.theme === "night";
   let elevation: Elevation | null = null, plate: HTMLImageElement | null = null, original: Rect | null = null, coverRect: Rect | null = null;
   let chosen = -1;
-  let settings = AS_DRAWN;
+  let settings = STARTING;
 
   const place = () => {
     if (!plate || !elevation) return;

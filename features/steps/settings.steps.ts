@@ -17,10 +17,15 @@ Then("the settings offer {string}, {string}, {string}, {string}, {string}, {stri
     for (const label of [a, b, c, d, e, f, g, h, i, j, k, l, m]) await expect(panel(page).getByText(label, { exact: true }).first()).toBeVisible();
   });
 
-Then("every amount starts at its middle, as the range is drawn", async ({ page }) => {
-  const sliders = panel(page).getByRole("slider");
-  expect(await sliders.count()).toBe(9);
-  for (const slider of await sliders.all()) await expect(slider).toHaveValue("50");
+Then("the settings start where Andre set them: fog {int}, wind {int} from the east, clouds {int}, fire {int}, smoke {int}, stars {int}, glyphs {int}, contrast {int}, mist {int}",
+  async ({ page }, fog: number, wind: number, clouds: number, fire: number, smoke: number, stars: number, glyphs: number, contrast: number, mist: number) => {
+    const at = { fog, wind, clouds, fire, smoke, stars, glyphSize: glyphs, contrast, mist };
+    for (const [name, value] of Object.entries(at)) await expect(panel(page).locator(`input[name=${name}]`)).toHaveValue(String(value));
+    await expect(panel(page).getByRole("radio", { name: "east →" })).toBeChecked();
+  });
+
+Then("the time follows the visitor's clock, the ink is Starlight and the characters are Full", async ({ page }) => {
+  for (const name of ["My clock", "Starlight", "Full"]) await expect(panel(page).getByRole("radio", { name, exact: true })).toBeChecked();
 });
 
 When("I choose {string} for the time", async ({ page }, sky: string) => {

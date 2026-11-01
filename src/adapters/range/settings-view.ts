@@ -1,11 +1,11 @@
-import { AS_DRAWN, withSetting, type RangeSettings } from "../../domain/range/settings";
+import { STARTING, withSetting, type RangeSettings } from "../../domain/range/settings";
 import { showTheSky } from "../daylight/clock";
 
 const AMOUNT_MAX = 100;   // the sliders run 0–100; the domain's amounts run 0–1
 
 /** The range's settings panel: opens from its icon, turns the range as each control moves, and holds day or night. */
 export function mountSettings(open: HTMLButtonElement, panel: HTMLFormElement, apply: (settings: RangeSettings) => void): void {
-  let settings = AS_DRAWN;
+  let settings = STARTING;
 
   const show = (shown: boolean) => {
     panel.hidden = !shown;

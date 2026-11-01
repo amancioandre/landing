@@ -3,11 +3,11 @@
 // that turns the weather, the time of day, the campfire, the night's ink and the ASCII itself. Behaviour: adapters/range/settings-view.
 import Icon from "./Icon.astro";
 import type { Copy } from "../content/copy/copy";
-import { AS_DRAWN } from "../domain/range/settings";
+import { STARTING } from "../domain/range/settings";
 interface Props { copy: Copy }
 const t = Astro.props.copy.settings;
-const amount = (name: keyof typeof AS_DRAWN) => Math.round((AS_DRAWN[name] as number) * 100);
-type Row = { name: keyof typeof AS_DRAWN; label: string; night?: boolean; day?: boolean } & (
+const amount = (name: keyof typeof STARTING) => Math.round((STARTING[name] as number) * 100);
+type Row = { name: keyof typeof STARTING; label: string; night?: boolean; day?: boolean } & (
   { options?: undefined } | { options: readonly (readonly [string, string])[] });
 const groups: { legend: string; rows: Row[] }[] = [
   { legend: t.weather, rows: [
@@ -42,7 +42,7 @@ const groups: { legend: string; rows: Row[] }[] = [
           <span class="name" aria-hidden="true">{row.label}</span>
           <span class="choices">
             {row.options.map(([value, words]) => (
-              <label><input type="radio" name={row.name} value={value} checked={AS_DRAWN[row.name] === value} /><span>{words}</span></label>
+              <label><input type="radio" name={row.name} value={value} checked={STARTING[row.name] === value} /><span>{words}</span></label>
             ))}
           </span>
         </div>

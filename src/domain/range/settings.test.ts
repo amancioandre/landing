@@ -1,10 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { AS_DRAWN, cellFor, lookOf, rampOf, withSetting } from "./settings";
+import { AS_DRAWN, STARTING, cellFor, lookOf, rampOf, withSetting } from "./settings";
 
 describe("the range's settings (canvas row 21, A: a small panel at the range's lower right)", () => {
-  it("start as the range is drawn today: every amount at its middle, the wind from the west, the visitor's clock", () => {
+  it("as drawn means the range as it was first drawn: every amount at its middle, the wind from the west, the visitor's clock", () => {
     expect(AS_DRAWN).toMatchObject({ fog: 0.5, wind: 0.5, windFrom: "west", clouds: 0.5, time: "clock", fire: 0.5,
       smoke: 0.5, nightInk: "starlight", stars: 0.5, glyphSize: 0.5, characters: "as drawn", contrast: 0.5, mist: 0.5 });
+  });
+
+  it("start where Andre set them on 2026-10-31: light fog, an east wind, no clouds, a full sky of stars, fine full glyphs", () => {
+    expect(STARTING).toEqual({ fog: 0.19, wind: 0.5, windFrom: "east", clouds: 0, time: "clock", fire: 0.5, smoke: 0.92,
+      nightInk: "starlight", stars: 1, glyphSize: 0.15, characters: "full", contrast: 0.16, mist: 0.07 });
   });
 
   it("as drawn, ask the drawing for exactly what it does today", () => {

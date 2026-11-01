@@ -21,6 +21,12 @@ export const AS_DRAWN: RangeSettings = {
   nightInk: "starlight", stars: 0.5, glyphSize: 0.5, characters: "as drawn", contrast: 0.5, mist: 0.5,
 };
 
+/** Where every visitor starts: Andre's own settings, set on the panel on 2026-10-31 (time stays on the visitor's clock). */
+export const STARTING: RangeSettings = {
+  fog: 0.19, wind: 0.5, windFrom: "east", clouds: 0, time: "clock", fire: 0.5, smoke: 0.92,
+  nightInk: "starlight", stars: 1, glyphSize: 0.15, characters: "full", contrast: 0.16, mist: 0.07,
+};
+
 export const NIGHT_INKS: Record<NightInk, readonly [number, number, number]> = {
   moonlight: [0.64, 0.62, 0.59], starlight: [0.66, 0.64, 0.6], faint: [0.42, 0.41, 0.39],
 };

@@ -6,7 +6,8 @@ Feature: The range's settings
     Given I open the home page
     When I open the range's settings
     Then the settings offer "Fog", "Wind", "From", "Clouds", "Time", "Fire", "Smoke", "Ink", "Stars", "Glyphs", "Characters", "Contrast" and "Mist"
-    And every amount starts at its middle, as the range is drawn
+    And the settings start where Andre set them: fog 19, wind 50 from the east, clouds 0, fire 50, smoke 92, stars 100, glyphs 15, contrast 16, mist 7
+    And the time follows the visitor's clock, the ink is Starlight and the characters are Full
 
   Scenario: Holding night in the middle of the day
     Given it is "2026-12-21T12:00:00-08:00" in "America/Vancouver"
