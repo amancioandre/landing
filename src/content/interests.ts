@@ -8,7 +8,7 @@ export interface InterestLink { label: string; url: string; icon?: IconName }
 export interface InterestStop {
   name: InterestName;                      // in English, always: anchors and Andre's letters use it
   label: string;                           // as the page shows it
-  at: readonly [number, number];          // on the trail, in the original's frame
+  at: readonly [number, number];          // on the land, in the original's frame
   photo?: { src: string; alt: string; focus?: Focus };   // Andre's own photographs, in black and white; focus keeps the subject in any frame
   line?: string;                           // Andre's line, still to come
   piece?: string;                          // under the card; hidden until there is content tagged for the interest

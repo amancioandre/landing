@@ -3,6 +3,7 @@ import type { Fraction4, Frame } from "../domain/range/geometry";
 
 // Provenance: AI ink-wash plates (Higgsfield, 2026-10-29), the valley and landscape outpainted from the ridge
 // original; stored as greyscale (the red channel the shader reads). `inner` is where the original sits in each.
+// The drawn trail and its markers were painted out of all three (Andre, 2026-10-31): the waypoints stand on the land.
 export interface Plate { src: string; inner: Fraction4; anchorY: number; nearBy: "walk" | "crest" }
 
 export const PLATES: Record<Elevation, Plate> = {
