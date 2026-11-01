@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { estimatePlace, isNight, solarElevation } from "./sun";
+import { estimatePlace, isNight, solarElevation, themeFor } from "./sun";
 
 const VANCOUVER = { lat: 49.28, lon: -123.12 };
 
@@ -41,5 +41,17 @@ describe("estimating where the visitor is from their time zone", () => {
 
   it("puts southern zones south of the equator", () => {
     expect(estimatePlace("Australia/Nowhere", -600, KNOWN, ["Australia/"]).lat).toBe(-35);
+  });
+});
+
+describe("the sky a visitor chooses in the range's settings", () => {
+  it("follows the visitor's sun on their clock", () => {
+    expect(themeFor("clock", true)).toBe("night");
+    expect(themeFor("clock", false)).toBe("day");
+  });
+
+  it("holds day or night when the visitor picks one, whatever the sun", () => {
+    expect(themeFor("day", true)).toBe("day");
+    expect(themeFor("night", false)).toBe("night");
   });
 });

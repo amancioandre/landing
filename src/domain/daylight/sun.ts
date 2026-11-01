@@ -20,6 +20,10 @@ export function solarElevation(date: Date, { lat, lon }: Place): number {
 
 export const isNight = (date: Date, place: Place) => solarElevation(date, place) < SUNSET;
 
+/** The page's theme: the visitor's sun, unless they hold day or night in the range's settings. */
+export const themeFor = (sky: "clock" | "day" | "night", sunDown: boolean): "day" | "night" =>
+  sky === "clock" ? (sunDown ? "night" : "day") : sky;
+
 /**
  * Where the visitor probably is, without asking: the time zone's own city when known; otherwise the longitude
  * the clock's offset implies, at a temperate latitude on the right side of the equator. Roughly right, never exact.
