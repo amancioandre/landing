@@ -32,3 +32,23 @@ Then("the feed lists {string} and {string}", async ({}, a: string, b: string) =>
   expect(feed).toContain(`<title>${a}</title>`);
   expect(feed).toContain(`<title>${b}</title>`);
 });
+
+const cover = (page: Page) => entries(page).first().locator("img");
+const box = async (l: ReturnType<Page["locator"]>) => (await l.boundingBox())!;
+
+Then("the newest post's cover sits beside its words", async ({ page }) => {
+  await expect(cover(page)).toHaveAttribute("src", "https://i2.ytimg.com/vi/abc123/hqdefault.jpg");
+  const [picture, title] = [await box(cover(page)), await box(entries(page).first().locator(".title"))];
+  expect(picture.x).toBeGreaterThan(title.x + title.width);
+  expect(picture.y).toBeLessThanOrEqual(title.y);
+});
+
+Then("only the newest post shows a cover", async ({ page }) => {
+  await expect(page.locator("#latest [data-entry-post] img")).toHaveCount(1);
+});
+
+Then("the newest post's cover sits above its title", async ({ page }) => {
+  const [picture, title] = [await box(cover(page)), await box(entries(page).first().locator(".title"))];
+  expect(picture.y + picture.height).toBeLessThanOrEqual(title.y);
+  expect(picture.width).toBeGreaterThan(300);
+});

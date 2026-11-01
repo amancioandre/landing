@@ -14,3 +14,12 @@ Feature: Latest
   Scenario: The hub has one feed for everything
     When I read the site's feed
     Then the feed lists "A film title" and "The Way Back"
+
+  Scenario: The newest post shows its own cover beside its words (canvas row 22, B)
+    Given I am on a wide screen
+    Then the newest post's cover sits beside its words
+    And only the newest post shows a cover
+
+  Scenario: On a phone the newest post's cover comes before its words
+    Given I am on a phone
+    Then the newest post's cover sits above its title

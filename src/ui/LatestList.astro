@@ -1,5 +1,6 @@
 ---
 // Latest (ADR 0009): the newest post leads with its opening words; the rest follow as rows. Each opens where it lives.
+// The newest also shows its own cover beside its words, or above them on a phone (canvas row 22, B; Andre, 2026-11-01).
 import Icon from "./Icon.astro";
 import { loadLatest } from "../adapters/feeds/load";
 import type { Copy } from "../content/copy/copy";
@@ -17,7 +18,8 @@ const longDate = (iso: string) => new Date(iso).toLocaleDateString(language.tag,
   <ol class="entries">
     {entries.map((e, i) => (
       <li>
-        <a class:list={["post", { lead: i === 0 }]} href={e.url} target="_blank" rel="noopener" data-entry-post>
+        <a class:list={["post", { lead: i === 0, pictured: i === 0 && e.picture }]} href={e.url} target="_blank" rel="noopener" data-entry-post>
+          {i === 0 && e.picture && <img src={e.picture} alt="" width="1280" height="720" loading="lazy" decoding="async" referrerpolicy="no-referrer" />}
           <time datetime={e.date}>{longDate(e.date)}</time>
           <span class="title">{e.title}</span>
           {i === 0 && e.excerpt && <span class="excerpt">{e.excerpt}</span>}
@@ -35,10 +37,17 @@ const longDate = (iso: string) => new Date(iso).toLocaleDateString(language.tag,
   time { font: 400 12px var(--mono); color: var(--mute); }
   .title { font-size: 20px; line-height: 28px; font-weight: 500; }
   .lead .title { font-size: 28px; line-height: 34px; letter-spacing: -.01em; }
-  .excerpt { color: var(--ink-2); max-width: 62ch; }
+  .excerpt { color: var(--ink); max-width: 62ch; }
+  /* The cover is cropped to 16:9, which also trims the bars YouTube letterboxes its small covers with. */
+  .pictured img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; background: var(--mark); margin-bottom: 12px; }
   .via { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; }
   /* The way out waits in grey and turns red only when it is the one being pointed at: red stays a single signal. */
   .via :global(.out) { color: var(--mute); transition: color .2s ease; }
   .post:hover .via :global(.out), .post:focus-visible .via :global(.out) { color: var(--signal); }
-  @media (min-width: 900px) { .lead .title { font-size: 32px; line-height: 38px; } }
+  @media (min-width: 900px) {
+    .lead .title { font-size: 32px; line-height: 38px; }
+    .pictured { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto auto auto 1fr; column-gap: 40px; row-gap: 8px; align-items: start; }
+    .pictured > :not(img) { grid-column: 1; }
+    .pictured img { grid-column: 2; grid-row: 1 / span 4; margin-bottom: 0; }
+  }
 </style>
