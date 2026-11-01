@@ -35,3 +35,11 @@ Then("the settings are closed", async ({ page }) => {
   await expect(panel(page)).toBeHidden();
   await expect(button(page)).toHaveAttribute("aria-expanded", "false");
 });
+
+Then("the strip at the foot is not covered by the settings icon", async ({ page }) => {
+  await page.waitForTimeout(500);
+  const box = (await button(page).boundingBox())!;
+  const onTop = await page.evaluate(([x, y]) => document.elementFromPoint(x, y)?.closest("[data-card], [data-settings-open]")?.hasAttribute("data-card"),
+    [box.x + box.width / 2, box.y + box.height / 2]);
+  expect(onTop, "the settings icon lies over the open card's strip").toBe(true);
+});

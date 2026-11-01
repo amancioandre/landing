@@ -29,3 +29,9 @@ Feature: The range's settings
     When I open the range's settings
     And I press Escape
     Then the settings are closed
+
+  Scenario: On a phone, the strip of an open card lies over the settings icon
+    Given I open the home page
+    And I am on a phone
+    When I choose "Writer" in the index
+    Then the strip at the foot is not covered by the settings icon
