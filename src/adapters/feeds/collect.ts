@@ -1,11 +1,11 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { refresh, SOURCES, type Entry, type Snapshot, type Source } from "../../domain/latest/latest";
-import { FEEDS, GITHUB_USER, LATEST_FILE, SUBSTACK_RELAY } from "../../content/feeds";
+import { FEEDS, GITHUB_USER, LATEST_FILE } from "../../content/feeds";
 import { fullSize, parseRepos, parseSubstack, parseYouTube } from "./parse";
 
 // The collector (ADR 0030): reads every place Andre publishes and refreshes the saved copy of Latest. A source that
-// can't be read keeps its last entries. It runs on a schedule; the page itself never reads the network.
+// can't be read keeps its last entries. It runs weekly on Andre's machine; the page itself never reads the network.
 const TRIES = 4;
 const pause = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -45,8 +45,7 @@ async function repos(): Promise<Entry[]> {
 }
 
 const READERS: Record<Source, () => Promise<Entry[]>> = {
-  // Through the relay first (Substack turns GitHub's servers away), then straight from Substack.
-  substack: async () => parseSubstack(await get(SUBSTACK_RELAY).catch(() => get(FEEDS.substack))),
+  substack: async () => parseSubstack(await get(FEEDS.substack)),   // Substack turns GitHub's servers away, never Andre's machine
   youtube: async () => Promise.all(parseYouTube(await get(FEEDS.youtube)).map(sharpest)),
   github: repos,
 };

@@ -1,5 +1,5 @@
 # The hub goes live: every push to main is checked, built, and published to GitHub Pages. Latest is built from the saved
-# copy in src/content/latest.json; the latest workflow keeps it fresh and asks for this build when it changes (ADR 0030).
+# copy in src/content/latest.json; a weekly run on Andre's machine keeps it fresh and pushes it when it changes (ADR 0030).
 name: site
 
 on:
