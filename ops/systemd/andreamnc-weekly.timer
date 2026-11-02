@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh andreamnc.com's Latest and Now every week
+
+[Timer]
+OnCalendar=Mon *-*-* 07:00:00
+RandomizedDelaySec=600
+Persistent=true
+
+[Install]
+WantedBy=timers.target

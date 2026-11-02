@@ -1,0 +1,13 @@
+# The weekly refresh of andreamnc.com (ADR 0030): Latest goes live when it changed; a changed Now waits on now/weekly.
+# Install: ln -s "$PWD"/ops/systemd/andreamnc-weekly.* ~/.config/systemd/user/ && systemctl --user enable --now andreamnc-weekly.timer
+# Log: journalctl --user -u andreamnc-weekly
+[Unit]
+Description=andreamnc.com weekly refresh (Latest published, the Now held for review)
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/Development/andre-amnc/landing
+# zsh -l reads ~/.zshenv (the Buffer key the Now reads); nvm gives the node in .nvmrc.
+ExecStart=/usr/bin/zsh -lc 'source ~/.nvm/nvm.sh && nvm use --silent && npm run -s refresh:weekly'
+Nice=10
