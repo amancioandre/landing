@@ -8,7 +8,7 @@ import type { Language } from "../domain/languages/languages";
 interface Props { copy: Copy; language: Language }
 const { copy, language } = Astro.props;
 
-const NAMES = { substack: "Substack", youtube: "YouTube" } as const;
+const NAMES = { substack: "Substack", youtube: "YouTube", github: "GitHub" } as const;
 const entries = await loadLatest();
 const longDate = (iso: string) => new Date(iso).toLocaleDateString(language.tag, { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 ---

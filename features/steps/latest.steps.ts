@@ -52,3 +52,13 @@ Then("the newest post's cover sits above its title", async ({ page }) => {
   expect(picture.y + picture.height).toBeLessThanOrEqual(title.y);
   expect(picture.width).toBeGreaterThan(300);
 });
+
+Then("Latest shows {string} from {string}", async ({ page }, title: string, source: string) => {
+  const entry = entries(page).filter({ hasText: title });
+  await expect(entry).toHaveCount(1);
+  await expect(entry).toContainText(source);
+});
+
+Then("Latest never shows {string} or {string}", async ({ page }, a: string, b: string) => {
+  for (const title of [a, b]) await expect(entries(page).locator(".title", { hasText: new RegExp(`^${title}$`) })).toHaveCount(0);
+});

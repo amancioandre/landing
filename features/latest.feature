@@ -23,3 +23,7 @@ Feature: Latest
   Scenario: On a phone the newest post's cover comes before its words
     Given I am on a phone
     Then the newest post's cover sits above its title
+
+  Scenario: An original repo Andre tagged shows in Latest; forks and untagged repos never do
+    Then Latest shows "creative-thesaurus" from "GitHub"
+    And Latest never shows "open-seo" or "landing"
