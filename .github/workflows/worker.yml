@@ -1,5 +1,5 @@
 # The letter's Worker (ADR 0023): tested, then deployed to Cloudflare when its code or the letter's rules change.
-# Kept apart from site.yml, so a Worker problem never holds back the site or its daily rebuild.
+# Kept apart from site.yml, so a Worker problem never holds back the site.
 name: worker
 
 on:
