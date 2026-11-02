@@ -1,0 +1,8 @@
+// The feed relay (ADR 0030): reachable only at andreamnc.com/feeds/substack, like the letter's Worker (ADR 0022).
+{
+  "name": "andreamnc-feeds",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "routes": [{ "pattern": "andreamnc.com/feeds/substack", "zone_name": "andreamnc.com" }]
+}
