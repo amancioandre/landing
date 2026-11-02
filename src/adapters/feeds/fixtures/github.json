@@ -1,0 +1,6 @@
+[
+  { "name": "creative-thesaurus", "description": "A thesaurus for Obsidian, on your own machine.", "html_url": "https://github.com/amancioandre/creative-thesaurus", "created_at": "2026-08-29T10:00:00Z", "fork": false, "private": false, "archived": false, "topics": ["obsidian", "andreamnc"] },
+  { "name": "open-seo", "description": "Someone else's project.", "html_url": "https://github.com/amancioandre/open-seo", "created_at": "2026-10-30T10:00:00Z", "fork": true, "private": false, "archived": false, "topics": ["andreamnc"] },
+  { "name": "landing", "description": "andreamnc.com", "html_url": "https://github.com/amancioandre/landing", "created_at": "2026-10-30T09:00:00Z", "fork": false, "private": false, "archived": false, "topics": [] },
+  { "name": "secret", "description": null, "html_url": "https://github.com/amancioandre/secret", "created_at": "2026-10-01T09:00:00Z", "fork": false, "private": true, "archived": false, "topics": ["andreamnc"] }
+]

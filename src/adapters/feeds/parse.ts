@@ -1,5 +1,6 @@
 import { XMLParser } from "fast-xml-parser";
 import { excerpt, type Entry } from "../../domain/latest/latest";
+import { TAG } from "../now/parse";
 
 const xml = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@" });
 const list = <T>(v: T | T[] | undefined): T[] => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
@@ -26,3 +27,15 @@ export function parseYouTube(feed: string): Entry[] {
 
 /** The feed names a small, letterboxed cover; YouTube keeps the full 16:9 one beside it (not for every video). */
 export const fullSize = (picture: string): string => picture.replace(/\/hqdefault\.jpg$/, "/maxresdefault.jpg");
+
+interface Repo { name: string; description: string | null; html_url: string; created_at: string; fork: boolean; private: boolean; topics?: string[] }
+
+/** GitHub's REST list of repos: only Andre's originals he tagged `andreamnc`, each dated when he made it. */
+export function parseRepos(json: string): Entry[] {
+  return (JSON.parse(json || "[]") as Repo[])
+    .filter((r) => !r.fork && !r.private && (r.topics ?? []).includes(TAG))
+    .map((r) => ({
+      title: r.name, url: r.html_url, date: iso(r.created_at), via: "github" as const,
+      ...(r.description ? { excerpt: excerpt(r.description, EXCERPT) } : {}),
+    }));
+}

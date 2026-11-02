@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { fullSize, parseSubstack, parseYouTube } from "./parse";
+import { fullSize, parseRepos, parseSubstack, parseYouTube } from "./parse";
 
 const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), "utf8");
 
@@ -27,5 +27,12 @@ describe("reading Andre's feeds", () => {
 
   it("reads an empty channel as no entries", () => {
     expect(parseYouTube('<feed xmlns="http://www.w3.org/2005/Atom"><title>André Amnc</title></feed>')).toEqual([]);
+  });
+
+  it("reads Andre's GitHub as his own public repos tagged andreamnc, dated when each was made; never forks", () => {
+    expect(parseRepos(fixture("github.json"))).toEqual([{
+      title: "creative-thesaurus", url: "https://github.com/amancioandre/creative-thesaurus", via: "github",
+      date: "2026-08-29T10:00:00.000Z", excerpt: "A thesaurus for Obsidian, on your own machine.",
+    }]);
   });
 });
