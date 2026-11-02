@@ -1,5 +1,6 @@
 // Latest: what Andre published, wherever it lives. The hub links out; it never hosts the post (ADR 0009).
-export type Source = "substack" | "youtube";
+export const SOURCES = ["substack", "youtube", "github"] as const;
+export type Source = (typeof SOURCES)[number];
 
 export interface Entry {
   readonly title: string;
@@ -20,6 +21,16 @@ export function latest(entries: readonly Entry[], count: number): Entry[] {
     .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
     .slice(0, count);
 }
+
+/** The saved copy of Latest: each source's own entries as last read (ADR 0030). */
+export type Snapshot = Record<Source, Entry[]>;
+
+/** What each source says now; a source missing from `read` could not be read and keeps its last entries. */
+export function refresh(previous: Snapshot, read: Partial<Snapshot>): Snapshot {
+  return Object.fromEntries(SOURCES.map((s) => [s, read[s] ?? previous[s] ?? []])) as Snapshot;
+}
+
+export const everything = (snapshot: Snapshot): Entry[] => SOURCES.flatMap((s) => snapshot[s] ?? []);
 
 export function excerpt(text: string, max: number): string {
   const plain = text.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();

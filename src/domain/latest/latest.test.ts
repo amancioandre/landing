@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { excerpt, latest, rssFeed, type Entry } from "./latest";
+import { everything, excerpt, latest, refresh, rssFeed, type Entry } from "./latest";
 
 const entry = (title: string, date: string, via: Entry["via"] = "substack"): Entry =>
   ({ title, date, url: `https://example.com/${title}`, via });
@@ -53,5 +53,26 @@ describe("the hub's own feed (ADR 0009: RSS mirrors Latest)", () => {
     expect(xml).toContain("<pubDate>Thu, 10 Sep 2026 00:00:00 GMT</pubDate>");
     expect(xml).toContain("<category>substack</category>");
     expect(xml).toContain("<description>Later &lt;that&gt; day</description>");
+  });
+});
+
+describe("refreshing the saved copy of Latest", () => {
+  const before = { substack: [entry("essay", "2026-09-01")], youtube: [entry("film", "2026-10-01", "youtube")], github: [] };
+
+  it("takes what each source says now", () => {
+    const after = refresh(before, { youtube: [entry("new film", "2026-11-01", "youtube")] , substack: [], github: [] });
+    expect(after.youtube.map((e) => e.title)).toEqual(["new film"]);
+    expect(after.substack).toEqual([]);
+  });
+
+  it("keeps a source's last entries when it could not be read, so an outage never empties the page", () => {
+    const after = refresh(before, { github: [entry("tool", "2026-10-30", "github")] });
+    expect(after.substack).toEqual(before.substack);
+    expect(after.youtube).toEqual(before.youtube);
+    expect(after.github.map((e) => e.title)).toEqual(["tool"]);
+  });
+
+  it("lays every source's entries out as one list for the page", () => {
+    expect(everything(before).map((e) => e.title)).toEqual(["essay", "film"]);
   });
 });
